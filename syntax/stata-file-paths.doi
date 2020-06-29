@@ -1,0 +1,12 @@
+
+/* Stata include file containing the global path variables */
+
+global path1 "$dfiles\charity-covid19\data_working\"
+global path2 "$dfiles\charity-covid19\data_raw\"
+global path3 "$dfiles\charity-covid19\data_clean\"
+global path4 "$rfiles\syntax\" 
+global path5 "$rfiles\tables\"
+global path6 "$rfiles\figures\"
+global path7 "$rfiles\tmp\"
+
+pwd
