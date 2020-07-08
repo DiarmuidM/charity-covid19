@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="Charity Details" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Charity Details | The Charity Commission for Northern Ireland</title>
+    
+    <link rel="icon" href="/favicon.ico?cdv=201910011" />
+
+    
+
+    <link href="/content/css/styles.css?cdv=201910011" type="text/css" rel="stylesheet"/>
+    <link href="/content/css/contrast.css" rel="alternate stylesheet" title="contrast" class="js-contrast-style" type="text/css"
+          media="screen" disabled />
+
+    
+
+    <script src="/content/js/runtime.js?cdv=201910011" type="text/javascript"></script><script src="/content/js/common.js?cdv=201910011" type="text/javascript"></script><script src="/content/js/vendors.js?cdv=201910011" type="text/javascript"></script><script src="/content/js/app.js?cdv=201910011" type="text/javascript"></script>
+    
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-18854372-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag()
+        { dataLayer.push(arguments); }
+
+        gtag('js', new Date());
+        
+        gtag('config', 'UA-18854372-1');
+    </script>
+
+
+    
+    
+
+</head>
+<body>
+    
+
+
+<div class="pcg-page-wrapper">
+    <a class="pcg-skip-button pcg-contrast__link-hovered" href="#skiptarget">skip to main content</a>
+    
+
+<header class="pcg-header pcg-contrast__bg-alt">
+    <div class="pcg-container pcg-header__inner container row">
+        <a class="pcg-header__logo col-3 col-md-4 col-lg-2 order-0 d-print-none" href="/">
+            <img class="d-print-none" src="/media/1574/ccni_logo-1.png?anchor=center&amp;amp;mode=crop&amp;amp;width=214&amp;amp;height=77&amp;amp;rnd=131726960090000000" alt="site logo">
+        </a>
+        <img class="d-none d-print-block" src="/content/images/website/print_logo.gif" alt="The Charity Commission for Northern Ireland">
+        <section class="pcg-header__activities col-sm-8 col-md-7 col-lg-10 order-1">
+                <div>
+                    <a class="pcg-header__log-in d-print-none pcg-contrast__link-hovered" href="https://apps.charitycommissionni.org.uk/outreach/workbench.ofml" target="_self">
+                        Log in or get a password to Online services
+                    </a>
+                </div>
+
+            <div class="pcg-accessibility pcg-contrast-accessibility d-print-none">
+    <span class="pcg-accessibility__title sr-only">Text size:</span>
+    <ul class="pcg-accessibility__container js-access-widget">
+        <li class="pcg-accessibility__option">
+            <button class="pcg-accessibility__size pcg-accessibility__size--xs js-fontsize-normal" title="switch to normal font size">
+                A
+            </button>
+        </li>
+        <li class="pcg-accessibility__option">
+            <button class="pcg-accessibility__size pcg-accessibility__size--sm js-fontsize-medium" title="switch to bigger font size">
+                A
+            </button>
+        </li>
+        <li class="pcg-accessibility__option">
+            <button class="pcg-accessibility__size pcg-accessibility__size--md js-fontsize-large" title="switch to biggest font size">
+                A
+            </button>
+        </li>
+        <li class="pcg-accessibility__option">
+            <button class="pcg-accessibility__scheme pcg-accessibility__scheme--normal js-switch-css-normal" title="switch to color theme">
+                C
+            </button>
+        </li>
+        <li class="pcg-accessibility__option">
+            <button class="pcg-accessibility__scheme pcg-accessibility__scheme--contrast js-switch-css-contrast" title="switch to high contrast theme">
+                C
+            </button>
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $.pcg.frontend.accessWidget.init($(".js-access-widget"),
+            {
+                fontSizes: {
+                    normal: "14px",
+                    large: "18px",
+                    largest: "20px"
+                }
+            });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $.pcg.frontend.accessWidget.init($(".js-access-widget"),
+            {
+                fontSizes: {
+                    normal: "14px",
+                    large: "18px",
+                    largest: "20px"
+                }
+            });
+
+    });
+</script>
+
+            <form class="pcg-header__form navbar-form d-print-none" action="/content-search/" method="get">
+                <div class="pcg-header__search input-group">
+                    <label class="sr-only" for="searchText">Search text</label>
+                    <input id="searchText" type="text" class="pcg-header__input form-control" name="searchText" placeholder="Search...">
+                    <div class="pcg-header__button input-group-btn">
+                        <button class="pcg-contrast__color-main pcg-header__find btn" type="submit">
+                            <span class="sr-only">Toggle search</span>
+                            <i class="icon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+            <button class="pcg-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="icon-menu"></i>
+            </button>
+            <section class="pcg-header__nav order-2">
+                <nav class="pcg-main-nav navbar navbar-expand-lg d-print-none">
+                    <div class="pcg-header__nav-list collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="pcg-main-nav__list navbar-nav">
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/about-us/" target="_self">About us</a>
+                                </li>
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/manage-your-charity/" target="_self">Manage your charity</a>
+                                </li>
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/start-up-a-charity/" target="_self">Start up a charity</a>
+                                </li>
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/concerns-and-decisions/" target="_self">Concerns and decisions</a>
+                                </li>
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/charity-essentials/" target="_self">Charity essentials</a>
+                                </li>
+                                <li class="pcg-main-nav__item nav-item">
+                                    <a class="pcg-contrast__link-hovered pcg-main-nav__link  nav-link" href="/charity-search/" target="_self">Charity search</a>
+                                </li>
+                        </ul>
+                    </div>
+                </nav>
+            </section>
+    </div>
+</header>
+
+
+    <main class="pcg-main-content">
+        <span id="skiptarget"></span>
+        
+<div class="pcg-charity-details pcg-container container">
+    
+
+    <ul class="pcg-page-path breadcrumb">
+            <li class="pcg-page-path__item breadcrumb-item">
+                <a class="pcg-contrast__link-hovered" href="/charity-search/">Back to search results</a>
+            </li>
+                    <li class="pcg-page-path__item breadcrumb-item pcg-contrast__color-main">Brown &amp; Br&#237;</li>
+    </ul>
+
+
+    <div class="pcg-charity-details__wrapper pcg-contrast__color-alt">
+        <h1 class="pcg-charity-details__title">Brown &amp; Br&#237;</h1>
+    </div>
+
+<ul class="pcg-charity-details__nav pcg-contrast-nav-tabs nav nav-tabs">
+             <li class="nav-item">
+
+             <a class="pcg-charity-details__tab nav-link pcg-contrast__link-hovered pcg-contrast__bg-extra active" data-toggle="tab" href="#overview">
+                 <h2 class="pcg-charity-details__tab-title">
+                    Overview
+                 </h2>
+             </a>
+         </li>
+
+    
+    
+    
+    
+</ul>
+
+        <section class="pcg-charity-details__content tab-content">
+<article class="pcg-charity-details__overview pcg-contrast__color-main tab-pane active" id="overview">
+    
+            <ul class="pcg-charity-details__cost pcg-charity-details__cost--highlighted row">
+            <li class="pcg-charity-details__numb col-4">
+                <p class="pcg-charity-details__amount pcg-charity-details__amount--removed pcg-contrast__color-alt">Removed information</p>
+            </li>
+            <li class="pcg-charity-details__numb col-8">
+                <div class="pcg-charity-details__purpose pcg-charity-details__purpose--removed pcg-contrast__color-main">
+                    This charity was removed from the register on 5 Feb 2018
+                </div>
+            </li>
+        </ul>
+
+
+
+    
+    <div class="row">
+        <div class="col-lg-4">
+            
+            <div class="pcg-charity-details__data">
+                <span class="pcg-charity-details__requisites">
+                    Charity no. 100075
+                </span>
+                                    <span class="pcg-charity-details__requisites">
+                        
+                        Date registered. 11/09/2014
+                    </span>
+                                            </div>
+        </div>
+        <div class="col-lg-8 row">
+            
+            <div class="pcg-charity-details__block pcg-charity-details__block--collapsible col-12">
+                <h3 class="pcg-contrast__color-alt">Public benefits</h3>
+                    <p>
+        The first purpose of this organisation is to advance the arts, culture and heritage through innovation in cross-disciplinary practice. 
+The direct benefits which flow from this purpose include the provision of art exhibitions, new art commissions and event programmes. People attending these public events gain:
+ - access to contemporary culture and
+    </p>
+        <p class="pcg-charity-details__continue collapse" id="charityBenifits">
+             new work free of charge  
+ - visual culture that is relevant locally, often using local historical or heritage resources to re-invent or re-present traditional knowledge, providing a different way of viewing and experiencing familiar histories, through images, texts, sound and live performances.
+ - opportunities and a platform for involvement by the general public in these art projects through an open call process
+ - specialist training, skills development, career development and professional confidence through participating in high quality events and gaining experience.
+ - a sense of ownership and pride in the finished exhibition and/or production (both contributors and audience)
+ - by working with and across disciplines we are able to cross educate and expand participants experience of other specialist fields
+ - we are able to broaden and develop our programme to engage with a wider audience, also broadening their interests
+ - we are able to develop new  networks for participants and new audiences for the various art forms involved
+ - we are able to remain relevant to current issues and trends locally through the lens of contemporary culture
+The charity’s beneficiaries are the general public, particularly based in Belfast. 
+
+The second purpose of this organisation is to advance public education, appreciation and knowledge of the arts and culture.
+The direct benefits which flow from this purpose include providing educational programmes including:
+ - educational programmes that cover specifically photography, media and events production
+ - training and skills development in the areas of multi-media, events co-ordinating and customer service
+ - internships and volunteers opportunities where possible
+ - focused career development mentoring and support
+ - opportunity for networking and introductions to professionals in the field
+The charity’s beneficiaries are the general public, particularly based in Belfast. 
+
+The third purpose of this organisation is to advance the training of students and early career artists in curatorial practice.
+The direct benefits which flow from this purpose include providing training and education programmes.  Individual beneficiaries gain:
+ - organisational skills, working in a busy environment
+ - ability to adapt to quickly changing circumstances
+ - good communication skills and customer/client service
+ - an aesthetic sensibility in terms of artwork styles and layout
+ - understanding of various styles and their historical references
+ - event management and co-ordination skills
+ - admin and financial experience, monitoring of project budgets
+ - understanding of policy docs and procedures needed in order to deliver an exhibition or production
+ - understanding of what is required by event partners and internally, who is responsible for which aspects
+ - ability to liaise directly with artists, facilitators, media and other partners
+ - experience in writing copy for marketing purposes
+ - all round experience of exhibition and event production 
+ - introductions and networking opportunities with professional peers
+The charity’s beneficiaries are students and early career artists.
+
+These benefits are demonstrated through innovation and excellence in the field of multi-disciplinary arts practice.
+The purposes of our charity do not lead to any harm. 
+The only private benefit flowing from the purposes is when directors Rachel Brown &amp; Brighdin Farren receive facilitator fees and this is incidental and necessary because the services they provide are unique in the sector and the charity activities would not happen otherwise.
+        </p>
+        <span class="collapsed" data-target="#charityBenifits" data-toggle="collapse">
+            <span class="pcg-charity-details__show">
+                <span class="pcg-charity-details__dots"> ...</span>
+                <span class="pcg-charity-details__toggler pcg-contrast__link-hovered">[more]</span>
+            </span>
+            <span class="pcg-charity-details__toggler pcg-contrast__link-hovered pcg-charity-details__hidden">[less]</span>
+        </span>
+
+            </div>
+            <div class="pcg-charity-details__block pcg-charity-details__block--collapsible col-12">
+                <h3 class="pcg-contrast__color-alt">What your organisation does</h3>
+                    <p>
+        Arts and cultural activities are across all disciplines - visual arts, literature, music, theatre, dance, and also cultural heritage. Through collaborative projects we support the same charitable work of other individuals and organisations. We work mostly in Northern Ireland but occasionally across the island of Ireland.
+    </p>
+
+            </div>
+            
+            
+                <div class="pcg-charity-details__block col-lg-6">
+                    <h3 class="pcg-charity-details__subtitle--bordered pcg-contrast__color-alt">The charity’s classifications</h3>
+                        <ul>
+                                <li>The advancement of education</li>
+                                <li>The advancement of the arts, culture, heritage or science</li>
+                        </ul>
+                </div>
+                <div class="pcg-charity-details__subtitle--bordered pcg-charity-details__block col-lg-6">
+                    <h3 class="pcg-contrast__color-alt">Who the charity helps</h3>
+                        <ul>
+                                <li>Children (5-13 year olds)</li>
+                                <li>General public</li>
+                                <li>Youth (14-25 year olds)</li>
+                        </ul>
+                </div>
+                <div class="pcg-charity-details__block col-lg-6">
+                    <h3 class="pcg-contrast__color-alt">How the charity works</h3>
+                        <ul>
+                                <li>Arts</li>
+                                <li>Cultural</li>
+                                <li>Heritage/historical</li>
+                        </ul>
+                </div>
+        </div>
+    </div>
+    
+    
+            <div class="row">
+            <div class="pcg-charity-details__block col-12">
+                <h3>Charitable purposes</h3>
+                <p>The Charity’s Objects are to: -
+(i)	advance the arts and culture and heritage though innovation in cross-disciplinary practice;
+(ii)	advance public education, appreciation and knowledge of the arts, culture and heritage;
+(iii)	advance the training of students and early career artists in curatorial practice.</p>
+            </div>
+        </div>
+</article>
+
+                                                        </section>
+
+
+<div class="pcg-charity-details__actions">
+    <a class="pcg-charity-details__btn pcg-contrast__link-hovered pcg-contrast__bg-alt"
+       href="/umbraco/api/CharityApi/ExportDetailsToCsv?regid=100075&amp;subid=0"
+       target="_blank">
+        Export to CSV
+    </a>
+        <a class="pcg-charity-details__btn pcg-contrast__link-hovered pcg-contrast__bg-alt"
+           href="http://pdfserver.systemassociates.co.uk/Html2PDF.aspx?pageURL=http://www.charitycommissionni.org.uk/charity-details/?regid=100075&amp;subid=0&amp;exportpdf=1&amp;pdfFileName=CharityDetails_100075&amp;mediaType=print"
+           target="_blank">
+            PDF version
+        </a>
+</div></div>
+
+    </main>
+
+    
+
+<footer class="pcg-contrast__bg-alt pcg-footer d-print-none">
+    <div class="pcg-container pcg-footer__inner container row">
+        <div class="col-lg-3">
+            <img src="/media/1575/footer_logo-1.png?anchor=center&amp;amp;mode=crop&amp;amp;width=189&amp;amp;height=72&amp;amp;rnd=131726962110000000" alt="">
+        </div>
+        <div class="col-lg-6">
+                <ul class="pcg-footer-nav">
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/" target="_self">Contact us</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/press-office/" target="_self">Press office</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/directions-to-the-commission/" target="_self">Directions to the Commission</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/freedom-of-information/" target="_self">Freedom of information</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/data-protection/" target="_self">Data protection</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/contact-us/accessibility/" target="_self">Accessibility</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="http://eepurl.com/cMe_Yn" target="_self">Mailing list</a>
+                        </li>
+                        <li class="pcg-footer-nav__item">
+                            <a class="pcg-footer-nav__link pcg-contrast__link-hovered" href="/about-us/privacy-notice-and-retention-schedule/" target="_self">Privacy notice and retention schedule</a>
+                        </li>
+                </ul>
+                            <p class="pcg-footer__copyright pcg-contrast__color-alt">2014 Copyright The Charity Commission for Northern Ireland</p>
+        </div>
+        <div class="col-lg-3">
+            
+
+<ul class="pcg-social">
+            <li class="pcg-social__item pcg-social__item--youtube">
+            <a href="http://www.youtube.com/watch?v=50M3A3EoQRs"
+               target="_blank"
+               title="Visit our YouTube site"
+               class="pcg-social__link pcg-social__link--youtube">
+                    <span class="sr-only">Visit our YouTube site</span>
+            </a>
+        </li>
+
+            <li class="pcg-social__item pcg-social__item--rss">
+            <a href="/news/news-feed/"
+               target="_self"
+               title="RSS feed"
+               class="pcg-social__link pcg-social__link--rss">
+                    <span class="sr-only">RSS feed</span>
+            </a>
+        </li>
+
+    
+        <li class="pcg-social__item pcg-social__item--mail">
+            <a class="pcg-social__link pcg-social__link--mail" href="mailto:admin@charitycommissionni.org.uk">
+                <span class="sr-only">Email us</span>
+            </a>
+        </li>
+
+            <li class="pcg-social__item pcg-social__item--twitter">
+            <a href="https://twitter.com/CharityCommNI"
+               target="_blank"
+               title="See our Twitter feed"
+               class="pcg-social__link pcg-social__link--twitter">
+                    <span class="sr-only">See our Twitter feed</span>
+            </a>
+        </li>
+
+</ul>
+
+
+        </div>
+    </div>
+</footer>
+
+</div>
+
+
+
+        
+    <script>
+        $(function() {
+            $.pcg.frontend.printButton.init($("body"));
+        })
+     </script>
+
+    
+
+</body>
+</html>

@@ -219,7 +219,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 	** Registrations
 
-	import delimited using $path2\can-all-data-2020-06.txt, varn(1) clear
+	import delimited using $path2\can-all-data-2020-07.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -293,7 +293,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	** Revocations
 
-	import delimited using $path2\can-all-data-2020-06.txt, varn(1) clear
+	import delimited using $path2\can-all-data-2020-07.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -371,7 +371,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	// Create analysis file
 	
 	use "$path1\can-monthly-registrations.dta", clear
-	merge 1:1 period using "$path1\can-monthly-removals.dta", keep(match)
+	merge 1:1 period using "$path1\can-monthly-removals.dta", keep(match master)
 	drop _merge
 	gen country = "Canada"
 	sav "$path3\can-monthly-statistics.dta", replace
@@ -561,9 +561,19 @@ keep if removed==1
 
 
 ** Australia (ACNC) **
+/*
+	Some serious discrepencies between Register of Charities and the list of newly registered charities listed
+	here: https://www.acnc.gov.au/charity/charity/recently-registered-charities
+	
+	For example, the following charities were claimed to be registered in June 2020 but appear under different dates
+	in the Register:
+		- l if ABN=="11407494755" [May 2020]
+		- l if ABN=="11527622696" [2012]
+		- l if ABN=="35276763984" [2019]
+*/
 
-	import excel using $path2\aus-roc-2020-06-10.xlsx, firstrow clear
-	keep ABN Registration_Date
+	import excel using $path2\aus-roc-2020-07.xlsx, firstrow clear
+	keep ABN Registration_Date Date_Organisation_Established Charity_Legal_Name
 
 	// Convert to date
 	
@@ -952,23 +962,23 @@ desc, f
 
 ** Create master file
 
-import delimited using $path2\oscr-roc-2020-06.csv, varn(1) clear
+import delimited using $path2\oscr-roc-2020-07.csv, varn(1) clear
 gen regdata = 1
-sav $path1\scot-roc-2020-06.dta, replace
+sav $path1\scot-roc-2020-07.dta, replace
 
-import delimited using $path2\oscr-rem-2020-06.csv, varn(1) clear
+import delimited using $path2\oscr-rem-2020-07.csv, varn(1) clear
 gen remdata = 1
-sav $path1\scot-removals-2020-06.dta, replace
+sav $path1\scot-removals-2020-07.dta, replace
 
-append using $path1\scot-roc-2020-06.dta, force
+append using $path1\scot-roc-2020-07.dta, force
 *keep charityregistrationnumber deregistrationdate dateregistered *data
 gen removed = (remdata)
-sav $path1\scot-all-data-2020-06.dta, replace
+sav $path1\scot-all-data-2020-07.dta, replace
 
 
 ** De-registrations
 
-use $path1\scot-all-data-2020-06.dta, clear
+use $path1\scot-all-data-2020-07.dta, clear
 keep if removed==1
 
 	// Convert to date
@@ -1043,7 +1053,7 @@ keep if removed==1
 	
 ** Registrations
 
-use $path1\scot-all-data-2020-06.dta, clear
+use $path1\scot-all-data-2020-07.dta, clear
 
 	// Convert to date
 	

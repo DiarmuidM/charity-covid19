@@ -1,21 +1,69 @@
 
+
+global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
+global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and outputs
+
+include "$rfiles\syntax\stata-file-paths.doi"
+
 	
 	
 	
 	
-	
-	
-	
-	
-	
-/*	
+
 /* Produce cleaned Register */
 
-use "$path2\oscr-roc-2020-06.dta", clear
-append using "$path2\oscr-rem-2020-06.dta", force
+use $path1\scot-all-data-2020-06.dta, clear
+desc, f
+codebook, compact
 
 	
 	** Data cleaning
+	
+	// Charitable purposes
+	
+	codebook purposes // 101 charities with no values for this variable.
+	tab purposes, sort
+	split purposes, p(',)
+
+		// Now for some tidying up before I do a count of each charitable purpose mentioned:
+		
+		local counter = 1
+		foreach var of varlist purposes1-purposes16 {
+			gen charitablepurposes`counter' = subinstr(`var'," ","",.)
+			replace charitablepurposes`counter' = subinstr(charitablepurposes`counter',"'","",.)
+			replace charitablepurposes`counter' = subinstr(charitablepurposes`counter',",","",.)
+			replace charitablepurposes`counter' = strlower(charitablepurposes`counter')
+			drop `var'
+			local counter = `counter' + 1
+		}	
+		
+		local charpurplist = "AdvancementOfAnimalWelfare AdvancementOfCitizenshipOrCommunityDevelopment AdvancementOfEducation AdvancementOfEnvironmentalProtectionOrImprovement AdvancementOfHealth AdvancementOfHumanRightsConflictResolution AdvancementOfPublicParticipationInSport AdvancementOfReligion AdvancementOfTheArtsHeritageCultureOrScience Other PreventionOfPoverty PromotionOfEqualityAndDiversity PromotionOfReligiousOrRacialHarmony ProvisionOfRecreationalFacilities ReliefOfThoseInNeed SavingOfLives"
+		forvalues cpvarcounter = 1(1)16 {
+			local counter=1
+			gen cpresponse`cpvarcounter'=0
+			foreach cpitem in `charpurplist' {
+				replace cpresponse`cpvarcounter'=`counter' if charitablepurposes`cpvarcounter'=="`cpitem'"
+				local counter = `counter' + 1
+			 }
+		}
+
+		forvalues i = 1(1)16 {
+			egen charpurp`i' = count(cpresponse1-cpresponse16) if cpresponse1==`i' | cpresponse2==`i' | cpresponse3==`i' | cpresponse4==`i' | cpresponse5==`i' | cpresponse6==`i' | cpresponse7==`i' | cpresponse8==`i' | cpresponse9==`i' | cpresponse10==`i' | cpresponse11==`i' | cpresponse12==`i' | cpresponse13==`i' | cpresponse14==`i' | cpresponse15==`i' | cpresponse16==`i'
+			tab charpurp`i'
+		}
+		
+		sum charpurp*
+		
+		// Create a dummy variable indicating the presence of each purpose:
+		
+		foreach var of varlist charpurp1-charpurp16 {
+			quietly levelsof `var'
+			local num = r(N)
+			recode `var' `num'=1 *=0 if CharitablePurposes!=""
+			tab `var'
+		}
+
+
 	
 	/* Cases in the dataset that should be excluded */
 	
@@ -141,47 +189,6 @@ append using "$path2\oscr-rem-2020-06.dta", force
 		gen outwith = (mainoplocation==23)
 		tab outwith
 	
-
-	// Charitable purposes
-	
-	codebook purposes // 101 charities with no values for this variable.
-	list charnumber status if purposes=="" // All of these charities have been removed; I'll attribute missing data to data migration and human error.
-	split purposes, p(",") // split() won't work as currently formulated
-
-		// Now for some tidying up before I do a count of each charitable purpose mentioned:
-		
-		local counter = 1
-		foreach var of varlist CharitablePurposes1-CharitablePurposes16 {
-			gen charitablepurposes`counter'=subinstr(`var'," ","",.)
-			drop `var'
-			local counter = `counter' + 1
-		}	
-		
-		local charpurplist = "AdvancementOfAnimalWelfare AdvancementOfCitizenshipOrCommunityDevelopment AdvancementOfEducation AdvancementOfEnvironmentalProtectionOrImprovement AdvancementOfHealth AdvancementOfHumanRightsConflictResolution AdvancementOfPublicParticipationInSport AdvancementOfReligion AdvancementOfTheArtsHeritageCultureOrScience Other PreventionOfPoverty PromotionOfEqualityAndDiversity PromotionOfReligiousOrRacialHarmony ProvisionOfRecreationalFacilities ReliefOfThoseInNeed SavingOfLives"
-		forvalues cpvarcounter = 1(1)16 {
-			local counter=1
-			gen cpresponse`cpvarcounter'=0
-			foreach cpitem in `charpurplist' {
-				replace cpresponse`cpvarcounter'=`counter' if charitablepurposes`cpvarcounter'=="`cpitem'"
-				local counter = `counter' + 1
-			 }
-		}
-
-		forvalues i = 1(1)16 {
-			egen charpurp`i' = count(cpresponse1-cpresponse16) if cpresponse1==`i' | cpresponse2==`i' | cpresponse3==`i' | cpresponse4==`i' | cpresponse5==`i' | cpresponse6==`i' | cpresponse7==`i' | cpresponse8==`i' | cpresponse9==`i' | cpresponse10==`i' | cpresponse11==`i' | cpresponse12==`i' | cpresponse13==`i' | cpresponse14==`i' | cpresponse15==`i' | cpresponse16==`i'
-			tab charpurp`i'
-		}
-		
-		sum charpurp*
-		
-		// Create a dummy variable indicating the presence of each purpose:
-		
-		foreach var of varlist charpurp1-charpurp16 {
-			quietly levelsof `var'
-			local num = r(N)
-			recode `var' `num'=1 *=0 if CharitablePurposes!=""
-			tab `var'
-		}
 
 				
 	// Do the same for beneficiary groups:
