@@ -1171,6 +1171,23 @@ sav $path3\all-jurisdictions-monthly-statistics.dta, replace
 
 ************************************************************************************************************
 	
+/** Create CSV versions of each data set **//
+
+local cleandir $path3
+cd `cleandir'
+
+local datafiles: dir "`workdir'" files "*.dta"
+
+foreach datafile of local datafiles {
+	use `datafile', clear
+	sort period
+	order country, first
+	order period, after(country)
+	keep period country *_avg* *_count* *_excess*
+	
+	export delimited using `datafile'.csv, replace
+}
+	
 	
 /** Empty working data folder **/
 	
