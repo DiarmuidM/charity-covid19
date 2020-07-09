@@ -15,8 +15,12 @@ There is a dedicated project website where the latest findings are published, as
 ## Materials
 
 The project uses Python (a programming language) and Stata (a statistical software package) to collect, clean and analyse publicly available data about charities. These materials are free for you to use, adapt and share for your own purposes:
-* [code](./code) - run and/or download text-mining code using our Jupyter notebook resources.
+* [syntax](./syntax) - programming and statistical software code for run and/or download text-mining code using our Jupyter notebook resources.
 * [webinars](./webinars) - watch recordings of our webinars and download the underpinning slides.
+
+## Disclaimer
+
+This project is in its infancy and thus there are likely to be errors associated with some of the materials. We are working on this on a regular basis and any feedback or identification of errata are welcomed - see contact details below.
 
 ## Acknowledgements
 
