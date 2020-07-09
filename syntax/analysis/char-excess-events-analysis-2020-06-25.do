@@ -50,7 +50,7 @@ use $path3\all-jurisdictions-monthly-statistics.dta, clear
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
 		caption("Data from June 2020 Data Download", size(small)) ///
 		scheme(s1color)
-	*graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\all-monthly-cumulative-change-registrations.png", replace width(4096)
+	*graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\all-monthly-cumulative-change-registrations.png", replace width(`isize')
 
 
 ** USA
@@ -68,7 +68,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-stati
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
 		caption("Data from IRS June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-registrations.png", replace width(`isize')
 	
 	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
 		(scatter rem_count period, msym(X) msize(large)) , ///
@@ -79,7 +79,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-stati
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
 		caption("Data from IRS June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-removals.png", replace width(`isize')
 
 	
 	// Cumulative events
@@ -92,7 +92,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-stati
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
 		caption("Data from IRS June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-cumulative-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-cumulative-registrations.png", replace width(`isize')
 	
 	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("United States of America") ///
@@ -102,7 +102,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-stati
 		note("Expected removals: mean number of removals for that month (2015-2019)") ///
 		caption("Data from IRS June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-cumulative-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\us-monthly-cumulative-removals.png", replace width(`isize')
 
 	
 
@@ -121,7 +121,7 @@ use $path3\can-monthly-statistics.dta, clear
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
 		caption("Data from CRA June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-registrations.png", replace width(`isize')
 	
 	// Monthly variability
 	
@@ -134,7 +134,7 @@ use $path3\can-monthly-statistics.dta, clear
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
 		caption("Data from CRA June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-removals.png", replace width(`isize')
 	
 	
 	// Cumulative events
@@ -147,7 +147,7 @@ use $path3\can-monthly-statistics.dta, clear
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
 		caption("Data from CRA June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-cumulative-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-cumulative-registrations.png", replace width(`isize')
 	
 	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("Canada") ///
@@ -157,7 +157,7 @@ use $path3\can-monthly-statistics.dta, clear
 		note("Expected removals: mean number of removals for that month (2015-2019)") ///
 		caption("Data from CRA June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-cumulative-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\can-monthly-cumulative-removals.png", replace width(`isize')
 
 	
 
@@ -176,7 +176,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\csnz-monthly-sta
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
 		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-registrations.png", replace width(`isize')
 	
 	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
 		(scatter rem_count period, msym(X) msize(large)) , ///
@@ -187,7 +187,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\csnz-monthly-sta
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
 		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-removals.png", replace width(`isize')
 
 	
 	// Cumulative events
@@ -200,7 +200,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\csnz-monthly-sta
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
 		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-cumulative-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-cumulative-registrations.png", replace width(`isize')
 	
 	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("New Zealand") ///
@@ -210,7 +210,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\csnz-monthly-sta
 		note("Expected removals: mean number of removals for that month (2015-2019)") ///
 		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-cumulative-removals.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\nz-monthly-cumulative-removals.png", replace width(`isize')
 
 	
 ** Australia
@@ -228,7 +228,7 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-regi
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
 		caption("Data from ACNC June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-registrations.png", replace width(`isize')
 
 	
 	// Cumulative events
@@ -241,59 +241,61 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-regi
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
 		caption("Data from ACNC June 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-cumulative-registrations.png", replace width(4096)
+	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-cumulative-registrations.png", replace width(`isize')
 
 	
 ** Northern Ireland
 
-use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\ni-monthly-statistics.dta", clear
+use $path3\ni-monthly-statistics.dta, clear
+local isize = 1200
 
 	// Monthly variability
 	
-	twoway (rcap reg_lb reg_ub period, msize(medlarge) lpatt(solid)) (scatter reg_avg period, msym(O)) ///
-		(scatter reg_count period, msym(X) msize(large)) , ///
+	local cutoff = tm(2020m7)
+	twoway (rcap reg_lb reg_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < `cutoff', msym(O)) ///
+		(scatter reg_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("Northern Ireland") ///
 		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
+		ylab(0(40)260, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Monthly Registrations") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CCNI June 2020 Data Download", size(small)) ///
+		caption("Data from CCNI July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\ni-monthly-registrations.png", replace width(4096)
+	graph export $path6\ni-monthly-registrations.png, replace width(`isize')
 	
-	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
-		(scatter rem_count period, msym(X) msize(large)) , ///
+	twoway (rcap rem_lb rem_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < `cutoff', msym(O)) ///
+		(scatter rem_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Removals") subtitle("Northern Ireland") ///
 		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
+		ylab(0(10)40, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Monthly Removals") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CCNI June 2020 Data Download", size(small)) ///
+		caption("Data from CCNI July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\ni-monthly-removals.png", replace width(4096)
+	graph export $path6\ni-monthly-removals.png, replace width(`isize')
 
 	
 	// Cumulative events
 
-	twoway (line reg_count_cumu period, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period, lpatt(solid)) , ///
+	twoway (line reg_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Registrations") subtitle("Northern Ireland") ///
 		ytitle("Count of registrations") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CCNI June 2020 Data Download", size(small)) ///
+		caption("Data from CCNI July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\ni-monthly-cumulative-registrations.png", replace width(4096)
+	graph export $path6\ni-monthly-cumulative-registrations.png, replace width(`isize')
 	
-	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
+	twoway (line rem_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("Northern Ireland") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
 		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CCNI June 2020 Data Download", size(small)) ///
+		caption("Data from CCNI July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\ni-monthly-cumulative-removals.png", replace width(4096)
+	graph export $path6\ni-monthly-cumulative-removals.png, replace width(`isize')
 
 
 ** Scotland
@@ -306,23 +308,23 @@ use $path3\scot-monthly-statistics.dta, clear
 		(scatter reg_count period, msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("Scotland") ///
 		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
+		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Monthly Registrations") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from OSCR June 2020 Data Download", size(small)) ///
+		caption("Data from OSCR July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\scot-monthly-registrations.png", replace width(4096)
+	graph export $path6\scot-monthly-registrations.png, replace width(`isize')
 		
 	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
 		(scatter rem_count period, msym(X) msize(large)) , ///
 		title("Charity Removals") subtitle("Scotland") ///
 		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
+		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Monthly Removals") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from OSCR June 2020 Data Download", size(small)) ///
+		caption("Data from OSCR July 2020 Data Download", size(small)) ///
 		scheme(s1mono)	
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\scot-monthly-removals.png", replace width(4096)
+	graph export $path6\scot-monthly-removals.png, replace width(`isize')
 
 	
 	// Cumulative events
@@ -333,9 +335,9 @@ use $path3\scot-monthly-statistics.dta, clear
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from OSCR June 2020 Data Download", size(small)) ///
+		caption("Data from OSCR July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\scot-monthly-cumulative-registrations.png", replace width(4096)
+	graph export $path6\scot-monthly-cumulative-registrations.png, replace width(`isize')
 
 	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("Scotland") ///
@@ -343,9 +345,9 @@ use $path3\scot-monthly-statistics.dta, clear
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
 		note("Expected Removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from OSCR June 2020 Data Download", size(small)) ///
+		caption("Data from OSCR July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\scot-monthly-cumulative-removals.png", replace width(4096)
+	graph export $path6\scot-monthly-cumulative-removals.png, replace width(`isize')
 	
 		
 ** England and Wales
@@ -362,9 +364,9 @@ use $path3\ew-monthly-statistics.dta, clear
 		ylab(0(100)650, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Monthly Registrations") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CCEW June 2020 Data Download", size(small)) ///
+		caption("Data from CCEW July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\ew-monthly-registrations.png, replace width(4096)
+	graph export $path6\ew-monthly-registrations.png, replace width(`isize')
 	
 	twoway (rcap rem_lb rem_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < `cutoff', msym(O)) ///
 		(scatter rem_count period if period < `cutoff', msym(X) msize(large)) , ///
@@ -373,9 +375,9 @@ use $path3\ew-monthly-statistics.dta, clear
 		ylab(0(150)900, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Monthly Removals") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CCEW June 2020 Data Download", size(small)) ///
+		caption("Data from CCEW July 2020 Data Download", size(small)) ///
 		scheme(s1mono)	
-	graph export $path6\ew-monthly-removals.png, replace width(4096)
+	graph export $path6\ew-monthly-removals.png, replace width(`isize')
 
 	
 	// Cumulative events
@@ -387,9 +389,9 @@ use $path3\ew-monthly-statistics.dta, clear
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CCEW June 2020 Data Download", size(small)) ///
+		caption("Data from CCEW July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\ew-monthly-cumulative-registrations.png, replace width(4096)
+	graph export $path6\ew-monthly-cumulative-registrations.png, replace width(`isize')
 
 	twoway (line rem_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("England & Wales") ///
@@ -397,7 +399,7 @@ use $path3\ew-monthly-statistics.dta, clear
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
 		note("Expected Removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CCEW June 2020 Data Download", size(small)) ///
+		caption("Data from CCEW July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\ew-monthly-cumulative-removals.png, replace width(4096)
+	graph export $path6\ew-monthly-cumulative-removals.png, replace width(`isize')
 	

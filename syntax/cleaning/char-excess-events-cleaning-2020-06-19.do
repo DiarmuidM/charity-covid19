@@ -654,7 +654,7 @@ keep if removed==1
 
 	** Registrations
 	
-	import delimited using $path2\ni-roc-2020-06-25.csv, varn(1) clear
+	import delimited using $path2\ni-roc-2020-07-09.csv, varn(1) clear
 	keep regcharitynumber dateregistered status
 	tab status
 	keep if status!="Removed"
@@ -728,7 +728,7 @@ keep if removed==1
 	
 	** Removals
 		
-	import delimited using $path2\ni-removals-2020-06-25.csv, varn(1) clear
+	import delimited using $path2\ni-removals-2020-07-09.csv, varn(1) clear
 	keep if removed==1
 	desc, f
 
@@ -962,11 +962,11 @@ desc, f
 
 ** Create master file
 
-import delimited using $path2\oscr-roc-2020-07.csv, varn(1) clear
+import delimited using $path2\CharityExport-09-Jul-2020.csv, varn(1) clear
 gen regdata = 1
 sav $path1\scot-roc-2020-07.dta, replace
 
-import delimited using $path2\oscr-rem-2020-07.csv, varn(1) clear
+import delimited using $path2\CharityExport-Removed-09-Jul-2020.csv, varn(1) clear
 gen remdata = 1
 sav $path1\scot-removals-2020-07.dta, replace
 

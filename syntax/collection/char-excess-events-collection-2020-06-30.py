@@ -20,6 +20,7 @@
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
 from time import sleep
+from fimport import import_zip
 import requests
 import os
 import argparse
@@ -126,7 +127,108 @@ def aus_download():
     print("\r")
     print("Charity Register: '{}'".format(outfile))
 
- 
+
+#############################################################################################################
+
+#############################################################################################################
+
+
+# England and Wales
+
+def ew_download():
+    """
+        Downloads latest copy of the data extract from the Charity Commission for England and Wales.
+
+        Dependencies:
+            - NONE
+
+        Issues: 
+    """  
+
+    print("Downloading England and Wales data extract")
+    print("\r")
+
+
+    # Create folders
+
+    directories = ["ew", "logs"]
+
+    for directory in directories:
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+        else:
+            print("{} already exists".format(directory))
+            continue   
+
+
+    # Get current date
+
+    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
+    mfile = "./logs/ew-download-metadata-" + ddate + ".json"
+
+
+    # Request web page containing link to file
+    
+    webadd = "http://data.charitycommission.gov.uk/"
+    response = requests.get(webadd)
+    print(response.status_code, response.headers)
+
+
+    # Search for file on web page
+
+    if response.status_code==200: # if the web page was successfully requested
+
+        webpage = soup(response.text, "html.parser")
+        file_url = webpage.select_one("a[href*=RegPlusExtract]").get("href")
+        print(file_url)
+
+
+        # Request file
+
+        response_file = requests.get(file_url, allow_redirects=True)
+
+        if response_file.status_code==200:
+
+            download_folder = "./ew/" + ddate
+            os.mkdir(download_folder)
+            outfile = download_folder + "/ccew-data-extract-" + ddate + ".zip"
+            if os.path.isfile(outfile): # do not overwrite existing file
+                print("File already exists, no need to overwrite")
+            else: # file does not currently exist, therefore create
+                with open(outfile, "wb") as f:
+                    f.write(response_file.content)
+
+            # Unzip files and convert from bcp to csv
+
+            import_zip(outfile)
+
+        else:
+            print("Unable to download data extract from link {}".format(file_url))
+            print("Status code {}".format(response_file.status_code))
+
+
+    # Write metadata to file
+
+    mdata = dict(response_file.headers)
+    mdata["file"] = "Data Extract"
+    mdata["data_portal_link"] = str(webadd)
+    mdata["data_extract_link"] = str(file_url)
+    mdata["data_extract_last_modified"] = response_file.headers["Last-Modified"]
+
+    with open(mfile, "w") as f:
+        json.dump(mdata, f)
+    
+
+    print("\r")    
+    print("Successfully downloaded data extract")
+    print("Check log file for metadata about the download: {}".format(mfile))
+
+
+#############################################################################################################
+
+#############################################################################################################
+
+
 # Northern Ireland
 
 def ni_roc():
@@ -475,7 +577,7 @@ def roi_download(**args):
 
 
     print("\r")
-    print("Charity Register: '{}'; and master file: '{}'".format(outfile))
+    print("Charity Register: '{}'".format(outfile))
 
 
 
@@ -599,8 +701,34 @@ def file_delete(source, ext, **args):
 
 def main():
     print("Executing data download")
-    #sco_download()
-
+    try:
+        sco_download()
+    except:
+        print("Could not execute Scotland download")
+    """
+    try:
+        aus_download()
+    except:
+        print("Could not execute Australia download")
+    """
+    try:
+        ew_download()
+    except:
+        print("Could not execute England and Wales download")
+    """
+    try:
+        roi_download()
+    except:
+        print("Could not execute Republic of Ireland download")
+    """
+    try:
+        ni_download()
+    except:
+        print("Could not execute Northern Ireland download")
+    try:
+        file_delete("./ni/webpages/", ".txt")
+    except:
+        print("Could not delete files in folder './ni/webpages/'")
 
 
 # Main program #
