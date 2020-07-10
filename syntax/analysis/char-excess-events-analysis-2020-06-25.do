@@ -249,10 +249,10 @@ use "C:\Users\t95171dm\Dropbox\tso-response-covid19\papers\vssn\aus-monthly-regi
 use $path3\ni-monthly-statistics.dta, clear
 local isize = 1200
 local fdate = "2020-07-10"
+local cutoff = tm(2020m7)
 
 	// Monthly variability
 	
-	local cutoff = tm(2020m7)
 	twoway (rcap reg_lb reg_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < `cutoff', msym(O)) ///
 		(scatter reg_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("Northern Ireland") ///
@@ -305,8 +305,8 @@ use $path3\scot-monthly-statistics.dta, clear
 
 	// Monthly variability
 	
-	twoway (rcap reg_lb reg_ub period, msize(medlarge) lpatt(solid)) (scatter reg_avg period, msym(O)) ///
-		(scatter reg_count period, msym(X) msize(large)) , ///
+	twoway (rcap reg_lb reg_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < `cutoff', msym(O)) ///
+		(scatter reg_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("Scotland") ///
 		ytitle("Count of registrations") xtitle("Month") ///
 		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
@@ -316,8 +316,8 @@ use $path3\scot-monthly-statistics.dta, clear
 		scheme(s1mono)
 	graph export $path6\scot-monthly-registrations-`fdate'.png, replace width(`isize')
 		
-	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
-		(scatter rem_count period, msym(X) msize(large)) , ///
+	twoway (rcap rem_lb rem_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < `cutoff', msym(O)) ///
+		(scatter rem_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Removals") subtitle("Scotland") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
@@ -330,7 +330,7 @@ use $path3\scot-monthly-statistics.dta, clear
 	
 	// Cumulative events
 
-	twoway (line reg_count_cumu period, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period, lpatt(solid)) , ///
+	twoway (line reg_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Registrations") subtitle("Scotland") ///
 		ytitle("Count of registrations") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
@@ -340,7 +340,7 @@ use $path3\scot-monthly-statistics.dta, clear
 		scheme(s1mono)
 	graph export $path6\scot-monthly-cumulative-registrations-`fdate'.png, replace width(`isize')
 
-	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
+	twoway (line rem_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("Scotland") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
@@ -357,7 +357,6 @@ use $path3\ew-monthly-statistics.dta, clear
 
 	// Monthly variability
 	
-	local cutoff = tm(2020m7)
 	twoway (rcap reg_lb reg_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < `cutoff', msym(O)) ///
 		(scatter reg_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("England & Wales") ///
