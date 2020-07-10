@@ -22,6 +22,8 @@ Finally, there are two key processes generating the observed trends:
 1. Applications for registration and de-registration by charities.
 2. The capacity of the regulators to process and prioritise these applications.
 
+More information on our methodology can be found here: [ [LINK] ]({{site.url}}/methodology)
+
 ### England and Wales
 
 #### Registrations
