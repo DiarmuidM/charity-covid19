@@ -28,7 +28,7 @@ Finally, there are two key processes generating the observed trends:
 
 ![Monthly registrations](ew-monthly-cumulative-registrations-2020-07-10.png)
 
-![Cumulative registrations](/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
+![Cumulative registrations](charity-covid19/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
