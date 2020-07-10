@@ -54,31 +54,53 @@ The number of charities de-registered (removed from the Register of Charities) i
 
 #### Registrations
 
+The patterns in monthly registrations for Scotland are similar to those for England and Wales, with a small degree of variation compared to previous years (see figure 5). Though as a result of these monthly trends, there are slightly fewer new charities overall in 2020 than we would expect (c. 100 - see figure 6).
+
+*Figure 5. Monthly registrations of charities - Scotland*
+
 ![Monthly registrations]({{site.url}}/figures/scot-monthly-registrations-2020-07-10.png)
+
+*Figure 6. Cumulative registrations of charities - Scotland*
 
 ![Cumulative registrations]({{site.url}}/figures/scot-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
+Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between February and April 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
+
+*Figure 7. Monthly de-registrations of charities - Scotland*
+
 ![Monthly removals]({{site.url}}/figures/scot-monthly-removals-2020-07-10.png)
+
+*Figure 8. Cumulative de-registrations of charities - Scotland*
 
 ![Cumulative removals]({{site.url}}/figures/scot-monthly-cumulative-removals-2020-07-10.png)
 
 ### Northern Ireland
 
 Figures for Northern Ireland should be interpreted cautiously, for three reasons:
-1. The sector is small compared to the other UK jurisdictions: monthly figures are low and hence display much more variability compared to previous periods.
+1. The sector is small compared to the other UK jurisdictions: monthly figures are low and hence display much more variability compared to what might be expected.
 2. The regulator is still undertaking work to register charities already in existence; that is, CCNI is calling charities forward in order to register with them. Thus monthly figures include new organisations being formed, and existing charities formalising their registration with the regulator. More information on the regulator's work on this task [here](https://apps.charitycommissionni.org.uk/About_us/Contacting_us/FAQs.aspx#Registration%20begins%20date?).
 3. The regulator's ability and capacity to register and remove charities (as well as execute a number of other core functions) has been considerably hampered by a recent court ruling - information [here](https://www.charitycommissionni.org.uk/news/legal-update/).
 
+For these reasons we are reluctant to interpret the observed trends - hopefully these figures will either be revised or clarified at a future date.
+
 #### Registrations
 
+*Figure 9. Monthly registrations of charities - Northern Ireland*
+
 ![Monthly registrations]({{site.url}}/figures/ni-monthly-registrations-2020-07-10.png)
+
+*Figure 10. Cumulative registrations of charities - Northern Ireland*
 
 ![Cumulative registrations]({{site.url}}/figures/ni-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
+*Figure 11. Monthly de-registrations of charities - Northern Ireland*
+
 ![Monthly removals]({{site.url}}/figures/ni-monthly-removals-2020-07-10.png)
+
+*Figure 12. Cumulative de-registrations of charities - Northern Ireland*
 
 ![Cumulative removals]({{site.url}}/figures/ni-monthly-cumulative-removals-2020-07-10.png)
