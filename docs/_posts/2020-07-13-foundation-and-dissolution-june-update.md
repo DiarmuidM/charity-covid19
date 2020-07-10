@@ -26,29 +26,29 @@ Finally, there are two key processes generating the observed trends:
 
 #### Registrations
 
-![Monthly registrations](ew-monthly-cumulative-registrations-2020-07-10.png)
+![Monthly registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
 
-![Cumulative registrations](/charity-covid19/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
+![Cumulative registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
-![Monthly removals](/figures/ew-monthly-removals-2020-07-10.png)
+![Monthly removals]({{site.url}}/figures/ew-monthly-removals-2020-07-10.png)
 
-![Cumulative removals](/figures/ew-monthly-cumulative-removals-2020-07-10.png)
+![Cumulative removals]({{site.url}}/figures/ew-monthly-cumulative-removals-2020-07-10.png)
 
 ### Scotland
 
 #### Registrations
 
-![Monthly registrations](/figures/scot-monthly-registrations-2020-07-10.png)
+![Monthly registrations]({{site.url}}/figures/scot-monthly-registrations-2020-07-10.png)
 
-![Cumulative registrations](/figures/scot-monthly-cumulative-registrations-2020-07-10.png)
+![Cumulative registrations]({{site.url}}/figures/scot-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
-![Monthly removals](/figures/scot-monthly-removals-2020-07-10.png)
+![Monthly removals]({{site.url}}/figures/scot-monthly-removals-2020-07-10.png)
 
-![Cumulative removals](/figures/scot-monthly-cumulative-removals-2020-07-10.png)
+![Cumulative removals]({{site.url}}/figures/scot-monthly-cumulative-removals-2020-07-10.png)
 
 ### Northern Ireland
 
@@ -59,12 +59,12 @@ Figures for Northern Ireland should be interpreted cautiously, for three reasons
 
 #### Registrations
 
-![Monthly registrations](/figures/ni-monthly-registrations-2020-07-10.png)
+![Monthly registrations]({{site.url}}/figures/ni-monthly-registrations-2020-07-10.png)
 
-![Cumulative registrations](/figures/ni-monthly-cumulative-registrations-2020-07-10.png)
+![Cumulative registrations]({{site.url}}/figures/ni-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
-![Monthly removals](/figures/ni-monthly-removals-2020-07-10.png)
+![Monthly removals]({{site.url}}/figures/ni-monthly-removals-2020-07-10.png)
 
-![Cumulative removals](/figures/ni-monthly-cumulative-removals-2020-07-10.png)
+![Cumulative removals]({{site.url}}/figures/ni-monthly-cumulative-removals-2020-07-10.png)
