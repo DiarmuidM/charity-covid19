@@ -1,6 +1,6 @@
 ---
 layout: post
-author: diarmuid
+author: Diarmuid McDonnell
 ---
 
 # Foundations and dissolutions of charitable organisations
