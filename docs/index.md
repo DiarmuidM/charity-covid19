@@ -2,6 +2,7 @@
 ---
 layout: default
 title: "Home"
+permalink: /index/
 ---
 
 # Welcome
@@ -14,7 +15,7 @@ Using comprehensive publicly available data from seven jurisdictions, we examine
 
 To view the latest findings see our blog: [LINK]
 
-To learn more about our data sources: [LINK].
+To learn more about our data sources: <a href="https://diarmuidm.github.io/charity-covid19/data/" target=_blank>[LINK]</a>.
 
 To learn more about our analytical methods: [LINK].
 
