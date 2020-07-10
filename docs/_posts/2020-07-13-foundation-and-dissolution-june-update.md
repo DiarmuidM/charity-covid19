@@ -26,7 +26,7 @@ Finally, there are two key processes generating the observed trends:
 
 #### Registrations
 
-![Monthly registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
+![Monthly registrations]({{site.url}}/figures/ew-monthly-registrations-2020-07-10.png)
 
 ![Cumulative registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
 
