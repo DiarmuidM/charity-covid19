@@ -8,7 +8,7 @@ Using comprehensive publicly available data from seven jurisdictions, we examine
 
 To view the latest findings see our blog: [LINK]
 
-To learn more about our data sources: [[LINK]](https://diarmuidm.github.io/charity-covid19/data/).
+To learn more about our data sources: [[LINK]](https://diarmuidm.github.io/charity-covid19/data).
 
 To learn more about our analytical methods: [LINK].
 
