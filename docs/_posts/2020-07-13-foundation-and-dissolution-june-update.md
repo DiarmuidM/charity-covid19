@@ -66,7 +66,7 @@ The patterns in monthly registrations for Scotland are similar to those for Engl
 
 #### De-registrations
 
-Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between February and April 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
+Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between February and April 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer de-registrations than expected - see figure 8. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
 
 *Figure 7. Monthly de-registrations of charities - Scotland*
 
