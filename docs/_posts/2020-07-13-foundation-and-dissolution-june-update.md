@@ -28,13 +28,25 @@ More information on our methodology can be found here: [ [LINK] ]({{site.url}}/m
 
 #### Registrations
 
+The number of new charities has remained steady in England and Wales over the first half of 2020: in fact, registrations were higher than expected in February and March (see figure 1). As a result, the total number of new charities is broadly in line with the trend for 2015-2019, with c. 3000 organisations granted charity status by the end of June 2020 (slightly above expectations).
+
+*Figure 1. Monthly registrations of charities - England and Wales*
+
 ![Monthly registrations]({{site.url}}/figures/ew-monthly-registrations-2020-07-10.png)
+
+*Figure 2. Cumulative registrations of charities - England and Wales*
 
 ![Cumulative registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-10.png)
 
 #### De-registrations
 
+The number of charities de-registered (removed from the Register of Charities) is also broadly in line with previous years, though the figures for April-June were more variable than expected. As a result, slightly fewer charities been de-registered in total by the end of June 2020 (c. 300 less than expected). If there is to be a culling of organisations due to the effects of Covid-19, it has yet to materialise in the data.
+
+*Figure 3. Monthly de-registrations of charities - England and Wales*
+
 ![Monthly removals]({{site.url}}/figures/ew-monthly-removals-2020-07-10.png)
+
+*Figure 4. Cumulative de-registrations of charities - England and Wales*
 
 ![Cumulative removals]({{site.url}}/figures/ew-monthly-cumulative-removals-2020-07-10.png)
 
