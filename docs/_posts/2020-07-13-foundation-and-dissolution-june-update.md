@@ -116,6 +116,10 @@ For these reasons we are reluctant to interpret the observed trends - hopefully 
 
 ### Australia
 
+The number of registrations is below what's expected for each month in the first half of 2020 (see figure 13); this trend may be explained by Australia's proximity to the regions first affected by Covid-19 in early January 2020.[^1]
+
+[^1]: The especially low figures for June may be an artefact of when the data were downloaded (2020-07-11), and thus potentially revised upwards at a later date.
+
 #### Registrations
 
 *Figure 13. Monthly registrations of charities - Australia*
