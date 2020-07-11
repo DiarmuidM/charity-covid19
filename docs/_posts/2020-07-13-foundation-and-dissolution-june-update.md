@@ -12,6 +12,9 @@ Using publicly available data collected the first week of July 2020, the followi
 * Scotland
 * Northern Ireland
 
+In addition we analyse registration data for the following jurisdictions:
+* Australia
+
 There are two types of analyses presented here:
 1. The monthly figures for registrations and de-registrations in 2020, compared to the average figures for 2015-2019.
 2. The cumulative number of registrations and de-registrations for 2020, compared to what we expect based on trends for 2015-2019.
@@ -23,6 +26,12 @@ Finally, there are two key processes generating the observed trends:
 2. The capacity of the regulators to process and prioritise these applications.
 
 More information on our methodology can be found here: [ [LINK] ]({{site.url}}/methodology)
+
+## Table of Contents
+1. [England and Wales](#england-and-wales)
+2. [Scotland](#scotland)
+3. [Northern Ireland](#northern-ireland)
+4. [Australia](#australia)
 
 ### England and Wales
 
@@ -104,3 +113,15 @@ For these reasons we are reluctant to interpret the observed trends - hopefully 
 *Figure 12. Cumulative de-registrations of charities - Northern Ireland*
 
 ![Cumulative removals]({{site.url}}/figures/ni-monthly-cumulative-removals-2020-07-10.png)
+
+### Australia
+
+#### Registrations
+
+*Figure 13. Monthly registrations of charities - Australia*
+
+![Monthly registrations]({{site.url}}/figures/aus-monthly-registrations-2020-07-11.png)
+
+*Figure 14. Cumulative registrations of charities - Australia*
+
+![Cumulative registrations]({{site.url}}/figures/aus-monthly-cumulative-registrations-2020-07-11.png)

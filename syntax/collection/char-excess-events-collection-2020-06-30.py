@@ -701,6 +701,7 @@ def file_delete(source, ext, **args):
 
 def main():
     print("Executing data download")
+    """
     try:
         sco_download()
     except:
@@ -716,19 +717,16 @@ def main():
     except:
         print("Could not execute England and Wales download")
     """
+    """
     try:
         roi_download()
     except:
         print("Could not execute Republic of Ireland download")
-    """
     try:
         ni_download()
     except:
         print("Could not execute Northern Ireland download")
-    try:
-        file_delete("./ni/webpages/", ".txt")
-    except:
-        print("Could not delete files in folder './ni/webpages/'")
+    """
 
 
 # Main program #

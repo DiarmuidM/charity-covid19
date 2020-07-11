@@ -572,7 +572,7 @@ keep if removed==1
 		- l if ABN=="35276763984" [2019]
 */
 
-	import excel using $path2\aus-roc-2020-07.xlsx, firstrow clear
+	import excel using $path2\aus-roc-2020-07-11.xlsx, firstrow clear
 	keep ABN Registration_Date Date_Organisation_Established Charity_Legal_Name
 
 	// Convert to date
