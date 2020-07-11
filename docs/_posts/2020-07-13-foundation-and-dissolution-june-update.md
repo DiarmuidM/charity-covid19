@@ -88,7 +88,7 @@ Examining de-registrations however, reveals a clear decrease in the monthly and 
 ### Northern Ireland
 
 Figures for Northern Ireland should be interpreted cautiously, for three reasons:
-1. The sector is small compared to the other UK jurisdictions: monthly figures are low and hence display much more variability compared to what might be expected.
+1. The sector is small compared to the other UK jurisdictions: monthly figures are low and hence display much more variability i.e., it is more difficult to establish what is a *typical* number of registrations for a given month.
 2. The regulator is still undertaking work to register charities already in existence; that is, CCNI is calling charities forward in order to register with them. Thus monthly figures include new organisations being formed, and existing charities formalising their registration with the regulator. More information on the regulator's work on this task [here](https://apps.charitycommissionni.org.uk/About_us/Contacting_us/FAQs.aspx#Registration%20begins%20date?).
 3. The regulator's ability and capacity to register and remove charities (as well as execute a number of other core functions) has been considerably hampered by a recent court ruling - information [here](https://www.charitycommissionni.org.uk/news/legal-update/).
 
