@@ -136,9 +136,9 @@ As a result, there are roughly half as many charities registered in the first ha
 
 ### United States of America
 
-The number of registrations has remained in line with expectations over the first six months of 2020 (figure 15). As a result, the total number of new charities is similar to previous years (figure 16).
-
 #### Registrations
+
+The number of registrations has remained in line with expectations over the first six months of 2020 (figure 15). As a result, the total number of new charities is similar to previous years (figure 16).
 
 *Figure 15. Monthly registrations of charities - USA*
 
