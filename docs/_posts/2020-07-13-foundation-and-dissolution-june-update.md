@@ -144,6 +144,6 @@ The number of registrations has remained in line with expectations over the firs
 
 ![Monthly registrations]({{site.url}}/figures/us-monthly-registrations-2020-07-12.png)
 
-*Figure 16. Cumulative registrations of charities - USAa*
+*Figure 16. Cumulative registrations of charities - USA*
 
 ![Cumulative registrations]({{site.url}}/figures/us-monthly-cumulative-registrations-2020-07-12.png)
