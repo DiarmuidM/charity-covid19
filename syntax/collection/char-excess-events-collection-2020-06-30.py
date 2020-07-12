@@ -22,6 +22,7 @@ from bs4 import BeautifulSoup as soup
 from time import sleep
 from fimport import import_zip
 import requests
+import zipfile, io
 import os
 import argparse
 import json
@@ -126,6 +127,143 @@ def aus_download():
 
     print("\r")
     print("Charity Register: '{}'".format(outfile))
+
+
+#############################################################################################################
+
+#############################################################################################################
+
+
+# United States of America
+
+def usa_download():
+    """
+        Downloads latest copies of the masterfile of current nonprofits, and the 
+        list of organisations that have had their nonprofit status revoked.
+
+        Dependencies:
+            - NONE
+
+        Issues: 
+    """  
+
+    print("Downloading USA nonprofit data")
+    print("\r")
+
+
+    # Create folders
+
+    directories = ["usa", "logs"]
+
+    for directory in directories:
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+        else:
+            print("{} already exists".format(directory))
+            continue   
+
+
+    # Get current date
+
+    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
+    exefile = "./logs/usa-exempt-metadata-" + ddate + ".json" # metadata for exempt nonprofits data file
+    revfile = "./logs/usa-revoked-metadata-" + ddate + ".json"
+
+    
+    # Exempt nonprofits #
+
+    busfile1 = 'https://www.irs.gov/pub/irs-soi/eo1.csv' # IRS MASTER FILE EXEMPT ORGANIZATIONS LIST 1
+    busfile2 = 'https://www.irs.gov/pub/irs-soi/eo2.csv' # IRS MASTER FILE EXEMPT ORGANIZATIONS LIST 2
+    busfile3 = 'https://www.irs.gov/pub/irs-soi/eo3.csv' # IRS MASTER FILE EXEMPT ORGANIZATIONS LIST 3
+    busfile4 = 'https://www.irs.gov/pub/irs-soi/eo4.csv' # IRS MASTER FILE EXEMPT ORGANIZATIONS LIST 4
+
+    # Download data #
+
+    files = [busfile1, busfile2, busfile3, busfile4]
+    item = 1
+
+    for file in files:
+
+        response = requests.get(file, allow_redirects=True)
+
+        outfile = "./usa/irs_businessfile_" + str(item) + ".csv"
+        with open(outfile, 'w') as f:
+            f.write(response.text)
+        item +=1
+
+    # Append files together to form one dataset #
+
+    masterfile = "./usa/irs_businessfile_master_" + ddate + ".csv"
+    file1 = "./usa/irs_businessfile_1.csv"
+    file2 = "./usa/irs_businessfile_2.csv"
+    file3 = "./usa/irs_businessfile_3.csv"
+    file4 = "./usa/irs_businessfile_4.csv"
+
+    afiles = [file2, file3, file4]
+
+
+    # Append all of these files together #
+
+    fout=open(masterfile, 'a')
+
+    # Open the first file and write the contents to the output file:
+    for line in open(file1):
+        fout.write(line)
+
+    # Now the remaining files:
+    for file in afiles:
+        f = open(file)
+        next(f) # skip the first row
+        for line in f:
+             fout.write(line)
+        f.close() # not really needed
+    fout.close()
+
+
+    # Write metadata to file
+
+    mdata = dict(response.headers)
+    mdata["file"] = "Exempt Organisations - Business Files"
+    mdata["data_link"] = files
+
+    with open(exefile, "w") as f:
+        json.dump(mdata, f)
+
+    
+    # Revoked nonprofits #    
+
+    revexemp = 'https://apps.irs.gov/pub/epostcard/data-download-revocation.zip' # IRS CURRENT EXEMPT ORGANIZATIONS LIST
+
+    # Download data #
+
+    response = requests.get(revexemp, allow_redirects=True)
+    z = zipfile.ZipFile(io.BytesIO(response.content))
+    z.extractall("./usa/")
+
+    # Load in .txt file and write to csv #
+
+    inputfile = "./usa/data-download-revocation.txt"
+    outputfile = "./usa/irs_revoked_exemp_orgs_" + ddate + ".csv"
+    
+    with open(outputfile, 'w', newline='') as outcsv:
+        varnames = ["EIN", "Legal_Name", "Doing_Business_As_Name", "Organization_Address", "City", "State", "ZIP_Code", "Country", "Exemption_Type", "Revocation_Date", "Revocation_Posting_Date", "Exemption_Reinstatement_Date"]
+        writer = csv.writer(outcsv, varnames)
+        writer.writerow(varnames)
+
+        with open(inputfile, 'r') as infile:
+            reader = csv.reader(infile, delimiter='|')
+            for row in reader:
+                writer.writerow(row)
+
+
+    # Write metadata to file
+
+    mdata = dict(response.headers)
+    mdata["file"] = "Revoked Organisations"
+    mdata["data_link"] = revexemp
+
+    with open(revfile, "w") as f:
+        json.dump(mdata, f)            
 
 
 #############################################################################################################
@@ -698,6 +836,9 @@ def file_delete(source, ext, **args):
 
 
 # Define main() function for executing other functions when script is exectuted
+#
+# Add a logfile to capture which functions were not executed.
+#
 
 def main():
     print("Executing data download")
@@ -706,18 +847,14 @@ def main():
         sco_download()
     except:
         print("Could not execute Scotland download")
-    """
     try:
         aus_download()
     except:
         print("Could not execute Australia download")
-    """
     try:
         ew_download()
     except:
         print("Could not execute England and Wales download")
-    """
-    """
     try:
         roi_download()
     except:
@@ -727,6 +864,11 @@ def main():
     except:
         print("Could not execute Northern Ireland download")
     """
+    try:
+        usa_download()
+    except:
+        print("Could not execute USA download")
+
 
 
 # Main program #

@@ -42,8 +42,10 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** USA **
 
 	** Registrations
+	
+	local fdate = "2020-07-12"
 
-	import delimited using $path2\irs_businessfiles_07Jun2020.csv, varn(1) clear
+	import delimited using $path2\irs_businessfile_master_2020-07-12.csv, varn(1) clear
 	keep ein subsection affiliation classification ruling deductibility activity organization status ntee_cd
 	codebook, compact
 	/*
@@ -117,12 +119,12 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	gen period = regm
 	sort period
 	format period %tm
-	sav "$path1\us-monthly-registrations.dta", replace
+	sav $path1\us-monthly-registrations-`fdate'.dta, replace
 
 
 	** Revocations
 
-	import delimited using $path2\irs_revoked_exemp_orgs_20Jun2020.csv, varn(1) clear
+	import delimited using $path2\irs_revoked_exemp_orgs_2020-07-12.csv, varn(1) clear
 	keep ein exemption_type revocation_date revocation_posting_date exemption_reinstatement_date
 	codebook, compact
 	/*
@@ -197,16 +199,16 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	gen period = remm
 	sort period
 	format period %tm
-	sav "$path1\us-monthly-removals.dta", replace
+	sav $path1\us-monthly-removals-`fdate'.dta, replace
 	
 	
 	// Create analysis file
 	
-	use "$path1\us-monthly-registrations.dta", clear
-	merge 1:1 period using "$path1\us-monthly-removals.dta", keep(match master)
+	use $path1\us-monthly-registrations-`fdate'.dta, clear
+	merge 1:1 period using $path1\us-monthly-removals-`fdate'.dta, keep(match master)
 	drop _merge
 	gen country = "USA"
-	sav "$path3\us-monthly-statistics.dta", replace
+	sav $path3\us-monthly-statistics-`fdate'.dta, replace
 
 	
 ************************************************************************************************************

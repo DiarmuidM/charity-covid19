@@ -14,6 +14,7 @@ Using publicly available data collected the first week of July 2020, the followi
 
 In addition we analyse registration data for the following jurisdictions:
 * Australia
+* United States of America
 
 There are two types of analyses presented here:
 1. The monthly figures for registrations and de-registrations in 2020, compared to the average figures for 2015-2019.
@@ -32,6 +33,7 @@ More information on our methodology can be found here: [ [LINK] ]({{site.url}}/m
 2. [Scotland](#scotland)
 3. [Northern Ireland](#northern-ireland)
 4. [Australia](#australia)
+5. [USA](#united-states-of-america)
 
 ### England and Wales
 
@@ -75,7 +77,7 @@ The patterns in monthly registrations for Scotland are similar to those for Engl
 
 #### De-registrations
 
-Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between February and April 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer de-registrations than expected - see figure 8. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
+Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between March and May 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer de-registrations than expected - see figure 8. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
 
 *Figure 7. Monthly de-registrations of charities - Scotland*
 
@@ -116,13 +118,13 @@ For these reasons we are reluctant to interpret the observed trends - hopefully 
 
 ### Australia
 
+#### Registrations
+
 The number of registrations is below what's expected for each month in the first half of 2020 (see figure 13); this trend may be explained by Australia's proximity to the regions first affected by Covid-19 in early January 2020.[^1]
 
 As a result, there are roughly half as many charities registered in the first half of 2020 than we would expect - see figure 14.
 
 [^1]: The especially low figures for June may be an artefact of when the data were downloaded (2020-07-11), and thus potentially revised upwards at a later date.
-
-#### Registrations
 
 *Figure 13. Monthly registrations of charities - Australia*
 
@@ -131,3 +133,17 @@ As a result, there are roughly half as many charities registered in the first ha
 *Figure 14. Cumulative registrations of charities - Australia*
 
 ![Cumulative registrations]({{site.url}}/figures/aus-monthly-cumulative-registrations-2020-07-11.png)
+
+### United States of America
+
+The number of registrations has remained in line with expectations over the first six months of 2020 (figure 15). As a result, the total number of new charities is similar to previous years (figure 16).
+
+#### Registrations
+
+*Figure 15. Monthly registrations of charities - USA*
+
+![Monthly registrations]({{site.url}}/figures/us-monthly-registrations-2020-07-12.png)
+
+*Figure 16. Cumulative registrations of charities - USAa*
+
+![Cumulative registrations]({{site.url}}/figures/us-monthly-cumulative-registrations-2020-07-12.png)
