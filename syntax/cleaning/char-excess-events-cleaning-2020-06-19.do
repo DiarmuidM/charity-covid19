@@ -387,26 +387,12 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 ** New Zealand (CSNZ) */
 
-** Create master file
-
-import delimited using $path2\nz-removals-2020-06.txt, varn(1) clear
-gen remdata = 1
-sav $path1\nz-removals-2020-06.dta, replace
-
-import delimited using $path2\nz-roc-2020-06.txt, varn(1) clear
-gen regdata = 1
-sav $path1\nz-roc-2020-06.dta, replace
-
-append using $path1\nz-removals-2020-06.dta, force
-keep charityregistrationnumber deregistrationdate dateregistered *data
-gen removed = (remdata)
-sav $path1\nz-all-data-2020-06.dta, replace
-
+import delimited using $path2\nz-roc-2020-07-13.csv, varn(1) clear
+local fdate = "2020-07-13"
 
 ** De-registrations
 
-use $path1\nz-all-data-2020-06.dta, clear
-keep if removed==1
+keep if deregistrationdate!=""
 
 	// Convert to date
 	
@@ -479,7 +465,7 @@ keep if removed==1
 		
 	** Registrations
 
-	use $path1\nz-all-data-2020-06.dta, clear
+	import delimited using $path2\nz-roc-2020-07-13.csv, varn(1) clear
 
 	// Convert to date
 	
@@ -553,7 +539,9 @@ keep if removed==1
 	merge 1:1 period using "$path1\nz-monthly-removals.dta", keep(match)
 	drop _merge
 	gen country = "New Zealand"
-	sav "$path3\nz-monthly-statistics.dta", replace
+	keep period country *_avg* *_count* *_excess* rem_* reg_*
+	drop postaladdress_country streetaddress_country
+	sav $path3\nz-monthly-statistics-`fdate'.dta, replace
 
 	
 ************************************************************************************************************

@@ -148,54 +148,57 @@ use $path3\can-monthly-statistics.dta, clear
 
 ** New Zealand
 
-use $path6\csnz-monthly-statistics.dta", clear
+use $path3\nz-monthly-statistics-2020-07-13.dta, clear
+local isize = 1200
+local fdate = "2020-07-13"
+local cutoff = tm(2020m7)
 
 	// Monthly variability
 	
-	twoway (rcap reg_lb reg_ub period, msize(medlarge) lpatt(solid)) (scatter reg_avg period, msym(O)) ///
-		(scatter reg_count period, msym(X) msize(large)) , ///
+	twoway (rcap reg_lb reg_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < `cutoff', msym(O)) ///
+		(scatter reg_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Registrations") subtitle("New Zealand") ///
 		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
+		ylab(0(50)250, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Monthly Registrations") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
+		caption("Data from CSNZ July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\nz-monthly-registrations.png", replace width(`isize')
+	graph export $path6\nz-monthly-registrations-`fdate'.png, replace width(`isize')
 	
-	twoway (rcap rem_lb rem_ub period, msize(medlarge) lpatt(solid)) (scatter rem_avg period, msym(O)) ///
-		(scatter rem_count period, msym(X) msize(large)) , ///
+	twoway (rcap rem_lb rem_ub period if period < `cutoff', msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < `cutoff', msym(O)) ///
+		(scatter rem_count period if period < `cutoff', msym(X) msize(large)) , ///
 		title("Charity Removals") subtitle("New Zealand") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Monthly Removals") rows(1) size(small)) ///
 		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
+		caption("Data from CSNZ July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\nz-monthly-removals.png", replace width(`isize')
+	graph export $path6\nz-monthly-removals-`fdate'.png, replace width(`isize')
 
 	
 	// Cumulative events
 
-	twoway (line reg_count_cumu period, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period, lpatt(solid)) , ///
+	twoway (line reg_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Registrations") subtitle("New Zealand") ///
 		ytitle("Count of registrations") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
 		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
+		caption("Data from CSNZ July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\nz-monthly-cumulative-registrations.png", replace width(`isize')
+	graph export $path6\nz-monthly-cumulative-registrations-`fdate'.png, replace width(`isize')
 	
-	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
+	twoway (line rem_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("New Zealand") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
 		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
 		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CSNZ June 2020 Data Download", size(small)) ///
+		caption("Data from CSNZ July 2020 Data Download", size(small)) ///
 		scheme(s1mono)
-	graph export $path6\nz-monthly-cumulative-removals.png", replace width(`isize')
+	graph export $path6\nz-monthly-cumulative-removals-`fdate'.png, replace width(`isize')
 
 	
 ** Australia

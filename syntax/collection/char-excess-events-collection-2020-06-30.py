@@ -134,6 +134,88 @@ def aus_download():
 #############################################################################################################
 
 
+# New Zealand
+
+def nz_download():
+    """
+        Downloads latest copy of the Register of Charities.
+
+        Dependencies:
+            - NONE
+
+        Issues: 
+    """  
+
+    print("Downloading New Zealand Charity Register")
+    print("\r")
+
+
+    # Create folders
+
+    directories = ["nz", "logs"]
+
+    for directory in directories:
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+        else:
+            #print("{} already exists".format(directory))
+            continue   
+
+
+    # Define output files
+
+    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
+
+    mfile = "./logs/nz-roc-metadata-" + ddate + ".json"
+    outfile = "./nz/nz-roc-" + ddate + ".csv" # Charity Register
+
+    
+    # Request file
+    
+    webadd = "http://www.odata.charities.govt.nz/vOrganisations?$returnall=true&$format=csv"
+    response = requests.get(webadd)
+    print(response.status_code, response.headers)
+
+    # Write metadata to file
+
+    mdata = dict(response.headers)
+    mdata["file"] = "Register of Charities"
+    mdata["url"] = str(webadd)
+
+    with open(mfile, "w") as f:
+        json.dump(mdata, f)
+
+
+    # Save files (data and metadata)
+
+    if response.status_code==200: # if the file was successfully requested
+
+        # Data
+
+        if os.path.isfile(outfile): # do not overwrite existing file
+            print("File already exists, no need to overwrite")
+        else: # file does not currently exist, therefore create
+            with open(outfile, "wb") as f:
+                f.write(response.content)
+        
+        print("\r")    
+        print("Successfully downloaded Charity Register")
+        print("Check log file for metadata about the download: {}".format(mfile))
+
+    else: # file was not successfully requested
+        print("\r")    
+        print("Unable to download Charity Register")
+        print("Check log file for metadata about the download: {}".format(mfile))
+
+    print("\r")
+    print("Charity Register: '{}'".format(outfile))
+
+
+#############################################################################################################
+
+#############################################################################################################
+
+
 # United States of America
 
 def usa_download():
@@ -863,11 +945,15 @@ def main():
         ni_download()
     except:
         print("Could not execute Northern Ireland download")
-    """
     try:
         usa_download()
     except:
         print("Could not execute USA download")
+    """
+    try:
+        nz_download()
+    except:
+        print("Could not execute New Zealand download")
 
 
 

@@ -7,14 +7,14 @@ author: Diarmuid McDonnell
 
 ## June 2020 Update
 
-Using publicly available data collected the first week of July 2020, the following are the trends in registrations (foundations) and de-registrations (dissolutions) for the three UK charity jurisdictions:
+Using publicly available data collected the first week of July 2020, the following are the trends in registrations (foundations) and de-registrations (dissolutions) for the following jurisdictions:
 * England and Wales
 * Scotland
 * Northern Ireland
-
-In addition we analyse registration data for the following jurisdictions:
-* Australia
-* United States of America
+* Australia (registrations only)
+* New Zealand
+* United States of America (registrations only)
+* Canada
 
 There are two types of analyses presented here:
 1. The monthly figures for registrations and de-registrations in 2020, compared to the average figures for 2015-2019.
@@ -22,7 +22,7 @@ There are two types of analyses presented here:
 
 The former shows us whether a particular month displays much higher or lower numbers of registrations/de-registrations than is typical for that month; the latter tells us whether the total number of registrations/de-registrations is where we expect it to be based on previous years.
 
-Finally, there are two key processes generating the observed trends:
+Finally, keep in mind two of the key processes generating the observed trends:
 1. Applications for registration and de-registration by charities.
 2. The capacity of the regulators to process and prioritise these applications.
 
@@ -33,7 +33,9 @@ More information on our methodology can be found here: [ [LINK] ]({{site.url}}/m
 2. [Scotland](#scotland)
 3. [Northern Ireland](#northern-ireland)
 4. [Australia](#australia)
-5. [USA](#united-states-of-america)
+5. [New Zealand](#new-zealand)
+6. [Canada](#canada)
+7. [USA](#united-states-of-america)
 
 ### England and Wales
 
@@ -133,6 +135,34 @@ As a result, there are roughly half as many charities registered in the first ha
 *Figure 14. Cumulative registrations of charities - Australia*
 
 ![Cumulative registrations]({{site.url}}/figures/aus-monthly-cumulative-registrations-2020-07-11.png)
+
+### New Zealand
+
+#### Registrations
+
+The number of registrations is below what's expected for the months March-June 2020 (see figure 15); this trend may be explained by New Zealand's proximity to the regions first affected by Covid-19 in early 2020, and the timing of its lockdown measures.
+
+As a result, there are roughly half as many charities registered in the first half of 2020 than we would expect - see figure 16.
+
+*Figure 15. Monthly registrations of charities - New Zealand*
+
+![Monthly registrations]({{site.url}}/figures/nz-monthly-registrations-2020-07-13.png)
+
+*Figure 16. Cumulative registrations of charities - New Zealand*
+
+![Cumulative registrations]({{site.url}}/figures/nz-monthly-cumulative-registrations-2020-07-13.png)
+
+#### De-registrations
+
+The number of de-registrations is below what's expected for each month in the first half of 2020 (see figure 17), resulting in far fewer than expected by this period in the year (figure 18).
+
+*Figure 17. Monthly de-registrations of charities - New Zealand*
+
+![Monthly removals]({{site.url}}/figures/nz-monthly-removals-2020-07-13.png)
+
+*Figure 18. Cumulative de-registrations of charities - New Zealand*
+
+![Cumulative removals]({{site.url}}/figures/nz-monthly-cumulative-removals-2020-07-13.png)
 
 ### United States of America
 
