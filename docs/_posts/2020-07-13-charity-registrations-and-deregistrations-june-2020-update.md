@@ -1,14 +1,12 @@
 ---
 layout: post
 author: Diarmuid McDonnell
-excerpt_separator: <!--more-->
+excerpt: Latest figures on charity registrations and de-registrations from seven jurisdictions.
 ---
 
 # Foundations and dissolutions of charitable organisations
 
 ## June 2020 Update
-
-<!--more-->
 
 Using publicly available data collected the first week of July 2020, the following are the trends in registrations (foundations) and de-registrations (dissolutions) for the following jurisdictions:
 * England and Wales
