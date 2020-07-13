@@ -4,7 +4,7 @@ title: "Home"
 permalink: /
 ---
 
-<h3><a href="https://diarmuidm.github.io/charity-covid19">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/data">Data</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/methodology">Methodology</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/blog">Blog</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/contact">Contact</a></h3>
+<p style="text-align:center;"><a href="https://diarmuidm.github.io/charity-covid19">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/data">Data</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/methodology">Methodology</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/blog">Blog</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/contact">Contact</a></p>
 
 # Welcome
 
