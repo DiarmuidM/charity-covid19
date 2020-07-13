@@ -4,6 +4,8 @@ title: "Home"
 permalink: /
 ---
 
+<h3><a style="color:white;" href="https://diarmuidm.github.io/charity-covid19">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:white;" href="https://diarmuidm.github.io/charity-covid19/data">Data</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:white;" href="https://diarmuidm.github.io/charity-covid19/methodology">Methodology</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:white;" href="https://diarmuidm.github.io/charity-covid19/blog">Blog</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:white;" href="https://diarmuidm.github.io/charity-covid19/contact">Contact</a></h3>
+
 # Welcome
 
 This website publishes analyses of the impact Covid-19 is having on charity sectors worldwide. It is based on work conducted by Dr Diarmuid McDonnell, University of Manchester and Professor Alasdair Rutherford, University of Stirling.
