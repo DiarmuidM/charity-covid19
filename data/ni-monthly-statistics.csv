@@ -1,8 +1,0 @@
-country,period,reg_count,reg_avg,reg_excess,reg_excess_per,reg_excess_cumu,reg_avg_cumu,reg_count_cumu,reg_excess_cumu_per,rem_count,rem_avg,rem_excess,rem_excess_per,rem_excess_cumu,rem_avg_cumu,rem_count_cumu,rem_excess_cumu_per
-Northern Ireland,2020m1,25,136,-111,-81,-111,136,25,-81,35,8,27,338,27,8,35,338
-Northern Ireland,2020m2,19,183,-164,-89,-275,319,44,-86,27,9,18,200,45,17,62,265
-Northern Ireland,2020m3,28,162,-134,-82,-409,481,72,-85,19,22,-3,-13,42,39,81,108
-Northern Ireland,2020m4,31,147,-116,-78,-525,628,103,-83,2,11,-9,-81,33,50,83,66
-Northern Ireland,2020m5,34,116,-82,-70,-607,744,137,-81,1,6,-5,-83,28,56,84,50
-Northern Ireland,2020m6,34,146,-112,-76,-719,890,171,-80,2,9,-7,-77,21,65,86,33
-Northern Ireland,2020m7,23,140,-117,-83,-836,1030,194,-81,2,6,-4,-66,17,71,88,24

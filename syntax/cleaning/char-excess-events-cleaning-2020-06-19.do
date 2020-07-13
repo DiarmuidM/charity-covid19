@@ -209,6 +209,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	drop _merge
 	gen country = "USA"
 	sav $path3\us-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\us-monthly-statistics-`fdate'.csv, replace
 
 	
 ************************************************************************************************************
@@ -219,9 +220,11 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 ** Canada **
 
+local fdate = "2020-07-13"
+
 	** Registrations
 
-	import delimited using $path2\can-all-data-2020-07.txt, varn(1) clear
+	import delimited using $path2\Charities_results_2020-07-13-07-14-52.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -295,7 +298,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	** Revocations
 
-	import delimited using $path2\can-all-data-2020-07.txt, varn(1) clear
+	import delimited using $path2\Charities_results_2020-07-13-07-14-52.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -376,7 +379,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	merge 1:1 period using "$path1\can-monthly-removals.dta", keep(match master)
 	drop _merge
 	gen country = "Canada"
-	sav "$path3\can-monthly-statistics.dta", replace
+	keep period country *_avg* *_count* *_excess* rem_* reg_*
+	sav $path3\can-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\can-monthly-statistics-`fdate'.csv, replace
 
 		
 ************************************************************************************************************
@@ -542,6 +547,7 @@ keep if deregistrationdate!=""
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	drop postaladdress_country streetaddress_country
 	sav $path3\nz-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\nz-monthly-statistics-`fdate'.csv, replace
 
 	
 ************************************************************************************************************
@@ -563,6 +569,8 @@ keep if deregistrationdate!=""
 */
 
 	import excel using $path2\aus-roc-2020-07-11.xlsx, firstrow clear
+	local fdate = "2020-07-11"
+	
 	keep ABN Registration_Date Date_Organisation_Established Charity_Legal_Name
 
 	// Convert to date
@@ -629,7 +637,9 @@ keep if deregistrationdate!=""
 	sort period
 	format period %tm
 	gen country = "Australia"
+	keep period country *_avg* *_count* *_excess* reg_*
 	sav "$path3\aus-monthly-statistics.dta", replace
+	export delimited using $path3\aus-monthly-statistics-`fdate'.csv, replace
 
 		
 ************************************************************************************************************
@@ -641,6 +651,8 @@ keep if deregistrationdate!=""
 ** Northern Ireland **
 
 **use C:\Users\t95171dm\Dropbox\brawdata\clients\oscr\data_clean\ocsr_scr_20190227_clean.dta, clear
+
+	local fdate = "2020-07-09"
 
 	** Registrations
 	
@@ -794,7 +806,9 @@ keep if deregistrationdate!=""
 	merge 1:1 period using "$path1\ni-monthly-removals.dta", keep(match)
 	drop _merge
 	gen country = "Northern Ireland"
-	sav "$path3\ni-monthly-statistics.dta", replace
+	keep period country *_avg* *_count* *_excess* rem_* reg_*
+	sav $path3\ni-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\ni-monthly-statistics-`fdate'.csv, replace
 
 	
 ************************************************************************************************************
@@ -804,6 +818,8 @@ keep if deregistrationdate!=""
 
 
 ** England and Wales **
+
+local fdate = "2020-07-09"
 
 import delimited using $path2\extract_registration.csv, varn(1) clear
 keep regno regdate remdate
@@ -939,7 +955,9 @@ desc, f
 	format period %tm
 	sort period
 	gen country = "England and Wales"
-	sav "$path3\ew-monthly-statistics.dta", replace
+	keep period country *_avg* *_count* *_excess* rem_* reg_*
+	sav $path3\ew-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\ew-monthly-statistics-`fdate'.csv, replace
 
 
 
@@ -949,6 +967,8 @@ desc, f
 
 
 ** Scotland **
+
+local fdate = "2020-07-09"
 
 ** Create master file
 
@@ -1118,7 +1138,9 @@ use $path1\scot-all-data-2020-07.dta, clear
 	merge 1:1 period using "$path1\scot-monthly-removals.dta", keep(match)
 	drop _merge
 	gen country = "Scotland"
-	sav "$path3\scot-monthly-statistics.dta", replace
+	keep period country *_avg* *_count* *_excess* rem_* reg_*
+	sav $path3\scot-monthly-statistics-`fdate'.dta, replace
+	export delimited using $path3\scot-monthly-statistics-`fdate'.csv, replace
 
 
 		
@@ -1127,6 +1149,7 @@ use $path1\scot-all-data-2020-07.dta, clear
 
 ************************************************************************************************************
 
+/*
 	
 /* Create master analysis file */
 
@@ -1154,29 +1177,12 @@ desc, f
 	
 compress
 sav $path3\all-jurisdictions-monthly-statistics.dta, replace
+*/
+
+************************************************************************************************************
 
 
 ************************************************************************************************************
-
-
-************************************************************************************************************
-	
-/** Create CSV versions of each data set **//
-
-local cleandir $path3
-cd `cleandir'
-
-local datafiles: dir "`workdir'" files "*.dta"
-
-foreach datafile of local datafiles {
-	use `datafile', clear
-	sort period
-	order country, first
-	order period, after(country)
-	keep period country *_avg* *_count* *_excess*
-	
-	export delimited using `datafile'.csv, replace
-}
 	
 	
 /** Empty working data folder **/

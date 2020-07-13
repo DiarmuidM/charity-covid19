@@ -1,8 +1,0 @@
-country,period,reg_count,rem_count,reg_avg,rem_avg,reg_excess,reg_excess_per,reg_excess_cumu,reg_avg_cumu,reg_count_cumu,reg_excess_cumu_per,rem_excess,rem_excess_per,rem_excess_cumu,rem_avg_cumu,rem_count_cumu,rem_excess_cumu_per
-England and Wales,2020m1,503,508,462,622,41,9,41,462,503,9,-114,-18,-114,622,508,-18
-England and Wales,2020m2,570,573,443,553,127,29,168,905,1073,19,20,4,-94,1175,1081,-8
-England and Wales,2020m3,577,480,475,397,102,22,270,1380,1650,20,83,21,-11,1572,1561,0
-England and Wales,2020m4,454,223,462,340,-8,-1,262,1842,2104,15,-117,-34,-128,1912,1784,-6
-England and Wales,2020m5,423,350,457,267,-34,-7,228,2299,2527,10,83,32,-45,2179,2134,-2
-England and Wales,2020m6,454,255,506,496,-52,-10,176,2805,2981,7,-241,-48,-286,2675,2389,-10
-England and Wales,2020m7,50,35,484,410,-434,-89,-258,3289,3031,-7,-375,-91,-661,3085,2424,-21
