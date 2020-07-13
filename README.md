@@ -17,6 +17,8 @@ There is a dedicated project website where the latest findings are published, as
 The project uses Python (a programming language) and Stata (a statistical software package) to collect, clean and analyse publicly available data about charities. These materials are free for you to use, adapt and share for your own purposes:
 * [syntax](./syntax) - programming and statistical software code for collecting, cleaning and analysing charity data for each jurisdiction.
 * [data](./data) - open data sets underpinning the analyses, as well as descriptions of the data contents and sources.
+* [conferences](./conferences) - academic conferences where this work has been submitted or presented.
+* [docs](./docs) - the files associated with the project website; also where the graphs are stored.
 
 ## Disclaimer
 
@@ -35,4 +37,4 @@ We are grateful to the following charity regulators for collecting and publishin
 
 ## Contact
 
-If you have any questions or queries regarding this work, or would like to discuss opportunities for collaboration, please contact Dr Diarmuid McDonnell [CONTACT DETAILS].
+If you have any questions or queries regarding this work, or would like to discuss opportunities for collaboration, please contact [Dr Diarmuid McDonnell](https://diarmuidm.github.io/charity-covid19/contact).
