@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Methodology"
+permalink: /methodology/
+---
+
 # Methodology
 
 ## Data Collection

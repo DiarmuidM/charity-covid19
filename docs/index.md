@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Home"
+permalink: /
+---
+
 # Welcome
 
 This website publishes analyses of the impact Covid-19 is having on charity sectors worldwide. It is based on work conducted by Dr Diarmuid McDonnell, University of Manchester and Professor Alasdair Rutherford, University of Stirling.
