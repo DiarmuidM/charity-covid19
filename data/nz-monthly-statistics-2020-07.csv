@@ -1,0 +1,8 @@
+country,period,reg_count,reg_avg,reg_excess,reg_excess_per,reg_excess_cumu,reg_avg_cumu,reg_count_cumu,reg_excess_cumu_per,rem_count,rem_avg,rem_excess,rem_excess_per,rem_excess_cumu,rem_avg_cumu,rem_count_cumu,rem_excess_cumu_per
+New Zealand,2020m1,69,89,-20,-22,-20,89,69,-22,47,166,-119,-71,-119,166,47,-71
+New Zealand,2020m2,115,92,23,25,3,181,184,2,47,398,-351,-88,-470,564,94,-83
+New Zealand,2020m3,66,142,-76,-53,-73,323,250,-22,61,191,-130,-68,-600,755,155,-79
+New Zealand,2020m4,41,92,-51,-55,-124,415,291,-29,11,82,-71,-86,-671,837,166,-80
+New Zealand,2020m5,39,135,-96,-71,-220,550,330,-40,14,208,-194,-93,-865,1045,180,-82
+New Zealand,2020m6,47,154,-107,-69,-327,704,377,-46,33,193,-160,-82,-1025,1238,213,-82
+New Zealand,2020m7,8,112,-104,-92,-431,816,385,-52,1,143,-142,-99,-1167,1381,214,-84
