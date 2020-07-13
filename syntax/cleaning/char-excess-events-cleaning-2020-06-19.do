@@ -26,7 +26,8 @@
 ** Diarmuid **
 
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
-global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and outputs
+global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
+global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
