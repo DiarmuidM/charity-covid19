@@ -4,7 +4,7 @@ author: Diarmuid McDonnell
 excerpt: Latest figures on charity registrations and de-registrations from seven jurisdictions.
 category: Blog
 tags: ["charity", "nonprofit", "charity regulation"]
-fdate: {{post.fdate}}
+fdate: "2020-07-13"
 ---
 
 # Foundations and dissolutions of charitable organisations
