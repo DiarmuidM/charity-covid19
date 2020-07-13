@@ -4,6 +4,7 @@ author: Diarmuid McDonnell
 excerpt: Latest figures on charity registrations and de-registrations from seven jurisdictions.
 category: Blog
 tags: ["charity", "nonprofit", "charity regulation"]
+fdate: {{page.fdate}}
 ---
 
 # Foundations and dissolutions of charitable organisations
@@ -48,11 +49,11 @@ The number of new charities has remained steady in England and Wales over the fi
 
 *Figure 1. Monthly registrations of charities - England and Wales*
 
-![Monthly registrations]({{site.url}}/figures/ew-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/ew-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 2. Cumulative registrations of charities - England and Wales*
 
-![Cumulative registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/ew-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 #### De-registrations
 
@@ -60,11 +61,11 @@ The number of charities de-registered (removed from the Register of Charities) i
 
 *Figure 3. Monthly de-registrations of charities - England and Wales*
 
-![Monthly removals]({{site.url}}/figures/ew-monthly-removals-2020-07-13.png)
+![Monthly removals]({{site.url}}/figures/ew-monthly-removals-{{page.fdate}}.png)
 
 *Figure 4. Cumulative de-registrations of charities - England and Wales*
 
-![Cumulative removals]({{site.url}}/figures/ew-monthly-cumulative-removals-2020-07-13.png)
+![Cumulative removals]({{site.url}}/figures/ew-monthly-cumulative-removals-{{page.fdate}}.png)
 
 ### Scotland
 
@@ -74,11 +75,11 @@ The patterns in monthly registrations for Scotland are similar to those for Engl
 
 *Figure 5. Monthly registrations of charities - Scotland*
 
-![Monthly registrations]({{site.url}}/figures/scot-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/scot-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 6. Cumulative registrations of charities - Scotland*
 
-![Cumulative registrations]({{site.url}}/figures/scot-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/scot-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 #### De-registrations
 
@@ -86,11 +87,11 @@ Examining de-registrations however, reveals a clear decrease in the monthly and 
 
 *Figure 7. Monthly de-registrations of charities - Scotland*
 
-![Monthly removals]({{site.url}}/figures/scot-monthly-removals-2020-07-13.png)
+![Monthly removals]({{site.url}}/figures/scot-monthly-removals-{{page.fdate}}.png)
 
 *Figure 8. Cumulative de-registrations of charities - Scotland*
 
-![Cumulative removals]({{site.url}}/figures/scot-monthly-cumulative-removals-2020-07-13.png)
+![Cumulative removals]({{site.url}}/figures/scot-monthly-cumulative-removals-{{page.fdate}}.png)
 
 ### Northern Ireland
 
@@ -105,21 +106,21 @@ For these reasons we are reluctant to interpret the observed trends - hopefully 
 
 *Figure 9. Monthly registrations of charities - Northern Ireland*
 
-![Monthly registrations]({{site.url}}/figures/ni-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/ni-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 10. Cumulative registrations of charities - Northern Ireland*
 
-![Cumulative registrations]({{site.url}}/figures/ni-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/ni-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 #### De-registrations
 
 *Figure 11. Monthly de-registrations of charities - Northern Ireland*
 
-![Monthly removals]({{site.url}}/figures/ni-monthly-removals-2020-07-13.png)
+![Monthly removals]({{site.url}}/figures/ni-monthly-removals-{{page.fdate}}.png)
 
 *Figure 12. Cumulative de-registrations of charities - Northern Ireland*
 
-![Cumulative removals]({{site.url}}/figures/ni-monthly-cumulative-removals-2020-07-13.png)
+![Cumulative removals]({{site.url}}/figures/ni-monthly-cumulative-removals-{{page.fdate}}.png)
 
 ### Australia
 
@@ -133,11 +134,11 @@ As a result, there are roughly half as many charities registered in the first ha
 
 *Figure 13. Monthly registrations of charities - Australia*
 
-![Monthly registrations]({{site.url}}/figures/aus-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/aus-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 14. Cumulative registrations of charities - Australia*
 
-![Cumulative registrations]({{site.url}}/figures/aus-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/aus-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 ### New Zealand
 
@@ -149,11 +150,11 @@ As a result, there are roughly half as many charities registered in the first ha
 
 *Figure 15. Monthly registrations of charities - New Zealand*
 
-![Monthly registrations]({{site.url}}/figures/nz-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/nz-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 16. Cumulative registrations of charities - New Zealand*
 
-![Cumulative registrations]({{site.url}}/figures/nz-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/nz-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 #### De-registrations
 
@@ -161,11 +162,11 @@ The number of de-registrations is below what's expected for each month in the fi
 
 *Figure 17. Monthly de-registrations of charities - New Zealand*
 
-![Monthly removals]({{site.url}}/figures/nz-monthly-removals-2020-07-13.png)
+![Monthly removals]({{site.url}}/figures/nz-monthly-removals-{{page.fdate}}.png)
 
 *Figure 18. Cumulative de-registrations of charities - New Zealand*
 
-![Cumulative removals]({{site.url}}/figures/nz-monthly-cumulative-removals-2020-07-13.png)
+![Cumulative removals]({{site.url}}/figures/nz-monthly-cumulative-removals-{{page.fdate}}.png)
 
 ### Canada
 
@@ -175,11 +176,11 @@ The number of registrations is below what's expected for each month in the first
 
 *Figure 19. Monthly registrations of charities - Canada*
 
-![Monthly registrations]({{site.url}}/figures/can-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/can-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 20. Cumulative registrations of charities - Canada*
 
-![Cumulative registrations]({{site.url}}/figures/can-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/can-monthly-cumulative-registrations-{{page.fdate}}.png)
 
 #### De-registrations
 
@@ -187,11 +188,11 @@ The latest copy of the data only includes de-registrations for the first three m
 
 *Figure 21. Monthly de-registrations of charities - Canada*
 
-![Monthly removals]({{site.url}}/figures/can-monthly-removals-2020-07-13.png)
+![Monthly removals]({{site.url}}/figures/can-monthly-removals-{{page.fdate}}.png)
 
 *Figure 22. Cumulative de-registrations of charities - Canada*
 
-![Cumulative removals]({{site.url}}/figures/can-monthly-cumulative-removals-2020-07-13.png)
+![Cumulative removals]({{site.url}}/figures/can-monthly-cumulative-removals-{{page.fdate}}.png)
 
 ### United States of America
 
@@ -201,8 +202,8 @@ The number of registrations has remained in line with expectations over the firs
 
 *Figure 23. Monthly registrations of charities - USA*
 
-![Monthly registrations]({{site.url}}/figures/us-monthly-registrations-2020-07-13.png)
+![Monthly registrations]({{site.url}}/figures/us-monthly-registrations-{{page.fdate}}.png)
 
 *Figure 24. Cumulative registrations of charities - USA*
 
-![Cumulative registrations]({{site.url}}/figures/us-monthly-cumulative-registrations-2020-07-13.png)
+![Cumulative registrations]({{site.url}}/figures/us-monthly-cumulative-registrations-{{page.fdate}}.png)
