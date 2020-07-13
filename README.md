@@ -12,6 +12,8 @@ Macmillan, R. (2020). Somewhere over the rainbow – third sector research in an
 
 There is a dedicated project website where the latest findings are published, as well as information on the methodology, data sources etc:
 
+[https://diarmuidm.github.io/charity-covid19](https://diarmuidm.github.io/charity-covid19)
+
 ## Materials
 
 The project uses Python (a programming language) and Stata (a statistical software package) to collect, clean and analyse publicly available data about charities. These materials are free for you to use, adapt and share for your own purposes:
