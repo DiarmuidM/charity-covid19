@@ -4,6 +4,8 @@ title: "Data"
 permalink: /data/
 ---
 
+<p style="text-align:center;"><a href="https://diarmuidm.github.io/charity-covid19">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/data">Data</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/methodology">Methodology</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/blog">Blog</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/contact">Contact</a></p>
+
 # Data
 
 *[Last updated: 2020-07-13]*
