@@ -12,19 +12,13 @@ The codebook explaining what each data set contains can be found here: [ [LINK] 
 
 This project draws on lists of registered and de-registered charities from seven jurisdictions:
 
-Australia - Australian Charities and Not-for-profits Commission (ACNC) <a href="https://data.gov.au/dataset/ds-dga-b050b242-4487-4306-abf5-07ca073e5594/details?q=acnc" target=_blank>[LINK]</a>
-
-Canada - Canada Revenue Agency (CRA) <a href="https://apps.cra-arc.gc.ca/ebci/hacc/srch/pub/dsplyBscSrch?request_locale=en" target=_blank>[LINK]</a>
-
-England & Wales - Charity Commission for England and Wales (CCEW) <a href="http://data.charitycommission.gov.uk/" target=_blank>[LINK]</a>
-
-New Zealand - Charities Services <a href="https://www.charities.govt.nz/charities-in-new-zealand/the-charities-register/open-data/" target=_blank>[LINK]</a>
-
-Northern Ireland - Charity Commission for Northern Ireland (CCNI) <a href="https://www.charitycommissionni.org.uk/charity-search" target=_blank>[LINK]</a>
-
-Scotland - Scottish Charity Regulator <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-register-download/" target=_blank>[LINK]</a>
-
-United States of America - Internal Revenue Service (IRS) <a href="https://www.irs.gov/charities-non-profits/tax-exempt-organization-search-bulk-data-downloads" target=_blank>[LINK]</a>
+* Australia - Australian Charities and Not-for-profits Commission (ACNC) <a href="https://data.gov.au/dataset/ds-dga-b050b242-4487-4306-abf5-07ca073e5594/details?q=acnc" target=_blank>[LINK]</a>
+* Canada - Canada Revenue Agency (CRA) <a href="https://apps.cra-arc.gc.ca/ebci/hacc/srch/pub/dsplyBscSrch?request_locale=en" target=_blank>[LINK]</a>
+* England & Wales - Charity Commission for England and Wales (CCEW) <a href="http://data.charitycommission.gov.uk/" target=_blank>[LINK]</a>
+* New Zealand - Charities Services <a href="https://www.charities.govt.nz/charities-in-new-zealand/the-charities-register/open-data/" target=_blank>[LINK]</a>
+* Northern Ireland - Charity Commission for Northern Ireland (CCNI) <a href="https://www.charitycommissionni.org.uk/charity-search" target=_blank>[LINK]</a>
+* Scotland - Scottish Charity Regulator <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-register-download/" target=_blank>[LINK]</a>
+* United States of America - Internal Revenue Service (IRS) <a href="https://www.irs.gov/charities-non-profits/tax-exempt-organization-search-bulk-data-downloads" target=_blank>[LINK]</a>
 
 ## Acknowledgements
 
