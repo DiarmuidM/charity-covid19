@@ -1,0 +1,14 @@
+- title: "Home"
+  href: "/"
+
+- title: "Data"
+  href: "/data/"
+
+- title: "Methodology"
+  href: "/methodology/"
+
+- title: "Blog"
+  href: "/blog/"
+
+- title: "Contact"
+  href: "/contact/"
