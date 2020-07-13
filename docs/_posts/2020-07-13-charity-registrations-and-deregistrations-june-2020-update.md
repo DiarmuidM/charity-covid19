@@ -2,6 +2,8 @@
 layout: post
 author: Diarmuid McDonnell
 excerpt: Latest figures on charity registrations and de-registrations from seven jurisdictions.
+category: Blog
+tags: ["charity", "nonprofit", "charity regulation"]
 ---
 
 # Foundations and dissolutions of charitable organisations
@@ -169,9 +171,7 @@ The number of de-registrations is below what's expected for each month in the fi
 
 #### Registrations
 
-The number of registrations is below what's expected for the months March-June 2020 (see figure 19); this trend may be explained by New Zealand's proximity to the regions first affected by Covid-19 in early 2020, and the timing of its lockdown measures.
-
-As a result, there are roughly half as many charities registered in the first half of 2020 than we would expect - see figure 20.
+The number of registrations is below what's expected for each month in the first half of 2020 (see figure 19); as a result, there are roughly 1/4 as many charities registered in the first half of 2020 than we would expect - see figure 20.
 
 *Figure 19. Monthly registrations of charities - Canada*
 
@@ -183,7 +183,7 @@ As a result, there are roughly half as many charities registered in the first ha
 
 #### De-registrations
 
-The number of de-registrations is below what's expected for each month in the first half of 2020 (see figure 21), resulting in far fewer than expected by this period in the year (figure 22).
+The latest copy of the data only includes de-registrations for the first three months of the year (figures 21 and 22).
 
 *Figure 21. Monthly de-registrations of charities - Canada*
 
