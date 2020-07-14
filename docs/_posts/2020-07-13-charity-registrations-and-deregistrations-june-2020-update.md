@@ -6,6 +6,8 @@ category: Blog
 tags: ["charity", "nonprofit", "charity regulation"]
 ---
 
+<p style="text-align:center;"><a href="https://diarmuidm.github.io/charity-covid19">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/data">Data</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/methodology">Methodology</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/blog">Blog</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://diarmuidm.github.io/charity-covid19/contact">Contact</a></p>
+
 # Foundations and dissolutions of charitable organisations
 
 ## June 2020 Update
