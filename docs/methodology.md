@@ -10,7 +10,7 @@ permalink: /methodology/
 
 ## Data Collection
 
-uses publicly available data on charity registrations (foundations) and de-registrations (dissolutions) from seven charity jurisdictions. We use a programming script, written in [Python](https://www.python.org/), to collect data for each jurisdiction. The exception is Canada, where the data are manually downloaded using the public search facility: [ [LINK] ](https://apps.cra-arc.gc.ca/ebci/hacc/srch/pub/dsplyBscSrch?request_locale=en).
+This project uses publicly available data on charity registrations (foundations) and de-registrations (dissolutions) from seven charity jurisdictions. We use a programming script, written in the popular [Python](https://www.python.org/) language, to collect data for each jurisdiction. The exception is Canada, where the data are manually downloaded using the public search facility here: [ [LINK] ](https://apps.cra-arc.gc.ca/ebci/hacc/srch/pub/dsplyBscSrch?request_locale=en).
 
 More information on our data sources can be found here: [ [LINK] ]({{site.url}}/data)
 
@@ -25,12 +25,12 @@ Each data set is loaded into the statistical software package Stata, where the f
 	* de-registered
 3. Create additional measures, such as:
 	* average number of registrations/de-registrations per month
-	* excess number of registrations/de-registrations per month
+	* excess number of registrations/de-registrations per month, etc
 4. Save and export to CSV for sharing
 
 ## Data Analysis
 
-The analysis is based on an “excess events” analytical approach, comparing the numbers of registrations and de-registrations in 2020 to what we would expect based on the trends from previous years. For example, let's say there were 50 new charities registered in Scotland in January 2020 - is that number large or small, expected or unexpected based on previous data for January? 
+The analysis is based on an “excess events” analytical approach, comparing the numbers of registrations and de-registrations in 2020 to what we would expect based on the trends from previous years. For example, let's say there were 50 new charities registered in Scotland in January 2020 - is that number large or small, expected or unexpected based on previous figures for January? 
 
 Month | Number of new charities
 --- | --- | ---
@@ -40,4 +40,4 @@ January 2017 | 82
 January 2018 | 65
 January 2019 | 75
 
-The average number of new charities for a January is: (60 + 55 + 82 + 65 + 75) / 5 = 67. So there are 17 fewer new charities in January 2020 compared to the average for 2015-2019. Of course, the figures for January vary over time, and thus we need to know if January 2020 falls outside the **range** of expected registrations for that month. Therefore we calculate the standard deviation of the average, which is 10, and use this to construct the range: 57 - 77 (i.e., 67 +- 10). So there are fewer new charities in January 2020 than we would expect.
+The average number of new charities in January between 2015-2019 is: (60 + 55 + 82 + 65 + 75) / 5 = 67. So there are 17 fewer new charities in January 2020 compared to the average for 2015-2019. Of course, the figures for January vary each year, and thus we need to know if the figure for January 2020 falls outside the **range** of expected registrations for that month. Therefore we calculate the standard deviation of the average, which is 10, and use this to construct the range: 57 to 77 (i.e., 67 +- 10). So there are fewer new charities in January 2020 than we would expect.
