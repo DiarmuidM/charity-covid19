@@ -33,7 +33,7 @@ Each data set is loaded into the statistical software package Stata, where the f
 The analysis is based on an “excess events” analytical approach, comparing the numbers of registrations and de-registrations in 2020 to what we would expect based on the trends from previous years. For example, let's say there were 50 new charities registered in Scotland in January 2020 - is that number large or small, expected or unexpected based on previous figures for January? 
 
 Month | Number of new charities
---- | --- | ---
+--- | ---:
 January 2015 | 60
 January 2016 | 55
 January 2017 | 82
