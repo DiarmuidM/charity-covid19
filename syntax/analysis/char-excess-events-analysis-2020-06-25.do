@@ -136,7 +136,7 @@ use $path3\can-monthly-statistics-2020-07-13.dta, clear
 		scheme(s1mono)
 	graph export $path6\can-monthly-cumulative-registrations-`fdate'.png, replace width(`isize')
 	
-	twoway (line rem_count_cumu period, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period, lpatt(solid)) , ///
+	twoway (line rem_count_cumu period if period < `cutoff', lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < `cutoff', lpatt(solid)) , ///
 		title("Cumulative Removals") subtitle("Canada") ///
 		ytitle("Count of removals") xtitle("Month") ///
 		ylab(, labsize(small)) xlab(, labsize(small)) ///
