@@ -31,8 +31,6 @@ global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
 
 include "$rfiles\syntax\stata-file-paths.doi"
-global filelist : dir "$path3" files "*.dta"
-di $filelist
 
 
 /** 1. Data Visualisation **/
