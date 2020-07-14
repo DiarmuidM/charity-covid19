@@ -12,9 +12,11 @@ permalink: /data/
 
 ## Open Data
 
-The data sets underpinning the analysis are contained in this folder - for example, monthly statistics for Scotland are contained in a file entitled `scot-monthly-statistics-DATE.csv`.
+The time-series data sets underpinning the analysis are publicly available: [ [LINK] ](https://github.com/DiarmuidM/charity-covid19/tree/master/data)
 
-The codebook explaining what each data set contains can be found here: [ [LINK] ](./data-codebook.md)
+Each jurisdiction has its own file and follows a naming convention e.g., `scot-monthly-statistics-DATE.csv`.
+
+The codebook explaining what information is contained in the data sets can be found here: [ [LINK] ](./data-codebook.md)
 
 ## Sources
 
