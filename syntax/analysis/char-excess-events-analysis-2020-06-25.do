@@ -91,7 +91,52 @@ use $path3\us-monthly-statistics-2020-07-12.dta, clear
 		caption("Data from IRS Junly 2020 Data Download", size(small)) ///
 		scheme(s1mono)
 	graph export $path6\us-monthly-cumulative-removals-`fdate'.png, replace width(`isize')
-
+	
+	
+	** By NTEE Code
+	
+	use $path3\us-monthly-registrations-by-ntee.dta, clear
+	capture graph drop *
+	local isize = 1200
+	local fdate = "2020-07-13"
+	local cutoff = tm(2020m7)
+	
+	// Cumulative events - percentage
+		
+	levelsof ntee_maj, local(codes)
+	foreach code of local codes {
+		local ntee_lab: label (ntee_maj) `code'
+		di "`ntee_lab'"
+		twoway (line reg_excess_cumu_per period if ntee_maj==`code' & period < `cutoff', lpatt(dash) lwidth(medthick)) ///
+			, title("`ntee_lab'") xtitle("") ytitle("") ///
+			legend(off) ///
+			scheme(s1mono) ///
+			name(ntee`code')
+	}
+	
+	graph combine ntee1 ntee2 ntee3 ntee4 ntee5 ntee6 ntee7 ntee8 ntee9 ntee10 ///
+		, title("US Cumulative Registrations") subtitle("By NTEE Code") ///
+		l1title("%") b1title("Month") ///
+		note("% difference between observed and expected cumulative registrations") ///
+		caption("Data from IRS July 2020 Data Download", size(small)) ///
+		scheme(s1mono)
+	graph export $path6\us-monthly-cumulative-registrations-percentage-by-ntee-`fdate'.png, replace width(`isize') 
+	
+	
+	// Cumulative events
+	
+	levelsof ntee_maj, local(codes)
+	foreach code of local codes {
+		local ntee_lab: label (ntee_maj) `code'
+		di "`ntee_lab'"
+		twoway (line reg_count_cumu period if ntee_maj==`code' & period < `cutoff', lpatt(dash) lwidth(medthick)) ///
+			(line reg_avg_cumu period if ntee_maj==`code' & period < `cutoff', lpatt(solid)) ///
+			, title("`ntee_lab'") xtitle("") ///
+			legend(off) ///
+			scheme(s1mono) ///
+			name(ntee`code')
+	}	
+	
 
 ** Canada
 

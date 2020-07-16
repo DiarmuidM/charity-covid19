@@ -41,20 +41,20 @@ include "$rfiles\syntax\stata-file-paths.doi"
 */
 
 ** USA **
+	
+local fdate = "2020-07-12"
 
 	** Registrations
 	
-	local fdate = "2020-07-12"
-
 	import delimited using $path2\irs_businessfile_master_2020-07-12.csv, varn(1) clear
 	keep ein subsection affiliation classification ruling deductibility activity organization status ntee_cd
-	codebook, compact
+	*codebook, compact
 	/*
 		I want to exclude organisations that are not 501(c)(3) orgs.
 	*/
 	keep if subsection==3
 
-
+	
 	// Convert to date
 	/*
 		The assumption is the values of 'ruling' are formatted as follows:
@@ -94,7 +94,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 		keep if reg_avg!=.
 		duplicates drop month_reg, force
 		keep month_reg reg_avg-reg_ub
-		sav "$path1\us-monthly-averages.dta", replace
+		sav $path1\us-monthly-averages.dta, replace
 	restore
 	
 	sort month_reg
@@ -121,6 +121,136 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	sort period
 	format period %tm
 	sav $path1\us-monthly-registrations-`fdate'.dta, replace
+	
+	
+	** Registrations, by NTEE
+	
+	import delimited using $path2\irs_businessfile_master_2020-07-12.csv, varn(1) clear
+	keep ein subsection affiliation classification ruling deductibility activity organization status ntee_cd
+	codebook, compact
+	/*
+		I want to exclude organisations that are not 501(c)(3) orgs.
+	*/
+	keep if subsection==3
+	
+	
+	// Clean NTEE Code variable
+	/*
+		Apply groupings a la "https://nccs.urban.org/project/national-taxonomy-exempt-entities-ntee-codes"
+	*/
+
+	gen ntee_maj = .
+	replace ntee_maj = 1 if strpos(ntee_cd, "A")
+	replace ntee_maj = 2 if strpos(ntee_cd, "B") 
+	replace ntee_maj = 3 if strpos(ntee_cd, "C") | strpos(ntee_cd, "D")
+	replace ntee_maj = 4 if strpos(ntee_cd, "E") | strpos(ntee_cd, "F") | strpos(ntee_cd, "G") | strpos(ntee_cd, "H")
+	replace ntee_maj = 5 if strpos(ntee_cd, "I") | strpos(ntee_cd, "J") | strpos(ntee_cd, "K") | strpos(ntee_cd, "L") ///
+		| strpos(ntee_cd, "M") | strpos(ntee_cd, "N") | strpos(ntee_cd, "O") | strpos(ntee_cd, "P")
+	replace ntee_maj = 6 if strpos(ntee_cd, "Q")
+	replace ntee_maj = 7 if strpos(ntee_cd, "R") | strpos(ntee_cd, "S") | strpos(ntee_cd, "T") | strpos(ntee_cd, "U") ///
+		| strpos(ntee_cd, "W")
+	replace ntee_maj = 8 if strpos(ntee_cd, "X")
+	replace ntee_maj = 9 if strpos(ntee_cd, "Y")
+	replace ntee_maj = 10 if strpos(ntee_cd, "Z")
+	
+	label define ntee_maj_lab 1 "Arts, Culture, and Humanities" 2 "Education" 3 "Environment and Animals" 4 "Health" 5 "Human Services" ///
+		6 "International, Foreign Affairs" 7 "Public, Societal Benefit" 8 "Religion Related" 9 "Mutual/Membership Benefit" 10 "Unknown, Unclassified"
+	label values ntee_maj ntee_maj_lab
+	
+		
+		// Keep a version for merging with revocations data
+		
+		preserve
+			keep ein ntee_maj
+			duplicates drop ein, force
+			sort ein
+			sav $path1\ein-ntee-lookup-`fdate'.dta, replace
+		restore
+
+	
+	// Convert to date
+	/*
+		The assumption is the values of 'ruling' are formatted as follows:
+			- 200606 = 2006-JUNE
+	*/
+	
+	tostring ruling, gen(regd_str)
+	gen regd = date(regd_str, "YM") 
+	format regd %td
+	gen regy = year(regd)
+	gen regq = qofd(regd)
+	gen regm = mofd(regd)
+	gen month_reg = month(dofm(regm))
+	format regq %tq
+	format regm %tm
+	tab1 regq regm month_reg
+	
+	
+	// Calculate monthly figures
+	
+	keep if regm >= tm(2015m1) // interested in five-year average
+	gen reg = 1
+	egen reg_count = sum(reg), by(regm ntee_maj)
+	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg ntee_maj)
+	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg ntee_maj)
+	gen reg_lb = reg_avg - reg_sd
+	gen reg_ub = reg_avg + reg_sd
+	foreach var of varlist reg_count-reg_ub {
+		replace `var' = ceil(`var')
+	}
+		
+	
+	// Convert to time series
+	
+	preserve
+		sort month_reg ntee_maj
+		keep if reg_avg!=.
+		duplicates drop month_reg ntee_maj, force
+		keep month_reg ntee_maj reg_avg-reg_ub
+		sav $path1\us-monthly-averages-by-ntee.dta, replace
+	restore
+	
+	sort month_reg
+	drop reg_avg-reg_ub
+	merge m:1 month_reg ntee_maj using $path1\us-monthly-averages-by-ntee.dta, keep(match) keepus(reg_avg-reg_ub)
+	keep if regm >= tm(2020m1)
+	drop ein-ntee_cd _merge
+	duplicates drop regm ntee_maj, force
+	drop if regm==.
+	l
+	sav $path1\us-monthly-registrations-by-ntee-`fdate'.dta, replace
+		
+	
+	// Calculate excess events, by NTEE Code
+	
+	use $path1\us-monthly-registrations-by-ntee-`fdate'.dta, clear
+	levelsof ntee_maj, local(codes)
+	
+	foreach code of local codes {
+		use $path1\us-monthly-registrations-by-ntee-`fdate'.dta, clear
+		keep if ntee_maj==`code'
+		sort ntee_maj regm
+		
+		gen reg_excess = ceil(reg_count - reg_avg)
+		gen reg_excess_per = ceil((reg_excess/reg_avg)*100)
+		gen reg_excess_cumu = sum(reg_excess)
+		gen reg_avg_cumu = sum(reg_avg)
+		gen reg_count_cumu = sum(reg_count)
+		gen reg_excess_cumu_per = ceil((reg_excess_cumu/reg_avg_cumu)*100)
+		
+		sav $path1\ntee-code-`code'.dta, replace
+	}
+	
+	use $path1\ntee-code-1.dta, clear
+	forvalues i = 2/10 {
+		append using $path1\ntee-code-`i'.dta, force
+	}
+	
+	gen period = regm
+	sort period
+	format period %tm
+	drop month_reg reg regd regy regq
+	sav $path3\us-monthly-registrations-by-ntee-`fdate'.dta, replace
 
 
 	** Revocations
@@ -135,6 +265,14 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	*/
 	drop if exemption_reinstatement_date!=""
 	keep if exemption_type==3 // assuming 3 refers to 501(c)(3)
+	
+		
+		// Merge with NTEE Code lookup
+		/*
+		duplicates drop ein, force
+		sort ein
+		merge 1:1 ein using $path1\ein-ntee-lookup-`fdate'.dta, keep(match master)
+		*/
 	
 
 	// Convert to date
@@ -959,6 +1097,53 @@ desc, f
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\ew-monthly-statistics-`fdate'.dta, replace
 	export delimited using $path3\ew-monthly-statistics-`fdate'.csv, replace
+	
+	
+	** Register of Mergers
+	/*
+		Information in this file helps us determine which charities lost their status due to merging
+		with another organisation.
+	*/
+	
+	import delimited using $path2\ew-register-of-mergers-2020-07-15.csv, varn(1) clear
+	drop v6 datevestingdeclarationmade datepropertytransferred
+	
+	
+		// Rename variables
+		
+		rename nameoftransferringcharitytransfe name_tra
+		rename nameofreceivingcharitytransferee name_rec
+		rename datemergerregistered merd_str
+		
+		
+		// Clean date variable
+		
+		gen merd = date(merd_str, "DMY")
+		format merd %td
+		
+		
+		// Drop unnecessary observations
+		
+		drop if merd < date("01/01/2015", "DMY")
+		drop if merd == .
+		
+		
+		// Extract charity numbers
+		
+		foreach var in tra rec {
+			gen regno_`var' = substr(name_`var', strpos(name_`var', "("), strpos(name_`var', ")"))
+			replace regno_`var' = subinstr(regno_`var', "(", "", .)
+			replace regno_`var' = subinstr(regno_`var', ")", "", .)
+			l if strmatch(regno_`var', "-") == 1
+		}
+		/*
+			Remaining issues:
+				- deal with other regno formats e.g., NAME: REGNO; NAME (REGNO
+				- deal with missing values for regno_`var'
+				- deal with instances where more than one transferring charity.
+		*/
+		
+		
 
 
 
