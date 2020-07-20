@@ -36,16 +36,10 @@ This project is not possible without the efforts of charity regulators to collec
 
 ## Licences
 
-Australia © Creative Commons Attribution 3.0 Australia <a href="https://data.gov.au/dataset/ds-dga-b050b242-4487-4306-abf5-07ca073e5594/details?q=acnc" target=_blank>[LINK]</a>
-
-Canada © Open Government Licence – Canada <a href="https://open.canada.ca/en/open-government-licence-canada" target=_blank>[LINK]</a>
-
-England & Wales © Open Government Licence v3.0 <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target=_blank>[LINK]</a>
-
-New Zealand © Creative Commons Attribution 3.0 New Zealand License <a href="https://creativecommons.org/licenses/by/3.0/nz/" target=_blank>[LINK]</a>
-
-Northern Ireland © Open Government Licence v3.0 <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target=_blank>[LINK]</a>
-
-Scotland © Crown Copyright and database right [2020]. Contains information from the Scottish Charity Register supplied by the Office of the Scottish Charity Regulator and licensed under the Open Government Licence v.3.0 <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target=_blank>[LINK]</a>
-
-United States of America © GNU General Public License v2.0.
+* Australia © Creative Commons Attribution 3.0 Australia - [ [LINK] ](https://data.gov.au/dataset/ds-dga-b050b242-4487-4306-abf5-07ca073e5594/details?q=acnc)
+* Canada © Open Government Licence – Canada - [ [LINK] ](https://open.canada.ca/en/open-government-licence-canada)
+* England & Wales © Open Government Licence v3.0 - [ [LINK] ](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+* New Zealand © Creative Commons Attribution 3.0 New Zealand License - [ [LINK] ](https://creativecommons.org/licenses/by/3.0/nz/)
+* Northern Ireland © Open Government Licence v3.0 - [ [LINK] ](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+* Scotland © Crown Copyright and database right [2020]. Contains information from the Scottish Charity Register supplied by the Office of the Scottish Charity Regulator and licensed under the Open Government Licence v.3.0 - [ [LINK] ](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+* United States of America © GNU General Public License v2.0.
