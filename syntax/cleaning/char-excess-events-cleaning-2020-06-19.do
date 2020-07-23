@@ -969,7 +969,6 @@ sav $path1\ccew-reg-dates.csv, replace
 
 
 import delimited using $path2\extract_charity.csv, varn(1) clear
-keep regno
 sort regno
 replace regno = "" if missing(real(regno)) // Set nonnumeric instances of regno as missing
 destring regno, replace
@@ -980,6 +979,12 @@ desc, f
 	
 	merge 1:1 regno using $path1\ccew-reg-dates.csv, keep(match)
 	drop _merge
+	
+	
+		// Postcode lookup version
+		
+		sort postcode
+		sav $path1\ccew-roc-postcode.dta, replace
 	
 
 	// Convert to date
@@ -1099,6 +1104,165 @@ desc, f
 	export delimited using $path3\ew-monthly-statistics-`fdate'.csv, replace
 	
 	
+	** Geographic disaggregation
+	/*
+		*SEE CHARITY DENSITY PAPER FOR CODE AND IDEAS*
+		
+		Registrations and de-registrations by geographic unit e.g., LA, MSOA.
+		
+		Geographic data from:
+			- https://github.com/drkane/geo-lookups
+			- https://geoportal.statistics.gov.uk/datasets/national-statistics-postcode-lookup-may-2020
+	*/
+	
+	// Import local authority data
+	
+	import delimited "https://github.com/drkane/geo-lookups/raw/master/la_all_codes.csv", clear varn(1)
+	rename ladcd la_code
+	rename ladnm la_name
+	rename lad20cd la_2020_code
+	sort la_code
+	keep la_code la_name la_2020_code
+	gen la_code_diff = (la_code!=la_2020_code)
+	sav $path1\uk_la_codes-`fdate'.dta, replace
+	
+	
+	// Import MSOA data
+	
+	import delimited "https://github.com/drkane/geo-lookups/raw/master/msoa_la.csv", clear varn(1)
+	rename msoa11cd msoa_code
+	rename msoa11nm msoa_name
+	rename lad20cd la_2020_code
+	rename lad20nm la_2020_name
+	sort la_2020_code
+	keep msoa_code msoa_name la_2020_*
+	sav $path1\uk_msoa_codes-`fdate'.dta, replace
+
+
+	// Import postcode lookup data
+	
+	import delimited using $path2\NSPL_MAY_2020_UK.csv, varn(1) clear
+	keep pcd laua
+	rename pcd postcode
+	rename laua la_code
+	sort postcode
+	
+	replace postcode = lower(postcode)
+	replace postcode = trim(postcode)
+	replace postcode = subinstr(postcode, " ", "", .)
+	
+	sav $path2\uk-postcode-la-lookup-2020-05.dta, replace
+	
+	
+	// Link postcode lookup to charity data
+	
+	use $path1\ccew-roc-postcode.dta, clear
+	
+	replace postcode = lower(postcode)
+	replace postcode = trim(postcode)
+	replace postcode = subinstr(postcode, " ", "", .)
+	
+	merge m:1 postcode using $path2\uk-postcode-la-lookup-2020-05.dta, keep(match master)
+	rename _merge postcode_merge
+	mdesc postcode // managed to match all bar c. 300 non-missing postcodes
+	
+	
+	// Link local authority lookup to charity data
+	
+	sort la_code
+	tab la_code, sort
+	merge m:1 la_code using $path1\uk_la_codes-`fdate'.dta, keep(match master)
+	rename _merge la_merge
+	tab *_merge
+	
+	
+	// Link MSOA lookup to charity data
+	
+	
+	// Convert to date
+	
+	gen regd_str = substr(regdate, 1, 10)
+	gen regd = date(regd_str, "YMD")
+	format regd %td
+	gen regy = year(regd)
+	gen regq = qofd(regd)
+	gen regm = mofd(regd)
+	gen month_reg = month(dofm(regm))
+	format regq %tq
+	format regm %tm
+	tab1 regq regm
+	
+	
+	// Calculate yearly figures and ranks
+	
+	keep if regy >= 2015 // interested in five-year average
+	gen reg_count = 1
+	*gen compy = (regy < 2020)
+	collapse (count) reg_count, by(regy la_code)
+	bys regy: egen reg_count_rank = rank(reg_count), field 
+	sort la_code
+	merge m:1 la_code using $path1\uk_la_codes-`fdate'.dta, keep(match master) keepus(la_name)
+		
+	
+	// Convert to time series
+	
+	tsset la_code period, delta(1)
+	
+	preserve
+		sort regy la_code
+		keep if reg_avg!=.
+		duplicates drop regy la_code, force
+		keep regy la_code reg_avg-reg_ub
+		sav $path1\ew-yearly-averages-by-la.dta, replace
+	restore
+	
+	sort regy
+	drop reg_avg-reg_ub
+	merge m:1 regy la_code using $path1\ew-yearly-averages-by-la.dta, keep(match) keepus(reg_avg-reg_ub)
+	keep if regy >= 2020
+	drop regno-remdate _merge
+	capture duplicates drop regy la_code, force
+	drop if regy==.
+	l
+	sav $path1\ew-yearly-registrations-by-la-`fdate'.dta, replace
+		
+	
+	// Calculate excess events, by local authority
+	
+	use $path1\ew-yearly-registrations-by-la-`fdate'.dta, clear
+	levelsof la_code, local(codes)
+	
+	foreach code of local codes {
+		use $path1\ew-yearly-registrations-by-la-`fdate'.dta, clear
+		keep if la_code==`code'
+		sort la_code regy
+		
+		gen reg_excess = ceil(reg_count - reg_avg)
+		gen reg_excess_per = ceil((reg_excess/reg_avg)*100)
+		gen reg_excess_cumu = sum(reg_excess)
+		gen reg_avg_cumu = sum(reg_avg)
+		gen reg_count_cumu = sum(reg_count)
+		gen reg_excess_cumu_per = ceil((reg_excess_cumu/reg_avg_cumu)*100)
+		
+		sav $path1\la-code-`code'.dta, replace
+	}
+	
+	use $path1\la-code-1.dta, clear
+	forvalues i = 2/10 {
+		append using $path1\la-code-`i'.dta, force
+	}
+	
+	gen period = regm
+	sort period
+	format period %tm
+	drop month_reg reg regd regy regq
+	sav $path3\us-monthly-registrations-by-ntee-`fdate'.dta, replace
+
+	
+	
+	
+	
+	/*
 	** Register of Mergers
 	/*
 		Information in this file helps us determine which charities lost their status due to merging
@@ -1142,7 +1306,7 @@ desc, f
 				- deal with missing values for regno_`var'
 				- deal with instances where more than one transferring charity.
 		*/
-		
+		*/
 		
 
 
