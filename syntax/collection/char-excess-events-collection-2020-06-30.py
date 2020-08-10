@@ -32,6 +32,14 @@ import re
 import pandas as pd
 
 
+# TO DO #
+#
+# 1. Execute file_delete() for NI webpages.
+# 2. Ensure all downloads go into data-DATE folder.
+# 3. Fix ew_download() [Possibly an issue with fimport]
+#
+
+
 # Define functions #
 
 # Test #
@@ -49,8 +57,29 @@ def test():
     print("\r")
     print("Welcome to this data collection script.") 
     print("\r")
-    print("To see the list of functions you can call, run the following command: python char-excess-events-collection-2020-06-30.py -h")
-   
+    with open("./test.txt", "a") as f:
+        f.write("Successfully executed script")
+
+
+def prelim():
+    """
+        Get the current date and creates a folder to store the download.
+    """
+
+    ddate = dt.now().strftime("%Y-%m-%d")
+    fol = "data/" + ddate
+    print(fol)
+
+    if not os.path.isdir("data"):
+        os.mkdir("data")
+    else:
+        print("Folder already exists")
+
+    if not os.path.isdir(fol):
+        os.mkdir(fol)
+    else:
+        print("Folder already exists")
+
 
 # Australia
 
@@ -409,9 +438,7 @@ def ew_download():
 
         if response_file.status_code==200:
 
-            download_folder = "./ew/" + ddate
-            os.mkdir(download_folder)
-            outfile = download_folder + "/ccew-data-extract-" + ddate + ".zip"
+            outfile = "./ew/ccew-data-extract-" + ddate + ".zip"
             if os.path.isfile(outfile): # do not overwrite existing file
                 print("File already exists, no need to overwrite")
             else: # file does not currently exist, therefore create
@@ -723,7 +750,7 @@ def roi_download(**args):
 
     # Create folders
 
-    directories = ["roi", "masterfiles", "logs"]
+    directories = ["roi", "logs"]
 
     for directory in directories:
         if not os.path.isdir(directory):
@@ -923,38 +950,52 @@ def file_delete(source, ext, **args):
 #
 
 def main():
+    test()
+
     print("Executing data download")
-    """
+    prelim()
+    
     try:
+        print("Beginning Scotland download")
         sco_download()
     except:
         print("Could not execute Scotland download")
+    
     try:
+        print("Beginning Australia download")
         aus_download()
     except:
         print("Could not execute Australia download")
+    
     try:
+        print("Beginning England and Wales download")
         ew_download()
     except:
         print("Could not execute England and Wales download")
+    
     try:
+        print("Beginning Rep. of Ireland download")
         roi_download()
     except:
         print("Could not execute Republic of Ireland download")
+    
     try:
+        print("Beginning Northern Ireland download")
         ni_download()
     except:
         print("Could not execute Northern Ireland download")
+    
     try:
+        print("Beginning USA download")
         usa_download()
     except:
         print("Could not execute USA download")
-    """
+    
     try:
+        print("Beginning New Zealand download")
         nz_download()
     except:
         print("Could not execute New Zealand download")
-
 
 
 # Main program #

@@ -28,6 +28,8 @@
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
+global foldate "2020-08-10" // name of folder containing latest data
+global fdate "2020-08-10" // date used to name output files
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -42,11 +44,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 ** USA **
 	
-local fdate = "2020-07-12"
-
 	** Registrations
 	
-	import delimited using $path2\irs_businessfile_master_2020-07-12.csv, varn(1) clear
+	import delimited using $path2\$foldate\usa\irs_businessfile_master_$fdate.csv, varn(1) clear
 	keep ein subsection affiliation classification ruling deductibility activity organization status ntee_cd
 	*codebook, compact
 	/*
@@ -120,12 +120,12 @@ local fdate = "2020-07-12"
 	gen period = regm
 	sort period
 	format period %tm
-	sav $path1\us-monthly-registrations-`fdate'.dta, replace
+	sav $path1\us-monthly-registrations-$fdate.dta, replace
 	
 	
 	** Registrations, by NTEE
 	
-	import delimited using $path2\irs_businessfile_master_2020-07-12.csv, varn(1) clear
+	import delimited using $path2\$foldate\usa\irs_businessfile_master_$fdate.csv, varn(1) clear
 	keep ein subsection affiliation classification ruling deductibility activity organization status ntee_cd
 	codebook, compact
 	/*
@@ -164,7 +164,7 @@ local fdate = "2020-07-12"
 			keep ein ntee_maj
 			duplicates drop ein, force
 			sort ein
-			sav $path1\ein-ntee-lookup-`fdate'.dta, replace
+			sav $path1\ein-ntee-lookup-$fdate.dta, replace
 		restore
 
 	
@@ -218,16 +218,16 @@ local fdate = "2020-07-12"
 	duplicates drop regm ntee_maj, force
 	drop if regm==.
 	l
-	sav $path1\us-monthly-registrations-by-ntee-`fdate'.dta, replace
+	sav $path1\us-monthly-registrations-by-ntee-$fdate.dta, replace
 		
 	
 	// Calculate excess events, by NTEE Code
 	
-	use $path1\us-monthly-registrations-by-ntee-`fdate'.dta, clear
+	use $path1\us-monthly-registrations-by-ntee-$fdate.dta, clear
 	levelsof ntee_maj, local(codes)
 	
 	foreach code of local codes {
-		use $path1\us-monthly-registrations-by-ntee-`fdate'.dta, clear
+		use $path1\us-monthly-registrations-by-ntee-$fdate.dta, clear
 		keep if ntee_maj==`code'
 		sort ntee_maj regm
 		
@@ -250,12 +250,12 @@ local fdate = "2020-07-12"
 	sort period
 	format period %tm
 	drop month_reg reg regd regy regq
-	sav $path3\us-monthly-registrations-by-ntee-`fdate'.dta, replace
+	sav $path3\us-monthly-registrations-by-ntee-$fdate.dta, replace
 
 
 	** Revocations
 
-	import delimited using $path2\irs_revoked_exemp_orgs_2020-07-12.csv, varn(1) clear
+	import delimited using $path2\$foldate\usa\irs_revoked_exemp_orgs_$fdate.csv, varn(1) clear
 	keep ein exemption_type revocation_date revocation_posting_date exemption_reinstatement_date
 	codebook, compact
 	/*
@@ -271,7 +271,7 @@ local fdate = "2020-07-12"
 		/*
 		duplicates drop ein, force
 		sort ein
-		merge 1:1 ein using $path1\ein-ntee-lookup-`fdate'.dta, keep(match master)
+		merge 1:1 ein using $path1\ein-ntee-lookup-$fdate.dta, keep(match master)
 		*/
 	
 
@@ -338,17 +338,17 @@ local fdate = "2020-07-12"
 	gen period = remm
 	sort period
 	format period %tm
-	sav $path1\us-monthly-removals-`fdate'.dta, replace
+	sav $path1\us-monthly-removals-$fdate.dta, replace
 	
 	
 	// Create analysis file
 	
-	use $path1\us-monthly-registrations-`fdate'.dta, clear
-	merge 1:1 period using $path1\us-monthly-removals-`fdate'.dta, keep(match master)
+	use $path1\us-monthly-registrations-$fdate.dta, clear
+	merge 1:1 period using $path1\us-monthly-removals-$fdate.dta, keep(match master)
 	drop _merge
 	gen country = "USA"
-	sav $path3\us-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\us-monthly-statistics-`fdate'.csv, replace
+	sav $path3\us-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\us-monthly-statistics-$fdate.csv, replace
 
 	
 ************************************************************************************************************
@@ -359,11 +359,10 @@ local fdate = "2020-07-12"
 
 ** Canada **
 
-local fdate = "2020-07-13"
 
 	** Registrations
 
-	import delimited using $path2\Charities_results_2020-07-13-07-14-52.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_2020-08-10-08-06-27.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -437,7 +436,7 @@ local fdate = "2020-07-13"
 	
 	** Revocations
 
-	import delimited using $path2\Charities_results_2020-07-13-07-14-52.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_2020-08-10-08-06-27.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -519,8 +518,8 @@ local fdate = "2020-07-13"
 	drop _merge
 	gen country = "Canada"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
-	sav $path3\can-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\can-monthly-statistics-`fdate'.csv, replace
+	sav $path3\can-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\can-monthly-statistics-$fdate.csv, replace
 
 		
 ************************************************************************************************************
@@ -531,8 +530,7 @@ local fdate = "2020-07-13"
 
 ** New Zealand (CSNZ) */
 
-import delimited using $path2\nz-roc-2020-07-13.csv, varn(1) clear
-local fdate = "2020-07-13"
+import delimited using $path2\$foldate\nz\nz-roc-$fdate.csv, varn(1) clear
 
 ** De-registrations
 
@@ -609,7 +607,7 @@ keep if deregistrationdate!=""
 		
 	** Registrations
 
-	import delimited using $path2\nz-roc-2020-07-13.csv, varn(1) clear
+	import delimited using $path2\$foldate\nz\nz-roc-$fdate.csv, varn(1) clear
 
 	// Convert to date
 	
@@ -685,8 +683,8 @@ keep if deregistrationdate!=""
 	gen country = "New Zealand"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	drop postaladdress_country streetaddress_country
-	sav $path3\nz-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\nz-monthly-statistics-`fdate'.csv, replace
+	sav $path3\nz-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\nz-monthly-statistics-$fdate.csv, replace
 
 	
 ************************************************************************************************************
@@ -707,8 +705,7 @@ keep if deregistrationdate!=""
 		- l if ABN=="35276763984" [2019]
 */
 
-	import excel using $path2\aus-roc-2020-07-11.xlsx, firstrow clear
-	local fdate = "2020-07-11"
+	import excel using $path2\$foldate\aus\aus-roc-$fdate.xlsx, firstrow clear
 	
 	keep ABN Registration_Date Date_Organisation_Established Charity_Legal_Name
 
@@ -778,7 +775,7 @@ keep if deregistrationdate!=""
 	gen country = "Australia"
 	keep period country *_avg* *_count* *_excess* reg_*
 	sav "$path3\aus-monthly-statistics.dta", replace
-	export delimited using $path3\aus-monthly-statistics-`fdate'.csv, replace
+	export delimited using $path3\aus-monthly-statistics-$fdate.csv, replace
 
 		
 ************************************************************************************************************
@@ -789,13 +786,9 @@ keep if deregistrationdate!=""
 
 ** Northern Ireland **
 
-**use C:\Users\t95171dm\Dropbox\brawdata\clients\oscr\data_clean\ocsr_scr_20190227_clean.dta, clear
-
-	local fdate = "2020-07-09"
-
 	** Registrations
 	
-	import delimited using $path2\ni-roc-2020-07-09.csv, varn(1) clear
+	import delimited using $path2\$foldate\ni\ni-roc-$fdate.csv, varn(1) clear
 	keep regcharitynumber dateregistered status
 	tab status
 	keep if status!="Removed"
@@ -869,7 +862,7 @@ keep if deregistrationdate!=""
 	
 	** Removals
 		
-	import delimited using $path2\ni-removals-2020-07-09.csv, varn(1) clear
+	import delimited using $path2\$foldate\ni\ni-removals-$fdate.csv, varn(1) clear
 	keep if removed==1
 	desc, f
 
@@ -946,8 +939,8 @@ keep if deregistrationdate!=""
 	drop _merge
 	gen country = "Northern Ireland"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
-	sav $path3\ni-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\ni-monthly-statistics-`fdate'.csv, replace
+	sav $path3\ni-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\ni-monthly-statistics-$fdate.csv, replace
 
 	
 ************************************************************************************************************
@@ -958,9 +951,7 @@ keep if deregistrationdate!=""
 
 ** England and Wales **
 
-local fdate = "2020-07-09"
-
-import delimited using $path2\extract_registration.csv, varn(1) clear
+import delimited using $path2\$foldate\ew\extract_registration.csv, varn(1) clear
 keep regno regdate remdate
 duplicates drop regno, force
 sort regno
@@ -968,7 +959,7 @@ desc, f
 sav $path1\ccew-reg-dates.csv, replace
 
 
-import delimited using $path2\extract_charity.csv, varn(1) clear
+import delimited using $path2\$foldate\ew\extract_charity.csv, varn(1) clear
 sort regno
 replace regno = "" if missing(real(regno)) // Set nonnumeric instances of regno as missing
 destring regno, replace
@@ -1011,6 +1002,8 @@ desc, f
 	format remq %tq
 	format remm %tm
 	tab1 remq remm
+	
+	sav $path1\ew-roc-v1.dta, replace
 
 
 	// Calculate monthly figures
@@ -1100,8 +1093,55 @@ desc, f
 	sort period
 	gen country = "England and Wales"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
-	sav $path3\ew-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\ew-monthly-statistics-`fdate'.csv, replace
+	sav $path3\ew-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\ew-monthly-statistics-$fdate.csv, replace
+	
+	/*
+	** Time series of cumulative number of charities
+	
+	use $path1\ew-roc-v1.dta, clear
+	
+	// Calculate net number of charities
+	
+	gen freq = 1
+	egen reg_count = sum(freq), by(regm)
+	egen rem_count = sum(freq), by(remm)
+	
+	preserve
+		duplicates drop regm, force
+		rename regm period
+		sort period
+		keep period reg_count
+		sav $path1\ew-reg-ts.dta, replace
+	restore
+	
+	preserve
+		duplicates drop remm, force
+		rename remm period
+		sort period
+		keep period rem_count
+		sav $path1\ew-rem-ts.dta, replace
+	restore
+	
+	use $path1\ew-reg-ts.dta, clear
+	merge 1:1 period using $path1\ew-rem-ts.dta, keep(match master)
+	drop _merge
+	
+	replace rem_count = 0 if rem_count==.
+	gen netreg = reg_count - rem_count
+	gen cumu = netreg[1]
+	replace cumu = netreg + cumu[_n-1] if _n > 1
+	hist netreg, freq norm scheme(s1mono)
+	/*
+		Perform a check that these figures are correct.
+	*/
+	
+	keep if period >= tm(2015m1)
+	drop if period==.
+	sav $path3\ew-monthly-statistics-cumu-$fdate.dta, replace
+	/*
+		Think of merging this with the original monthly statistics dataset.
+	*/
 	
 	
 	** Geographic disaggregation
@@ -1124,7 +1164,7 @@ desc, f
 	sort la_code
 	keep la_code la_name la_2020_code
 	gen la_code_diff = (la_code!=la_2020_code)
-	sav $path1\uk_la_codes-`fdate'.dta, replace
+	sav $path1\uk_la_codes-$fdate.dta, replace
 	
 	
 	// Import MSOA data
@@ -1136,7 +1176,7 @@ desc, f
 	rename lad20nm la_2020_name
 	sort la_2020_code
 	keep msoa_code msoa_name la_2020_*
-	sav $path1\uk_msoa_codes-`fdate'.dta, replace
+	sav $path1\uk_msoa_codes-$fdate.dta, replace
 
 
 	// Import postcode lookup data
@@ -1171,7 +1211,7 @@ desc, f
 	
 	sort la_code
 	tab la_code, sort
-	merge m:1 la_code using $path1\uk_la_codes-`fdate'.dta, keep(match master)
+	merge m:1 la_code using $path1\uk_la_codes-$fdate.dta, keep(match master)
 	rename _merge la_merge
 	tab *_merge
 	
@@ -1201,7 +1241,7 @@ desc, f
 	collapse (count) reg_count, by(regy la_code)
 	bys regy: egen reg_count_rank = rank(reg_count), field 
 	sort la_code
-	merge m:1 la_code using $path1\uk_la_codes-`fdate'.dta, keep(match master) keepus(la_name)
+	merge m:1 la_code using $path1\uk_la_codes-$fdate.dta, keep(match master) keepus(la_name)
 		
 	
 	// Convert to time series
@@ -1224,16 +1264,16 @@ desc, f
 	capture duplicates drop regy la_code, force
 	drop if regy==.
 	l
-	sav $path1\ew-yearly-registrations-by-la-`fdate'.dta, replace
+	sav $path1\ew-yearly-registrations-by-la-$fdate.dta, replace
 		
 	
 	// Calculate excess events, by local authority
 	
-	use $path1\ew-yearly-registrations-by-la-`fdate'.dta, clear
+	use $path1\ew-yearly-registrations-by-la-$fdate.dta, clear
 	levelsof la_code, local(codes)
 	
 	foreach code of local codes {
-		use $path1\ew-yearly-registrations-by-la-`fdate'.dta, clear
+		use $path1\ew-yearly-registrations-by-la-$fdate.dta, clear
 		keep if la_code==`code'
 		sort la_code regy
 		
@@ -1256,9 +1296,8 @@ desc, f
 	sort period
 	format period %tm
 	drop month_reg reg regd regy regq
-	sav $path3\us-monthly-registrations-by-ntee-`fdate'.dta, replace
-
-	
+	sav $path3\us-monthly-registrations-by-ntee-$fdate.dta, replace
+	*/
 	
 	
 	
@@ -1318,27 +1357,25 @@ desc, f
 
 ** Scotland **
 
-local fdate = "2020-07-09"
-
 ** Create master file
 
-import delimited using $path2\CharityExport-09-Jul-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-10-Aug-2020.csv, varn(1) clear
 gen regdata = 1
-sav $path1\scot-roc-2020-07.dta, replace
+sav $path1\scot-roc-2020-08.dta, replace
 
-import delimited using $path2\CharityExport-Removed-09-Jul-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-Removed-10-Aug-2020.csv, varn(1) clear
 gen remdata = 1
-sav $path1\scot-removals-2020-07.dta, replace
+sav $path1\scot-removals-2020-08.dta, replace
 
-append using $path1\scot-roc-2020-07.dta, force
+append using $path1\scot-roc-2020-08.dta, force
 *keep charityregistrationnumber deregistrationdate dateregistered *data
 gen removed = (remdata)
-sav $path1\scot-all-data-2020-07.dta, replace
+sav $path1\scot-all-data-2020-08.dta, replace
 
 
 ** De-registrations
 
-use $path1\scot-all-data-2020-07.dta, clear
+use $path1\scot-all-data-2020-08.dta, clear
 keep if removed==1
 
 	// Convert to date
@@ -1356,6 +1393,8 @@ keep if removed==1
 	/*
 		Consider monthly or bimonthly measures also
 	*/
+	
+	sav $path1\scot-rem-data.dta, replace
 
 	
 	// Calculate monthly figures
@@ -1413,7 +1452,7 @@ keep if removed==1
 	
 ** Registrations
 
-use $path1\scot-all-data-2020-07.dta, clear
+use $path1\scot-all-data-2020-08.dta, clear
 
 	// Convert to date
 	
@@ -1430,6 +1469,8 @@ use $path1\scot-all-data-2020-07.dta, clear
 	/*
 		Consider monthly or bimonthly measures also
 	*/
+	
+	sav $path1\scot-reg-data.dta, replace
 
 	
 	// Calculate monthly figures
@@ -1489,9 +1530,46 @@ use $path1\scot-all-data-2020-07.dta, clear
 	drop _merge
 	gen country = "Scotland"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
-	sav $path3\scot-monthly-statistics-`fdate'.dta, replace
-	export delimited using $path3\scot-monthly-statistics-`fdate'.csv, replace
+	sav $path3\scot-monthly-statistics-$fdate.dta, replace
+	export delimited using $path3\scot-monthly-statistics-$fdate.csv, replace
+	
+	/*
+	** Time series of cumulative number of charities
+	
+	foreach var in reg rem {
+		
+		use $path1\scot-`var'-data.dta, clear
+	
+		// Calculate net number of charities
+		
+		gen freq = 1
+		egen `var'_count = sum(freq), by(`var'm)
 
+		duplicates drop `var'm, force
+		rename `var'm period
+		sort period
+		keep period `var'_count
+		sav $path1\scot-`var'-ts.dta, replace
+	}
+	
+	
+	use $path1\scot-reg-ts.dta, clear
+	merge 1:1 period using $path1\scot-rem-ts.dta, keep(match master)
+	drop _merge
+	
+	replace rem_count = 0 if rem_count==.
+	gen netreg = reg_count - rem_count
+	gen cumu = netreg[1]
+	replace cumu = netreg + cumu[_n-1] if _n > 1
+	hist netreg, freq norm scheme(s1mono)
+	/*
+		Perform a check that these figures are correct.
+	*/
+	
+	keep if period >= tm(2015m1)
+	drop if period==.
+	sav $path3\scot-monthly-statistics-cumu-$fdate.dta, replace
+	*/
 
 		
 ************************************************************************************************************
