@@ -1,6 +1,6 @@
 # Data
 
-*[Last updated: 2020-07-13]*
+*[Licences information last updated: 2020-07-13]*
 
 ## Open Data
 
