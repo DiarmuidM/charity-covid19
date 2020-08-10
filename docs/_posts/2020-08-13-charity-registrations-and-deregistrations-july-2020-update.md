@@ -46,7 +46,7 @@ More information on our methodology can be found here: [ [LINK] ]({{site.url}}/m
 
 #### Registrations
 
-The number of new charities has remained steady in England and Wales over the first half of 2020: in fact, registrations were higher than expected in February and March (see figure 1). As a result the total number of new charities is broadly in line with the trend for 2015-2019, with c. 3000 organisations granted charity status by the end of June 2020 (slightly above expectations - see figure 2).
+The number of new charities has remained steady in England and Wales throughout 2020: in fact, registrations were higher than expected in February and March (see figure 1). As a result the total number of new charities is broadly in line with the trend for 2015-2019, with c. 3500 organisations granted charity status by the end of July 2020 (slightly above expectations - see figure 2).
 
 *Figure 1. Monthly registrations of charities - England and Wales*
 
@@ -58,7 +58,7 @@ The number of new charities has remained steady in England and Wales over the fi
 
 #### De-registrations
 
-The number of charities de-registered (removed from the Register of Charities) is also broadly in line with previous years, though the figures for April-June were more variable than expected. As a result, slightly fewer charities have been de-registered in total by the end of June 2020 (c. 300 less than expected). If there is to be a culling of organisations due to the effects of Covid-19, it has yet to materialise in the data.
+The number of charities de-registered (removed from the Register of Charities) is also broadly in line with previous years, though the figures for April-July were more variable than expected. As a result, slightly fewer charities have been de-registered in total so far in 2020 (c. 500 less than expected). If there is to be a culling of organisations due to the effects of Covid-19, it has yet to materialise in the data.
 
 *Figure 3. Monthly de-registrations of charities - England and Wales*
 
@@ -72,7 +72,7 @@ The number of charities de-registered (removed from the Register of Charities) i
 
 #### Registrations
 
-The patterns in monthly registrations for Scotland are similar to those for England and Wales, with a small degree of variation compared to previous years (see figure 5). Though as a result of these monthly trends, there are slightly fewer new charities overall in 2020 than we would expect (c. 100 - see figure 6).
+The patterns in monthly registrations for Scotland are similar to those for England and Wales, with a small degree of variation compared to previous years (see figure 5). As a result of these monthly trends, there are very slightly fewer new charities overall in 2020 than we would expect (figure 6).
 
 *Figure 5. Monthly registrations of charities - Scotland*
 
@@ -84,7 +84,7 @@ The patterns in monthly registrations for Scotland are similar to those for Engl
 
 #### De-registrations
 
-Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between March and May 2020, there were fewer charities de-registered each month (figure 7), though the figures for June are in line with expectations. As a result there are considerably fewer de-registrations than expected - see figure 8. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
+Examining de-registrations however, reveals a clear decrease in the monthly and cumulative figures compared to previous years: between March and May, there were fewer charities de-registered each month, ditto July (figure 7). As a result there are considerably fewer de-registrations than expected - see figure 8. It is likely the lower levels of de-registrations are a result of shifting regulatory priorities around the beginning of the pandemic in the UK; for example, case work relating to defaulting charities - those that fail to file their accounts on time - was likely halted for a period, resulting in lower numbers of these organisations losing their charitable status.
 
 *Figure 7. Monthly de-registrations of charities - Scotland*
 
@@ -127,11 +127,11 @@ For these reasons we are reluctant to interpret the observed trends - hopefully 
 
 #### Registrations
 
-The number of registrations is below what's expected for each month in the first half of 2020 (see figure 13); this trend may be explained by Australia's proximity to the regions first affected by Covid-19 in early January 2020.[^1]
+The number of registrations is below what's expected for each month so far in 2020 (see figure 13); this trend may be explained by Australia's proximity to the regions first affected by Covid-19 in early January 2020.[^1]
 
 As a result, there are roughly half as many charities registered in the first half of 2020 than we would expect - see figure 14.
 
-[^1]: The especially low figures for June may be an artefact of when the data were downloaded (2020-07-11), and thus potentially revised upwards at a later date.
+[^1]: The especially low figures for July may be an artefact of when the data were downloaded (2020-08-10), and thus potentially revised upwards at a later date.
 
 *Figure 13. Monthly registrations of charities - Australia*
 
@@ -145,9 +145,9 @@ As a result, there are roughly half as many charities registered in the first ha
 
 #### Registrations
 
-The number of registrations is below what's expected for the months March-June 2020 (see figure 15); this trend may be explained by New Zealand's proximity to the regions first affected by Covid-19 in early 2020, and the timing of its lockdown measures.
+The number of registrations is below what's expected for the months March-July 2020 (see figure 15); this trend may be explained by New Zealand's proximity to the regions first affected by Covid-19 in early 2020, and the timing of its lockdown measures.
 
-As a result, there are roughly half as many charities registered in the first half of 2020 than we would expect - see figure 16.
+As a result, there are c. 300 fewer charities registered in 2020 than we would expect - see figure 16.
 
 *Figure 15. Monthly registrations of charities - New Zealand*
 
@@ -159,7 +159,7 @@ As a result, there are roughly half as many charities registered in the first ha
 
 #### De-registrations
 
-The number of de-registrations is below what's expected for each month in the first half of 2020 (see figure 17), resulting in far fewer than expected by this period in the year (figure 18).
+The number of de-registrations is below what's expected for each month in 2020 (see figure 17), resulting in far fewer than expected by this period in the year (figure 18).
 
 *Figure 17. Monthly de-registrations of charities - New Zealand*
 
@@ -173,7 +173,7 @@ The number of de-registrations is below what's expected for each month in the fi
 
 #### Registrations
 
-The number of registrations is below what's expected for each month in the first half of 2020 (see figure 19); as a result, there are roughly 1/4 as many charities registered in the first half of 2020 than we would expect - see figure 20.
+The number of registrations is below what's expected for each month in 2020 (see figure 19); as a result, there are roughly 1/4 as many charities registered in 2020 than we would expect - see figure 20.
 
 *Figure 19. Monthly registrations of charities - Canada*
 
