@@ -6,6 +6,8 @@
 
 The data sets underpinning the analysis are contained in this folder - for example, monthly statistics for Scotland are contained in a file entitled `scot-monthly-statistics-DATE.csv`.
 
+There are multiple files per jurisdiction, one for each month. Therefore, figures can be compared over time within each jurisdiction, capturing any revisions to the figures by the regulators.
+
 The codebook explaining what each data set contains can be found here: [ [LINK] ](./data-codebook.md)
 
 ## Sources
