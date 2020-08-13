@@ -25,10 +25,16 @@
 /** 0. Preliminaries **/
 
 ** Diarmuid **
-
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
+global foldate "2020-08-10" // name of folder containing latest data
+global fdate "2020-08-10" // date used to name output files
+
+** Alasdair **
+global dfiles "C:\Users\alasd\Dropbox\" // location of data files
+global rfiles "C:\Users\alasd\OneDrive\Documents\codingworkspace\covid19register" // location of syntax and other project outputs
+global gfiles "C:\Users\alasd\OneDrive\Documents\codingworkspace\covid19register\docs2" // location of graphs
 global fdate "2020-08-10" // date used to name input files
 global pdate "2020-08-10" // date used to name visualisation and other analytical outputs
 
@@ -42,429 +48,236 @@ include "$rfiles\syntax\stata-file-paths.doi"
 global isize 1200
 global cutoff tm(2020m8)
 
+* Graph colours
+	global axtcol = "gs5"	// axis colour
+	global obscol = "navy"
+	global expcol = "cranberry"
+	
+* Graph settings
+	global graphstyle = `"bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) graphregion(fcolor(white)) scheme(s1mono)"'
 
-** USA
+	
+local countrylist = "aus us can nz ni scot ew"
 
-use $path3\us-monthly-statistics-$fdate.dta, clear
+* USA
+	local cnameus = "United States of America"		// The subtitle
+	local cregulatorus = "IRS"						// The name of the regulator
+	local cyhregus =50000							// Y-axis height for registartions
+	local cyhremus = 5000							// Y-axis height for removals
+
+* Canada
+	local cnamecan = "Canada"						// The subtitle
+	local cregulatorcan = "CRA"						// The name of the regulator
+	local cyhregcan =1500							// Y-axis height for registartions
+	local cyhremcan = 700							// Y-axis height for removals	
+	
+* Country
+	local cnamenz = "New Zealand"					// The subtitle
+	local cregulatornz = "CSNZ"						// The name of the regulator
+	local cyhregnz =1000							// Y-axis height for registrations
+	local cyhremnz = 1500							// Y-axis height for removals	
+	
+* Country
+	local cnameaus = "Australia"					// The subtitle
+	local cregulatoraus = "ACNC"					// The name of the regulator
+	local cyhregaus =1500							// Y-axis height for registrations
+	local cyhremaus = 1500							// Y-axis height for removals	
+	
+* Country
+	local cnameni = "Northern Ireland"				// The subtitle
+	local cregulatorni = "CCNI"						// The name of the regulator
+	local cyhregni =1200							// Y-axis height for registrations
+	local cyhremni = 250							// Y-axis height for removals	
+	
+* Country
+	local cnamescot = "Scotland"					// The subtitle
+	local cregulatorscot = "OSCR"					// The name of the regulator
+	local cyhregscot =600							// Y-axis height for registrations
+	local cyhremscot = 500							// Y-axis height for removals	
+	
+* Country
+	local cnameew = "England and Wales"				// The subtitle
+	local cregulatorew = "CCEW"						// The name of the regulator
+	local cyhregew =3000							// Y-axis height for registrations
+	local cyhremew = 3000							// Y-axis height for removals	
+	
+* Country
+	local cname = ""						// The subtitle
+	local cregulator = ""						// The name of the regulator
+	local cyhreg =4000							// Y-axis height for registrations
+	local cyhrem = 4000							// Y-axis height for removals	
+	
+foreach c in `countrylist' {
+	
+	local filename = "$path3\\`c'-monthly-statistics-$fdate.dta"
+	di "`filename'"
+	use "`filename'", clear
 
 	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("United States of America") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(2000)10000, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from IRS August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\us-monthly-registrations-$pdate.png, replace width($isize)
-	
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("United States of America") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from IRS August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\us-monthly-removals-$pdate.png, replace width($isize)
-
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("United States of America") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from IRS August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\us-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-	
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("United States of America") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from IRS August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\us-monthly-cumulative-removals-$pdate.png, replace width($isize)
-	
-	/*
-	** By NTEE Code
-	
-	use $path3\us-monthly-registrations-by-ntee.dta, clear
-	capture graph drop *
-	
-	// Cumulative events - percentage
 		
-	levelsof ntee_maj, local(codes)
-	foreach code of local codes {
-		local ntee_lab: label (ntee_maj) `code'
-		di "`ntee_lab'"
-		twoway (line reg_excess_cumu_per period if ntee_maj==`code' & period < $cutoff, lpatt(dash) lwidth(medthick)) ///
-			, title("`ntee_lab'") xtitle("") ytitle("") ///
-			legend(off) ///
-			scheme(s1mono) ///
-			name(ntee`code')
-	}
-	
-	graph combine ntee1 ntee2 ntee3 ntee4 ntee5 ntee6 ntee7 ntee8 ntee9 ntee10 ///
-		, title("US Cumulative Registrations") subtitle("By NTEE Code") ///
-		l1title("%") b1title("Month") ///
-		note("% difference between observed and expected cumulative registrations") ///
-		caption("Data from IRS August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\us-monthly-cumulative-registrations-percentage-by-ntee-$pdate.png, replace width($isize) 
-	
-	
-	// Cumulative events
-	
-	levelsof ntee_maj, local(codes)
-	foreach code of local codes {
-		local ntee_lab: label (ntee_maj) `code'
-		di "`ntee_lab'"
-		twoway (line reg_count_cumu period if ntee_maj==`code' & period < $cutoff, lpatt(dash) lwidth(medthick)) ///
-			(line reg_avg_cumu period if ntee_maj==`code' & period < $cutoff, lpatt(solid)) ///
-			, title("`ntee_lab'") xtitle("") ///
-			legend(off) ///
-			scheme(s1mono) ///
-			name(ntee`code')
-	}	
-	*/
-
-** Canada
-
-use $path3\can-monthly-statistics-$fdate.dta, clear
-
-	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("Canada") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CRA August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\can-monthly-registrations-$pdate.png, replace width($isize)
-	
-	// Monthly variability
-	
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("Canada") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CRA August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\can-monthly-removals-$pdate.png, replace width($isize)
-	
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("Canada") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CRA August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\can-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-	
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("Canada") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CRA August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\can-monthly-cumulative-removals-$pdate.png, replace width($isize)
-
-	
-
-** New Zealand
-
-use $path3\nz-monthly-statistics-$fdate.dta, clear
-
-	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("New Zealand") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(50)250, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CSNZ August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\nz-monthly-registrations-$pdate.png, replace width($isize)
-	
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("New Zealand") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CSNZ August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\nz-monthly-removals-$pdate.png, replace width($isize)
-
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("New Zealand") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CSNZ August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\nz-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-	
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("New Zealand") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CSNZ August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\nz-monthly-cumulative-removals-$pdate.png, replace width($isize)
-
-	
-** Australia
-
-use $path3\aus-monthly-statistics.dta, clear
-
-	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period, msym(O)) ///
-		(scatter reg_count period, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("Australia") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(100)400, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from ACNC August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\aus-monthly-registrations-$pdate.png, replace width($isize)
-
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("Australia") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(300)1500, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from ACNC August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\aus-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-
-	
-** Northern Ireland
-
-use $path3\ni-monthly-statistics-$fdate.dta, clear
-
-	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("Northern Ireland") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(50)300, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CCNI August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ni-monthly-registrations-$pdate.png, replace width($isize)
-	
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("Northern Ireland") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(0(10)40, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CCNI August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ni-monthly-removals-$pdate.png, replace width($isize)
-
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("Northern Ireland") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CCNI August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ni-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-	
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("Northern Ireland") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CCNI August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ni-monthly-cumulative-removals-$pdate.png, replace width($isize)
-
-
-** Scotland
-
-use $path3\scot-monthly-statistics-$fdate.dta, clear
-
-	// Monthly variability
-	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("Scotland") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from OSCR August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\scot-monthly-registrations-$pdate.png, replace width($isize)
+		local ytitle = "Count of registrations"
+		local xtitle = "Month"
 		
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("Scotland") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(0(20)120, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from OSCR August 2020 Data Download", size(small)) ///
-		scheme(s1mono)	
-	graph export $path6\scot-monthly-removals-$pdate.png, replace width($isize)
+		sum reg_ub
+		local ymax = r(max) * 1.01
+		local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000))
+		/*
+		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(small) lpatt(solid) lcolor($expcol*0.5) ) ///
+				(scatter reg_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
+				(scatter reg_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Registrations") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle
+		*/	
+		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5) ) ///
+				(scatter reg_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Registrations") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(2 "Observed Registrations") rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle
+			
+		graph export $path6\`c'-monthly-registrations-$pdate.png, replace width($isize)
+			
+		twoway 	(area reg_ub period if period < $cutoff, msize(small) color($expcol*0.2) ) ///
+				(area reg_lb period if period < $cutoff, msize(small) color(white) ) ///
+				(scatter reg_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Registrations") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(3 "Observed Registrations") order(1 3) rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle
+			
+		graph export $path6\`c'-monthly-registrations-range-$pdate.png, replace width($isize)
 
-	
-	// Cumulative events
-
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("Scotland") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from OSCR August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\scot-monthly-cumulative-registrations-$pdate.png, replace width($isize)
-
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("Scotland") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected Removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from OSCR August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\scot-monthly-cumulative-removals-$pdate.png, replace width($isize)
-	
-	
-	// Cumulative registered charities
-	/*
-	use $path3\scot-monthly-statistics-cumu-.dta, clear
-
-	
-	local cutoff = tm(2020m8)
-	line cumu period if period < $cutoff, lpatt(dash) lwidth(medthick) ///
-		title("Cumulative Charities") subtitle("Scotland") ///
-		ytitle("Count of organisations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(off) ///
-		note("Cumulative number of charities still registered in a given month") ///
-		caption("Data from OSCR August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\scot-monthly-cumulative-charities-$pdate.png, replace width($isize)
-	*/
-	
 		
-** England and Wales
+		if "`c'" != "aus" {
+		
+		local ytitle = "Count of removals"
+		local xtitle = "Month"
+		sum rem_ub
+		local ymax = r(max) * 1.01
+		local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000))
+	
+		/*
+		twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(small) lpatt(solid)  lcolor($expcol*0.5)) ///
+				(scatter rem_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
+				(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Removals") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle
+		*/	
+		twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5)) ///
+				(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Removals") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability of Mean Removals (2015-2019)")  label(2 "Observed Removals") rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle
+			
+		graph export $path6\`c'-monthly-removals-$pdate.png, replace width($isize)
 
-use $path3\ew-monthly-statistics-$fdate.dta, clear
+		twoway 	(area rem_ub period if period < $cutoff, msize(small) color($expcol*0.2) ) ///
+				(area rem_lb period if period < $cutoff, msize(small) color(white) ) ///
+				(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
+				, ///
+			title("Charity Removals") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(1 "Variability of Mean Removals (2015-2019)") label(3 "Observed Removals") order(1 3) rows(1) size(small)) ///
+			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			$graphstyle			
+			
+			
+		graph export $path6\`c'-monthly-removals-range-$pdate.png, replace width($isize)
+		}
+	
 
-	// Monthly variability
+		
+		// Cumulative events
 	
-	twoway (rcap reg_lb reg_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter reg_avg period if period < $cutoff, msym(O)) ///
-		(scatter reg_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Registrations") subtitle("England & Wales") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(0(100)650, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in registrations for that month (2015-2019)") ///
-		caption("Data from CCEW August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ew-monthly-registrations-$pdate.png, replace width($isize)
-	
-	twoway (rcap rem_lb rem_ub period if period < $cutoff, msize(medlarge) lpatt(solid)) (scatter rem_avg period if period < $cutoff, msym(O)) ///
-		(scatter rem_count period if period < $cutoff, msym(X) msize(large)) , ///
-		title("Charity Removals") subtitle("England & Wales") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(0(150)900, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-		note("Intervals represent expected range of variability in removals for that month (2015-2019)") ///
-		caption("Data from CCEW August 2020 Data Download", size(small)) ///
-		scheme(s1mono)	
-	graph export $path6\ew-monthly-removals-$pdate.png, replace width($isize)
+		local ytitle = "Count of registrations"
+		local xtitle = "Month"
+		local ytick = max(round(`cyhreg`c''/5, 100), round(`cyhreg`c''/5, 1000))
 
-	
-	// Cumulative events
-	
-	twoway (line reg_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line reg_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Registrations") subtitle("England & Wales") ///
-		ytitle("Count of registrations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Registrations") label(2 "Expected Registrations (2015-2019)") rows(1) size(small)) ///
-		note("Expected registrations: mean number of registrations for that month (2015-2019)") ///
-		caption("Data from CCEW August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ew-monthly-cumulative-registrations-$pdate.png, replace width($isize)
+		gen dif=reg_count_cumu - reg_avg_cumu
+		sum dif
+		if r(mean)>0 {
+			local shading = "(area reg_count_cumu period if period < $cutoff, color($expcol*0.2))  (area reg_avg_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		else {
+			local shading = "(area reg_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area reg_count_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		drop dif
+		
+		twoway 	`shading'	///
+				(line reg_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+				(line reg_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
+				,		///
+			title("Cumulative Registrations") subtitle("`cname`c''") 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`cyhreg`c'', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(3 "Observed Registrations") label(4 "Expected Registrations (2015-2019)") rows(1) size(small) order(3 4)) ///
+			note("Expected registrations: mean number of registrations for that month (2015-2019)",  color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+			graphregion(fcolor(white))	scheme(s1mono)	
+			
+		graph export $path6\`c'-monthly-cumulative-registrations-$pdate.png, replace width($isize)
 
-	twoway (line rem_count_cumu period if period < $cutoff, lpatt(dash) lwidth(medthick)) (line rem_avg_cumu period if period < $cutoff, lpatt(solid)) , ///
-		title("Cumulative Removals") subtitle("England & Wales") ///
-		ytitle("Count of removals") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(label(1 "Observed Removals") label(2 "Expected Removals (2015-2019)") rows(1) size(small)) ///
-		note("Expected Removals: mean number of removals for that month (2015-2019)") ///
-		caption("Data from CCEW August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ew-monthly-cumulative-removals-$pdate.png, replace width($isize)
-	
-	/*
-	// Cumulative registered charities
-	
-	use $path3\ew-monthly-statistics-cumu-.dta, clear
+		if "`c'" != "aus" {
+		local ytitle = "Count of removals"
+		local xtitle = "Month"
+		local ytick = max(round(`cyhrem`c''/5, 100), round(`cyhrem`c''/5, 1000))
+		
+		gen dif=rem_count_cumu - rem_avg_cumu
+		sum dif
+		if r(mean)>0 {
+			local shading = "(area rem_count_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_avg_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		else {
+			local shading = "(area rem_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_count_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		drop dif
+		
+		twoway  `shading'	///
+				(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+				(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) , ///
+			title("Cumulative Removals") subtitle("`cname`c''") ///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`cyhrem`c'', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
+			note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
+			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+			graphregion(fcolor(white))	scheme(s1mono)	
 
-	
-	local cutoff = tm(2020m8)
-	line cumu period if period < $cutoff, lpatt(dash) lwidth(medthick) ///
-		title("Cumulative Charities") subtitle("England & Wales") ///
-		ytitle("Count of organisations") xtitle("Month") ///
-		ylab(, labsize(small)) xlab(, labsize(small)) ///
-		legend(off) ///
-		note("Cumulative number of charities still registered in a given month") ///
-		caption("Data from CCEW August 2020 Data Download", size(small)) ///
-		scheme(s1mono)
-	graph export $path6\ew-monthly-cumulative-charities-$pdate.png, replace width($isize)
-	*/
+		graph export $path6\`c'-monthly-cumulative-removals-$pdate.png, replace width($isize)
+		}
+
+}
+
+
 
 /*
 	
@@ -485,4 +298,5 @@ use $path3\all-jurisdictions-monthly-statistics.dta, clear
 		caption("Data from June 2020 Data Download", size(small)) ///
 		scheme(s1color)
 	*graph export $path6\all-monthly-cumulative-change-registrations.png", replace width($isize)
+*/
 */
