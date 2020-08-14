@@ -28,15 +28,11 @@
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
-global foldate "2020-08-10" // name of folder containing latest data
-global fdate "2020-08-10" // date used to name output files
 
 ** Alasdair **
 global dfiles "C:\Users\alasd\Dropbox\" // location of data files
 global rfiles "C:\Users\alasd\OneDrive\Documents\codingworkspace\covid19register" // location of syntax and other project outputs
 global gfiles "C:\Users\alasd\OneDrive\Documents\codingworkspace\covid19register\docs2" // location of graphs
-global fdate "2020-08-10" // date used to name input files
-global pdate "2020-08-10" // date used to name visualisation and other analytical outputs
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -47,6 +43,8 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 global isize 1200
 global cutoff tm(2020m8)
+global fdate "2020-08-10" // date used to name input files
+global pdate "2020-08-10" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour
@@ -299,4 +297,4 @@ use $path3\all-jurisdictions-monthly-statistics.dta, clear
 		scheme(s1color)
 	*graph export $path6\all-monthly-cumulative-change-registrations.png", replace width($isize)
 */
-*/
+
