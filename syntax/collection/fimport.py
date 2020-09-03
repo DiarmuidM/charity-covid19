@@ -158,10 +158,9 @@ cc_files = {
 }
 
 
-def to_file(bcpdata, csvfilename='converted.csv', col_headers=None):
+def to_file(bcpdata, dfolder, csvfilename='converted.csv', col_headers=None):
 
-    extractpath = "./ew/" + ddate
-    csvfilename_path = extractpath + "/" + csvfilename
+    csvfilename_path = dfolder + "/" + csvfilename
     with open(csvfilename_path, 'w', encoding='utf-8') as csvfile:
         if(col_headers):
             for c in col_headers:
@@ -171,7 +170,7 @@ def to_file(bcpdata, csvfilename='converted.csv', col_headers=None):
         csvfile.write(bcpdata)
 
 
-def import_zip(zip_file):
+def import_zip(zip_file, dfolder):
     zf = zipfile.ZipFile(zip_file, 'r')
 
     for filename in cc_files:
@@ -192,7 +191,7 @@ def import_zip(zip_file):
           bcpdata = bcpdata.replace(delimiter, quote + newdelimiter + quote)
           bcpdata = bcpdata.replace(lineterminator, quote + newline + quote)
           bcpdata = quote + bcpdata + quote
-          extractpath = to_file(bcpdata, csvfilename=csv_filename, col_headers=cc_files[filename])
+          extractpath = to_file(bcpdata, dfolder, csvfilename=csv_filename, col_headers=cc_files[filename])
 
           print('Converted: %s' % bcp_filename)
       except KeyError:

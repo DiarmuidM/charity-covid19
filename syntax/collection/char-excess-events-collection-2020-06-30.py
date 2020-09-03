@@ -35,8 +35,9 @@ import pandas as pd
 # TO DO #
 #
 # 1. Execute file_delete() for NI webpages.
-# 2. Ensure all downloads go into data-DATE folder.
+# 2. Ensure all downloads go into data-DATE folder. [DONE]
 # 3. Fix ew_download() [Possibly an issue with fimport]
+# 4. NI removals function not working properly.
 #
 
 
@@ -67,23 +68,31 @@ def prelim():
     """
 
     ddate = dt.now().strftime("%Y-%m-%d")
-    fol = "data/" + ddate
-    print(fol)
+    download = "data/" + ddate
+    log = "data/" + ddate + "/log"
+    print(download)
 
     if not os.path.isdir("data"):
         os.mkdir("data")
     else:
         print("Folder already exists")
 
-    if not os.path.isdir(fol):
-        os.mkdir(fol)
+    if not os.path.isdir(download):
+        os.mkdir(download)
     else:
         print("Folder already exists")
+
+    if not os.path.isdir(log):
+        os.mkdir(log)
+    else:
+        print("Folder already exists")    
+
+    return download, log, ddate
 
 
 # Australia
 
-def aus_download():
+def aus_download(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the Register of Charities.
 
@@ -97,24 +106,19 @@ def aus_download():
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["aus", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            #print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/aus"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder))  
 
 
     # Define output files
 
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-
-    mfile = "./logs/aus-roc-metadata-" + ddate + ".json"
-    outfile = "./aus/aus-roc-" + ddate + ".xlsx" # Charity Register
+    mfile = logfolder + "/aus-roc-metadata-" + ddate + ".json"
+    outfile = dfolder + "/aus-roc-" + ddate + ".xlsx" # Charity Register
 
     
     # Request file
@@ -165,7 +169,7 @@ def aus_download():
 
 # New Zealand
 
-def nz_download():
+def nz_download(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the Register of Charities.
 
@@ -179,24 +183,19 @@ def nz_download():
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["nz", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            #print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/nz"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder))    
 
 
     # Define output files
 
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-
-    mfile = "./logs/nz-roc-metadata-" + ddate + ".json"
-    outfile = "./nz/nz-roc-" + ddate + ".csv" # Charity Register
+    mfile = logfolder + "/nz-roc-metadata-" + ddate + ".json"
+    outfile = dfolder + "/nz-roc-" + ddate + ".csv" # Charity Register
 
     
     # Request file
@@ -247,7 +246,7 @@ def nz_download():
 
 # United States of America
 
-def usa_download():
+def usa_download(basefolder, logfolder, ddate):
     """
         Downloads latest copies of the masterfile of current nonprofits, and the 
         list of organisations that have had their nonprofit status revoked.
@@ -262,23 +261,17 @@ def usa_download():
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["usa", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/usa"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder))  
 
 
-    # Get current date
-
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-    exefile = "./logs/usa-exempt-metadata-" + ddate + ".json" # metadata for exempt nonprofits data file
-    revfile = "./logs/usa-revoked-metadata-" + ddate + ".json"
+    exefile = logfolder + "/usa-exempt-metadata-" + ddate + ".json" # metadata for exempt nonprofits data file
+    revfile = logfolder + "/usa-revoked-metadata-" + ddate + ".json"
 
     
     # Exempt nonprofits #
@@ -297,18 +290,18 @@ def usa_download():
 
         response = requests.get(file, allow_redirects=True)
 
-        outfile = "./usa/irs_businessfile_" + str(item) + ".csv"
+        outfile = dfolder + "/irs_businessfile_" + str(item) + ".csv"
         with open(outfile, 'w') as f:
             f.write(response.text)
         item +=1
 
     # Append files together to form one dataset #
 
-    masterfile = "./usa/irs_businessfile_master_" + ddate + ".csv"
-    file1 = "./usa/irs_businessfile_1.csv"
-    file2 = "./usa/irs_businessfile_2.csv"
-    file3 = "./usa/irs_businessfile_3.csv"
-    file4 = "./usa/irs_businessfile_4.csv"
+    masterfile = dfolder + "/irs_businessfile_master_" + ddate + ".csv"
+    file1 = dfolder + "/irs_businessfile_1.csv"
+    file2 = dfolder + "/irs_businessfile_2.csv"
+    file3 = dfolder + "/irs_businessfile_3.csv"
+    file4 = dfolder + "/irs_businessfile_4.csv"
 
     afiles = [file2, file3, file4]
 
@@ -349,12 +342,12 @@ def usa_download():
 
     response = requests.get(revexemp, allow_redirects=True)
     z = zipfile.ZipFile(io.BytesIO(response.content))
-    z.extractall("./usa/")
+    z.extractall(dfolder)
 
     # Load in .txt file and write to csv #
 
-    inputfile = "./usa/data-download-revocation.txt"
-    outputfile = "./usa/irs_revoked_exemp_orgs_" + ddate + ".csv"
+    inputfile = dfolder + "/data-download-revocation.txt"
+    outputfile = dfolder + "/irs_revoked_exemp_orgs_" + ddate + ".csv"
     
     with open(outputfile, 'w', newline='') as outcsv:
         varnames = ["EIN", "Legal_Name", "Doing_Business_As_Name", "Organization_Address", "City", "State", "ZIP_Code", "Country", "Exemption_Type", "Revocation_Date", "Revocation_Posting_Date", "Exemption_Reinstatement_Date"]
@@ -384,7 +377,7 @@ def usa_download():
 
 # England and Wales
 
-def ew_download():
+def ew_download(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the data extract from the Charity Commission for England and Wales.
 
@@ -397,28 +390,22 @@ def ew_download():
     print("Downloading England and Wales data extract")
     print("\r")
 
+   
+    # Create data folder
 
-    # Create folders
-
-    directories = ["ew", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/ew"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder)) 
 
 
-    # Get current date
-
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-    mfile = "./logs/ew-download-metadata-" + ddate + ".json"
+    mfile = logfolder + "/ew-download-metadata-" + ddate + ".json"
 
 
     # Request web page containing link to file
     
-    webadd = "http://data.charitycommission.gov.uk/"
+    webadd = "https://register-of-charities.charitycommission.gov.uk/register/full-register-download"
     response = requests.get(webadd)
     print(response.status_code, response.headers)
 
@@ -428,8 +415,8 @@ def ew_download():
     if response.status_code==200: # if the web page was successfully requested
 
         webpage = soup(response.text, "html.parser")
-        file_url = webpage.select_one("a[href*=RegPlusExtract]").get("href")
-        print(file_url)
+        file_id = webpage.select_one("a[href*=RegPlusExtract]").get("href")
+        file_url = "https://register-of-charities.charitycommission.gov.uk" + file_id
 
 
         # Request file
@@ -438,7 +425,7 @@ def ew_download():
 
         if response_file.status_code==200:
 
-            outfile = "./ew/ccew-data-extract-" + ddate + ".zip"
+            outfile = dfolder + "/ccew-data-extract-" + ddate + ".zip"
             if os.path.isfile(outfile): # do not overwrite existing file
                 print("File already exists, no need to overwrite")
             else: # file does not currently exist, therefore create
@@ -447,7 +434,7 @@ def ew_download():
 
             # Unzip files and convert from bcp to csv
 
-            import_zip(outfile)
+            import_zip(outfile, dfolder)
 
         else:
             print("Unable to download data extract from link {}".format(file_url))
@@ -478,7 +465,7 @@ def ew_download():
 
 # Northern Ireland
 
-def ni_roc():
+def ni_roc(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the Register of Charities
 
@@ -492,24 +479,19 @@ def ni_roc():
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["ni", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/ni"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder)) 
 
 
     # Define output files
 
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-
-    mfile = "./logs/ni-roc-metadata-" + ddate + ".json"
-    outfile = "./ni/ni-roc-" + ddate + ".csv" # Charity Register
+    mfile = logfolder + "/ni-roc-metadata-" + ddate + ".json"
+    outfile = dfolder + "/ni-roc-" + ddate + ".csv" # Charity Register
 
 
     # Request file from API
@@ -552,10 +534,10 @@ def ni_roc():
     print("\r")
     print("Charity Register: '{}'".format(outfile))
 
-    return outfile
+    return outfile, dfolder
 
 
-def ni_webpage(regid):
+def ni_webpage(regid, webpagefolder, logfolder, ddate):
     """
         Downloads a charity's web page from the CCNI website, which can be parsed at a later date.
 
@@ -567,8 +549,6 @@ def ni_webpage(regid):
 
         Issues: 
     """  
-
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
     
     
     # Request web page
@@ -584,7 +564,7 @@ def ni_webpage(regid):
     mdata = dict(response.headers)
     mdata["registered_charity_number"] = str(regid)
     mdata["url"] = str(webadd)
-    mfile = "./logs/ni-webpages-metadata-" + str(regid) + "-" + ddate + ".json"
+    mfile = logfolder + "/ni-webpages-metadata-" + str(regid) + "-" + ddate + ".json"
 
     with open(mfile, "w") as f:
         json.dump(mdata, f)
@@ -594,7 +574,7 @@ def ni_webpage(regid):
 
     if response.status_code==200:
 
-        outfile = "./ni/webpages/ni-charity-" + str(regid)  + "-" + ddate + ".txt"
+        outfile = webpagefolder + "/ni-charity-" + str(regid)  + "-" + ddate + ".txt"
 
         with open(outfile, "w") as f:
             f.write(response.text) 
@@ -609,7 +589,7 @@ def ni_webpage(regid):
 
 
 
-def ni_webpage_from_file(infile):
+def ni_webpage_from_file(infile, dfolder, logfolder):
     """
         Takes a file containing Registered Charity Numbers (RCN) for Northern Irish charities and
         downloads a charity's web page from the regulator's website.
@@ -625,16 +605,13 @@ def ni_webpage_from_file(infile):
             - 
     """
 
-    # Create folders
+    # Create data folder
 
-    directories = ["ni/webpages", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue 
+    webpagefolder = dfolder + "/webpages"
+    if not os.path.isdir(webpagefolder):
+        os.mkdir(webpagefolder)
+    else:
+        print("{} already exists".format(dfolder)) 
 
             
     # Read in data
@@ -645,15 +622,16 @@ def ni_webpage_from_file(infile):
     # Request web pages
 
     for regid in regid_list:
-        ni_webpage(regid)
+        ni_webpage(regid, webpagefolder, logfolder)
 
     print("\r")
     print("Finished downloading web pages for charities in file: {}".format(infile))
     print("Check log files for metadata about the download")
 
+    return webpagefolder
 
 
-def ni_removed(source):
+def ni_removed(register, dfolder, webpagefolder, ddate):
     """
         Takes a charity's webpage (.txt file) downloaded from the CCNI website and
         extracts the removal date of deregistered organisations.
@@ -665,14 +643,11 @@ def ni_removed(source):
             - webpage_download | webpage_download_from_file 
 
         Issues:       
-    """
-
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-    
+    """    
 
     # Define output file
 
-    rfile = "./ni/ni-removals-" + ddate + ".csv"    
+    rfile = dfolder + "/ni-removals-" + ddate + ".csv"    
     rvarnames = ["regid", "removed", "removed_date"]
 
 
@@ -685,20 +660,20 @@ def ni_removed(source):
     
     # Get list of removed organisations
 
-    infile = "./ni/ni-roc-" + ddate + ".csv" # Register of Charities
-    roc = pd.read_csv(infile, encoding = "ISO-8859-1", index_col=False)
+    roc = pd.read_csv(register, encoding = "ISO-8859-1", index_col=False)
     removed = roc.loc[roc["Status"]=="Removed"]
     removed_set = set(removed["Reg charity number"])
 
 
     # Read data
 
-    for file in os.listdir(source):
+    for file in os.listdir(webpagefolder):
         if file.endswith(".txt"):
             regid = file[11:17]
             if int(regid) in removed_set:
-                f = os.path.join(source, file)
-                with open(f, "r") as f:
+                f = os.path.join(webpagefolder, file)
+                print(regid, f)
+                with open(f, "r", encoding = "ISO-8859-1") as f:
                     data = f.read()
                     soup_org = soup(data, "html.parser") # Parse the text as a BS object.
             
@@ -706,12 +681,15 @@ def ni_removed(source):
                 
                 removed = 1
                 removed_date_sentence = soup_org.find("div", class_="pcg-charity-details__purpose pcg-charity-details__purpose--removed pcg-contrast__color-main").text
-                removed_date_str = re.split(r"\s(?=on)", removed_date_sentence)[1][3:].strip()
-                removed_date = dt.strptime(removed_date_str, "%d %b %Y").date()
+                removed_date_str = removed_date_sentence.replace(" ", "")[-10:].strip()
+                if removed_date_str[0].isalpha():
+                    removed_date_str = "0" + removed_date_str[1:]
+                removed_date = dt.strptime(removed_date_str, "%d%b%Y").date()
                 row = regid, removed, removed_date
                 with open(rfile, "a", newline="") as f:
                     writer = csv.writer(f)
                     writer.writerow(row)
+                
 
             else: # charity is not removed from register
                 removed = 0
@@ -721,20 +699,21 @@ def ni_removed(source):
                     writer = csv.writer(f)
                     writer.writerow(row)    
 
-    print("\r")
-    print("Finished extracting removal data from charity web pages found in: {}".format(source))
+    print("/r")
+    print("Finished extracting removal data from charity web pages found in: {}".format(webpagefolder))
 
 
-def ni_download():
-    register = ni_roc()
-    ni_webpage_from_file(register)
-    ni_removed("./ni/webpages/")
+
+def ni_download(basefolder, logfolder, ddate):
+    register, dfolder = ni_roc(basefolder, logfolder, ddate)
+    webpagefolder = ni_webpage_from_file(register, dfolder, logfolder)
+    ni_removed(register, dfolder, webpagefolder, ddate)
 
 
 
 # Republic of Ireland
 
-def roi_download(**args):
+def roi_download(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the Register of Charities and Annual Returns
 
@@ -748,24 +727,19 @@ def roi_download(**args):
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["roi", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/roi"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder))    
 
 
     # Define output files
 
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-
-    mfile = "./logs/roi-roc-metadata-" + ddate + ".json"
-    outfile = "./roi/roi-roc-" + ddate + ".xlsx" # Charity Register
+    mfile = logfolder + "/roi-roc-metadata-" + ddate + ".json"
+    outfile = dfolder + "/roi-roc-" + ddate + ".xlsx" # Charity Register
 
 
     # Request web page containing link to file
@@ -830,7 +804,7 @@ def roi_download(**args):
 
 # Scotland
 
-def sco_download(**args):
+def sco_download(basefolder, logfolder, ddate):
     """
         Downloads latest copy of the Register of Charities and Removed Organisations
 
@@ -844,26 +818,21 @@ def sco_download(**args):
     print("\r")
 
 
-    # Create folders
+    # Create data folder
 
-    directories = ["sco", "logs"]
-
-    for directory in directories:
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
-        else:
-            print("{} already exists".format(directory))
-            continue   
+    dfolder = basefolder + "/sco"
+    if not os.path.isdir(dfolder):
+        os.mkdir(dfolder)
+    else:
+        print("{} already exists".format(dfolder)) 
 
 
     # Define output files
 
-    ddate = dt.now().strftime("%Y-%m-%d") # get today's date
-
-    regmfile = "./logs/sco-roc-metadata-" + ddate + ".json" # Charity Register metadata
-    remmfile = "./logs/sco-rem-metadata-" + ddate + ".json" # Removed Organisations metadata
-    regfile = "./sco/sco-roc-" + ddate + ".zip" # Charity Register
-    remfile = "./sco/sco-rem-" + ddate + ".zip" # Removed Organisations
+    regmfile = logfolder + "/sco-roc-metadata-" + ddate + ".json" # Charity Register metadata
+    remmfile = logfolder + "/sco-rem-metadata-" + ddate + ".json" # Removed Organisations metadata
+    regfile = dfolder + "/sco-roc-" + ddate + ".zip" # Charity Register
+    remfile = dfolder + "/sco-rem-" + ddate + ".zip" # Removed Organisations
 
 
     # Download Charity Register
@@ -916,7 +885,7 @@ def sco_download(**args):
 
 # Delete files #
 
-def file_delete(source, ext, **args):
+def file_delete(source, ext):
     """
         Deletes files in a given folder. After you have finished extracting the information you want
         from the downloaded web pages, it is good practice to delete the .txt files containing the
@@ -950,53 +919,53 @@ def file_delete(source, ext, **args):
 #
 
 def main():
-    test()
 
     print("Executing data download")
-    prelim()
+    
+    download, log, ddate = prelim()
     
     try:
         print("Beginning Scotland download")
-        sco_download()
+        sco_download(download, log, ddate)
     except:
         print("Could not execute Scotland download")
     
     try:
         print("Beginning Australia download")
-        aus_download()
+        aus_download(download, log, ddate)
     except:
         print("Could not execute Australia download")
     
     try:
         print("Beginning England and Wales download")
-        ew_download()
+        ew_download(download, log, ddate)
     except:
         print("Could not execute England and Wales download")
     
     try:
         print("Beginning Rep. of Ireland download")
-        roi_download()
+        roi_download(download, log, ddate)
     except:
         print("Could not execute Republic of Ireland download")
     
     try:
         print("Beginning Northern Ireland download")
-        ni_download()
+        ni_download(download, log, ddate)
     except:
         print("Could not execute Northern Ireland download")
     
     try:
         print("Beginning USA download")
-        usa_download()
+        usa_download(download, log, ddate)
     except:
         print("Could not execute USA download")
     
     try:
         print("Beginning New Zealand download")
-        nz_download()
+        nz_download(download, log, ddate)
     except:
         print("Could not execute New Zealand download")
-
+    
 
 # Main program #
 

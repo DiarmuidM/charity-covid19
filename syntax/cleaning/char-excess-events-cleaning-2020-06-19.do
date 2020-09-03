@@ -28,8 +28,8 @@
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
-global foldate "2020-08-10" // name of folder containing latest data
-global fdate "2020-08-10" // date used to name output files
+global foldate "2020-09-03" // name of folder containing latest data
+global fdate "2020-09-03" // date used to name output files
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -52,7 +52,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	/*
 		I want to exclude organisations that are not 501(c)(3) orgs.
 	*/
-	keep if subsection==3
+	keep if subsection=="03"
 
 	
 	// Convert to date
@@ -61,8 +61,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 			- 200606 = 2006-JUNE
 	*/
 	
-	tostring ruling, gen(regd_str)
-	gen regd = date(regd_str, "YM") 
+	gen regd = date(ruling, "YM") 
 	format regd %td
 	gen regy = year(regd)
 	gen regq = qofd(regd)
@@ -131,7 +130,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	/*
 		I want to exclude organisations that are not 501(c)(3) orgs.
 	*/
-	keep if subsection==3
+	keep if subsection=="03"
 	
 	
 	// Clean NTEE Code variable
@@ -362,7 +361,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 	** Registrations
 
-	import delimited using $path2\$foldate\can\Charities_results_2020-08-10-08-06-27.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_2020-09-03-06-07-33.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -436,7 +435,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	** Revocations
 
-	import delimited using $path2\$foldate\can\Charities_results_2020-08-10-08-06-27.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_2020-09-03-06-07-33.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -1359,11 +1358,11 @@ desc, f
 
 ** Create master file
 
-import delimited using $path2\$foldate\sco\CharityExport-10-Aug-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-03-Sep-2020.csv, varn(1) clear
 gen regdata = 1
 sav $path1\scot-roc-2020-08.dta, replace
 
-import delimited using $path2\$foldate\sco\CharityExport-Removed-10-Aug-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-Removed-03-Sep-2020.csv, varn(1) clear
 gen remdata = 1
 sav $path1\scot-removals-2020-08.dta, replace
 
