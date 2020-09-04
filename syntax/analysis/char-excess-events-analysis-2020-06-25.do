@@ -42,9 +42,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** Set file and image properties
 
 global isize 1200
-global cutoff tm(2020m8)
-global fdate "2020-08-10" // date used to name input files
-global pdate "2020-08-10" // date used to name visualisation and other analytical outputs
+global cutoff tm(2020m9)
+global fdate "2020-09-03" // date used to name input files
+global pdate "2020-09-03" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour

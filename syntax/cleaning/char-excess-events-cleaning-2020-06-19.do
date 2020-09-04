@@ -773,7 +773,7 @@ keep if deregistrationdate!=""
 	format period %tm
 	gen country = "Australia"
 	keep period country *_avg* *_count* *_excess* reg_*
-	sav "$path3\aus-monthly-statistics.dta", replace
+	sav $path3\aus-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\aus-monthly-statistics-$fdate.csv, replace
 
 		
