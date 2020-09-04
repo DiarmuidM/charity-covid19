@@ -117,8 +117,17 @@ foreach c in `countrylist' {
 		local xtitle = "Month"
 		
 		sum reg_ub
-		local ymax = r(max) * 1.01
-		local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 100), round(`ymax'/5, 1000))
+		local ymax = r(max) * 1.02
+		//local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 100), round(`ymax'/5, 1000))
+		if `ymax'<=250 {
+			local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 50))
+			}
+		else {
+			local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000), round(`ymax'/5, 5000))
+		}
+		di "Max: `ymax' " "Tick: `ytick'"
+		local yumax = round(`ymax', `ytick')
+		//di `ytick' " " round(`ymax'/5, 10) " " round(`ymax'/5, 100) " " round(`ymax'/5, 1000)
 		/*
 		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(small) lpatt(solid) lcolor($expcol*0.5) ) ///
 				(scatter reg_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
@@ -136,7 +145,7 @@ foreach c in `countrylist' {
 				(scatter reg_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
 				, ///
 			title("Charity Registrations") subtitle("`cname`c''") ///
-			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(2 "Observed Registrations") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
@@ -150,7 +159,7 @@ foreach c in `countrylist' {
 				(scatter reg_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
 				, ///
 			title("Charity Registrations") subtitle("`cname`c''") ///
-			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(3 "Observed Registrations") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
@@ -165,9 +174,15 @@ foreach c in `countrylist' {
 		local ytitle = "Count of removals"
 		local xtitle = "Month"
 		sum rem_ub
-		local ymax = r(max) * 1.01
-		local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000))
-	
+		local ymax = r(max) * 1.02
+		if `ymax'<=250 {
+			local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 50))
+			}
+		else {
+			local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000), round(`ymax'/5, 5000))
+		}
+		di "Max: `ymax' " "Tick: `ytick'"
+		local yumax = round(`ymax', `ytick')	
 		/*
 		twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(small) lpatt(solid)  lcolor($expcol*0.5)) ///
 				(scatter rem_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
@@ -185,7 +200,7 @@ foreach c in `countrylist' {
 				(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
 				, ///
 			title("Charity Removals") subtitle("`cname`c''") ///
-			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)")  label(2 "Observed Removals") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
@@ -199,7 +214,7 @@ foreach c in `countrylist' {
 				(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
 				, ///
 			title("Charity Removals") subtitle("`cname`c''") ///
-			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)") label(3 "Observed Removals") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
