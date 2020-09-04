@@ -118,7 +118,7 @@ foreach c in `countrylist' {
 		
 		sum reg_ub
 		local ymax = r(max) * 1.01
-		local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000))
+		local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 100), round(`ymax'/5, 1000))
 		/*
 		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(small) lpatt(solid) lcolor($expcol*0.5) ) ///
 				(scatter reg_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
