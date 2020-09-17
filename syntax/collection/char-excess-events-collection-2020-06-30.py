@@ -36,8 +36,8 @@ import pandas as pd
 #
 # 1. Execute file_delete() for NI webpages.
 # 2. Ensure all downloads go into data-DATE folder. [DONE]
-# 3. Fix ew_download() [Possibly an issue with fimport]
-# 4. NI removals function not working properly.
+# 3. Fix ew_download() [Possibly an issue with fimport] [DONE]
+# 4. NI removals function not working properly. [DONE]
 #
 
 
@@ -589,7 +589,7 @@ def ni_webpage(regid, webpagefolder, logfolder, ddate):
 
 
 
-def ni_webpage_from_file(infile, dfolder, logfolder):
+def ni_webpage_from_file(infile, dfolder, logfolder, ddate):
     """
         Takes a file containing Registered Charity Numbers (RCN) for Northern Irish charities and
         downloads a charity's web page from the regulator's website.
@@ -622,7 +622,7 @@ def ni_webpage_from_file(infile, dfolder, logfolder):
     # Request web pages
 
     for regid in regid_list:
-        ni_webpage(regid, webpagefolder, logfolder)
+        ni_webpage(regid, webpagefolder, logfolder, ddate)
 
     print("\r")
     print("Finished downloading web pages for charities in file: {}".format(infile))
@@ -682,9 +682,12 @@ def ni_removed(register, dfolder, webpagefolder, ddate):
                 removed = 1
                 removed_date_sentence = soup_org.find("div", class_="pcg-charity-details__purpose pcg-charity-details__purpose--removed pcg-contrast__color-main").text
                 removed_date_str = removed_date_sentence.replace(" ", "")[-10:].strip()
-                if removed_date_str[0].isalpha():
-                    removed_date_str = "0" + removed_date_str[1:]
-                removed_date = dt.strptime(removed_date_str, "%d%b%Y").date()
+                #if removed_date_str[0].isalpha():
+                #    removed_date_str = "0" + removed_date_str[1:]
+                try:
+                    removed_date = dt.strptime(removed_date_str, "%d%b%Y").date()
+                except:
+                    removed_date = ""
                 row = regid, removed, removed_date
                 with open(rfile, "a", newline="") as f:
                     writer = csv.writer(f)
@@ -703,10 +706,9 @@ def ni_removed(register, dfolder, webpagefolder, ddate):
     print("Finished extracting removal data from charity web pages found in: {}".format(webpagefolder))
 
 
-
 def ni_download(basefolder, logfolder, ddate):
     register, dfolder = ni_roc(basefolder, logfolder, ddate)
-    webpagefolder = ni_webpage_from_file(register, dfolder, logfolder)
+    webpagefolder = ni_webpage_from_file(register, dfolder, logfolder, ddate)
     ni_removed(register, dfolder, webpagefolder, ddate)
 
 

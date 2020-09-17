@@ -15,6 +15,7 @@ import csv
 import re
 import pandas as pd
 
+
 def ni_removed(register, dfolder, webpagefolder, ddate):
     """
         Takes a charity's webpage (.txt file) downloaded from the CCNI website and
