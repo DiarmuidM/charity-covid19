@@ -171,6 +171,7 @@ def to_file(bcpdata, dfolder, csvfilename='converted.csv', col_headers=None):
 
 
 def import_zip(zip_file, dfolder):
+    
     zf = zipfile.ZipFile(zip_file, 'r')
 
     for filename in cc_files:
@@ -191,6 +192,7 @@ def import_zip(zip_file, dfolder):
           bcpdata = bcpdata.replace(delimiter, quote + newdelimiter + quote)
           bcpdata = bcpdata.replace(lineterminator, quote + newline + quote)
           bcpdata = quote + bcpdata + quote
+          
           extractpath = to_file(bcpdata, dfolder, csvfilename=csv_filename, col_headers=cc_files[filename])
 
           print('Converted: %s' % bcp_filename)

@@ -29,6 +29,9 @@ global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
 
+include "$rfiles\syntax\stata-file-paths.doi"
+
+
 ** Alasdair **
 global dfiles "C:\Users\alasd\Dropbox\" // location of data files
 global rfiles "C:\Users\alasd\OneDrive\Documents\codingworkspace\covid19register" // location of syntax and other project outputs
@@ -42,9 +45,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** Set file and image properties
 
 global isize 1200
-global cutoff tm(2020m9)
-global fdate "2020-09-03" // date used to name input files
-global pdate "2020-09-03" // date used to name visualisation and other analytical outputs
+global cutoff tm(2020m11)
+global fdate "2020-11-04" // date used to name input files
+global pdate "2020-11-04" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour
@@ -56,48 +59,49 @@ global pdate "2020-09-03" // date used to name visualisation and other analytica
 
 	
 local countrylist = "aus us can nz ni scot ew"
+local month = "November"
 
 * USA
 	local cnameus = "United States of America"		// The subtitle
 	local cregulatorus = "IRS"						// The name of the regulator
 	local cyhregus =100000							// Y-axis height for registrations
-	local cyhremus = 5000							// Y-axis height for removals
+	local cyhremus = 50000							// Y-axis height for removals
 
 * Canada
 	local cnamecan = "Canada"						// The subtitle
 	local cregulatorcan = "CRA"						// The name of the regulator
-	local cyhregcan =1500							// Y-axis height for registrations
-	local cyhremcan = 700							// Y-axis height for removals	
+	local cyhregcan =2000							// Y-axis height for registrations
+	local cyhremcan = 1000							// Y-axis height for removals	
 	
 * Country
 	local cnamenz = "New Zealand"					// The subtitle
 	local cregulatornz = "CSNZ"						// The name of the regulator
-	local cyhregnz =1000							// Y-axis height for registrations
-	local cyhremnz = 1500							// Y-axis height for removals	
+	local cyhregnz =1750							// Y-axis height for registrations
+	local cyhremnz = 1750							// Y-axis height for removals	
 	
 * Country
 	local cnameaus = "Australia"					// The subtitle
 	local cregulatoraus = "ACNC"					// The name of the regulator
-	local cyhregaus =1500							// Y-axis height for registrations
-	local cyhremaus = 1500							// Y-axis height for removals	
+	local cyhregaus =2000							// Y-axis height for registrations
+	local cyhremaus = 2000							// Y-axis height for removals	
 	
 * Country
 	local cnameni = "Northern Ireland"				// The subtitle
 	local cregulatorni = "CCNI"						// The name of the regulator
-	local cyhregni =1200							// Y-axis height for registrations
-	local cyhremni = 250							// Y-axis height for removals	
+	local cyhregni =1500							// Y-axis height for registrations
+	local cyhremni = 400							// Y-axis height for removals	
 	
 * Country
 	local cnamescot = "Scotland"					// The subtitle
 	local cregulatorscot = "OSCR"					// The name of the regulator
-	local cyhregscot =600							// Y-axis height for registrations
-	local cyhremscot = 500							// Y-axis height for removals	
+	local cyhregscot =800							// Y-axis height for registrations
+	local cyhremscot = 700							// Y-axis height for removals	
 	
 * Country
 	local cnameew = "England and Wales"				// The subtitle
 	local cregulatorew = "CCEW"						// The name of the regulator
-	local cyhregew =3000							// Y-axis height for registrations
-	local cyhremew = 3000							// Y-axis height for removals	
+	local cyhregew =4000							// Y-axis height for registrations
+	local cyhremew = 4000							// Y-axis height for removals	
 	
 * Country
 	local cname = ""						// The subtitle
@@ -138,7 +142,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 		*/	
 		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5) ) ///
@@ -149,7 +153,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(2 "Observed Registrations") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-registrations-$pdate.png, replace width($isize)
@@ -163,7 +167,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(3 "Observed Registrations") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-registrations-range-$pdate.png, replace width($isize)
@@ -193,7 +197,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 		*/	
 		twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5)) ///
@@ -204,7 +208,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)")  label(2 "Observed Removals") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-removals-$pdate.png, replace width($isize)
@@ -218,7 +222,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)") label(3 "Observed Removals") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			$graphstyle			
 			
 			
@@ -228,6 +232,8 @@ foreach c in `countrylist' {
 
 		
 		// Cumulative events
+		
+		** Registrations
 	
 		local ytitle = "Count of registrations"
 		local xtitle = "Month"
@@ -252,65 +258,45 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(3 "Observed Registrations") label(4 "Expected Registrations (2015-2019)") rows(1) size(small) order(3 4)) ///
 			note("Expected registrations: mean number of registrations for that month (2015-2019)",  color($axtcol)) ///
-			caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
 			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
 			graphregion(fcolor(white))	scheme(s1mono)	
 			
 		graph export $path6\`c'-monthly-cumulative-registrations-$pdate.png, replace width($isize)
 
+		
+		** Removals
+		
 		if "`c'" != "aus" {
 			local ytitle = "Count of removals"
 			local xtitle = "Month"
-			sum rem_ub
-			local ymax = r(max) * 1.02
-			if `ymax'<=250 {
-				local ytick = max(round(`ymax'/5, 10), round(`ymax'/5, 50))
+			local ytick = max(round(`cyhrem`c''/5, 100), round(`cyhrem`c''/5, 1000))
+
+			gen dif=rem_count_cumu - rem_avg_cumu
+			sum dif
+			if r(mean)>0 {
+				local shading = "(area rem_count_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_avg_cumu period if period < $cutoff, color($obscol*0.2))"
 				}
 			else {
-				local ytick = max(round(`ymax'/5, 100), round(`ymax'/5, 1000), round(`ymax'/5, 5000))
+				local shading = "(area rem_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_count_cumu period if period < $cutoff, color($obscol*0.2))"
 				}
-			di "Max: `ymax' " "Tick: `ytick'"
-			local yumax = round(`ymax', `ytick')	
-			/*
-			twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(small) lpatt(solid)  lcolor($expcol*0.5)) ///
-					(scatter rem_avg period if period < $cutoff, msym(O) msize(small) mcolor($expcol)) ///
-					(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
-					, ///
-				title("Charity Removals") subtitle("`cname`c''") ///
-				ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			drop dif
+			
+			twoway 	`shading'	///
+					(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+					(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
+					,		///
+				title("Cumulative Removals") subtitle("`cname`c''") 		///
+				ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`cyhrem`c'', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 				xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
-				legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
-				note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-				caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
-				$graphstyle
-			*/	
-			twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5)) ///
-					(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
-					, ///
-				title("Charity Removals") subtitle("`cname`c''") ///
-				ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
-				xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
-				legend(label(1 "Variability of Mean Removals (2015-2019)")  label(2 "Observed Removals") rows(1) size(small)) ///
-				note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-				caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
-				$graphstyle
+				legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
+				note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
+				caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+				bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+				graphregion(fcolor(white))	scheme(s1mono)	
 				
-			graph export $path6\`c'-monthly-removals-$pdate.png, replace width($isize)
+			graph export $path6\`c'-monthly-cumulative-removals-$pdate.png, replace width($isize)
 
-			twoway 	(area rem_ub period if period < $cutoff, msize(small) color($expcol*0.2) ) ///
-					(area rem_lb period if period < $cutoff, msize(small) color(white) ) ///
-					(scatter rem_count period if period < $cutoff, msym(D) msize(medlarge) mcolor($obscol)) ///
-					, ///
-				title("Charity Removals") subtitle("`cname`c''") ///
-				ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(range(0 `yumax') lcolor($axtcol))  ylabel(0(`ytick')`ymax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
-				xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
-				legend(label(1 "Variability of Mean Removals (2015-2019)") label(3 "Observed Removals") order(1 3) rows(1) size(small)) ///
-				note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-				caption("Data from `cregulator`c'' August 2020 Data Download", size(small) color($axtcol)) ///
-				$graphstyle			
-				
-				
-			graph export $path6\`c'-monthly-removals-range-$pdate.png, replace width($isize)
 
 		}
 
@@ -319,6 +305,75 @@ foreach c in `countrylist' {
 
 
 /*
+/* England and Wales - Removal Reason */
+
+use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
+/*
+	Focus on three categories initially:
+		- Amalgamated (A)
+		- Ceased to exist (CE)
+		- Does not operate (NO)
+*/
+
+	** Local macros
+	
+	local ytitle = "Count of removals"
+	local xtitle = "Month"
+	local cnameew = "England and Wales"				// The subtitle
+	local cregulatorew = "CCEW"						// The name of the regulator
+	local ceyax = 500							// Y-axis height for Ceased to exist removals
+	local noyax = 200							// Y-axis height for Does not operate removals
+	local ayax = 50							// Y-axis height for Amalgamation removals
+	
+	
+	// Cumulative events
+	
+	** Ceased to exist (CE)
+	
+	local ytick = max(round(`ceyax'/5, 100), round(`ceyax'/5, 10))
+
+	preserve
+		
+		keep if remcode=="CE"
+		
+		gen dif=rem_count_cumu - rem_avg_cumu
+		sum dif
+		if r(mean)>0 {
+			local shading = "(area rem_count_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_avg_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		else {
+			local shading = "(area rem_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_count_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		drop dif
+		
+		twoway 	`shading'	///
+				(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+				(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
+				,		///
+			title("Cumulative Removals") subtitle("Ceased to Exist") 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ceyax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
+			note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
+			caption("Data from `cregulator`c'' November 2020 Data Download", size(small) color($axtcol)) ///
+			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+			graphregion(fcolor(white))	scheme(s1mono)	
+			
+		graph export $path6\ew-monthly-cumulative-removals-ceased-to-exist-$pdate.png, replace width($isize)
+	restore
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 use $path3\all-jurisdictions-monthly-statistics.dta, clear
 

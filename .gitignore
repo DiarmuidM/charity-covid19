@@ -1,9 +1,9 @@
 syntax/logs/
-syntax/collection/ni*
 syntax/stata-file-paths.doi
 tmp
 nz
 tables
-docs/_posts/2020-08-13-charity-registrations-and-deregistrations-august-2020-update.md
 syntax/collection/ni-removed-test.py
-syntax/collection/ni-removed-test.py
+syntax/collection/ni-test.py
+syntax/collection/can-test.py
+__pycache__

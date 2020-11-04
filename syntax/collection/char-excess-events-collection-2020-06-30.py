@@ -64,7 +64,7 @@ def test():
 
 def prelim():
     """
-        Get the current date and creates a folder to store the download.
+        Get the current date and create a folder to store the download.
     """
 
     ddate = dt.now().strftime("%Y-%m-%d")
@@ -555,7 +555,7 @@ def ni_webpage(regid, webpagefolder, logfolder, ddate):
 
     session = requests.Session()
 
-    webadd = "https://www.charitycommissionni.org.uk/charity-details/?regid=" + str(regid) + "&subid=0"
+    webadd = "https://www.charitycommissionni.org.uk/charity-details/?regId=" + str(regid) + "&subId=0"
     response = session.get(webadd)
 
     
@@ -708,8 +708,13 @@ def ni_removed(register, dfolder, webpagefolder, ddate):
 
 def ni_download(basefolder, logfolder, ddate):
     register, dfolder = ni_roc(basefolder, logfolder, ddate)
+    print("Finished downloading Register of Charities")
+
     webpagefolder = ni_webpage_from_file(register, dfolder, logfolder, ddate)
+    print("Finished downloading webpages")
+
     ni_removed(register, dfolder, webpagefolder, ddate)
+    print("Finished extracting information for removed charities")
 
 
 
@@ -925,7 +930,6 @@ def main():
     print("Executing data download")
     
     download, log, ddate = prelim()
-    
     try:
         print("Beginning Scotland download")
         sco_download(download, log, ddate)
@@ -937,37 +941,33 @@ def main():
         aus_download(download, log, ddate)
     except:
         print("Could not execute Australia download")
-    
     try:
         print("Beginning England and Wales download")
         ew_download(download, log, ddate)
     except:
         print("Could not execute England and Wales download")
-    
     try:
         print("Beginning Rep. of Ireland download")
         roi_download(download, log, ddate)
     except:
         print("Could not execute Republic of Ireland download")
-    
     try:
         print("Beginning Northern Ireland download")
         ni_download(download, log, ddate)
     except:
         print("Could not execute Northern Ireland download")
-    
     try:
         print("Beginning USA download")
         usa_download(download, log, ddate)
     except:
         print("Could not execute USA download")
-    
+
     try:
         print("Beginning New Zealand download")
         nz_download(download, log, ddate)
     except:
         print("Could not execute New Zealand download")
-    
+
 
 # Main program #
 

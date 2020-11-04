@@ -28,8 +28,8 @@
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
-global foldate "2020-09-17" // name of folder containing latest data
-global fdate "2020-09-17" // date used to name output files
+global foldate "2020-11-04" // name of folder containing latest data
+global fdate "2020-11-04" // date used to name output files
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -52,7 +52,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	/*
 		I want to exclude organisations that are not 501(c)(3) orgs.
 	*/
-	keep if subsection=="03"
+	keep if subsection==3 // ASSUMPTION: this code corresponds to 501(c)(3) orgs
 
 	
 	// Convert to date
@@ -61,6 +61,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 			- 200606 = 2006-JUNE
 	*/
 	
+	tostring ruling, replace
 	gen regd = date(ruling, "YM") 
 	format regd %td
 	gen regy = year(regd)
@@ -121,7 +122,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	format period %tm
 	sav $path1\us-monthly-registrations-$fdate.dta, replace
 	
-	
+	/*
 	** Registrations, by NTEE
 	
 	import delimited using $path2\$foldate\usa\irs_businessfile_master_$fdate.csv, varn(1) clear
@@ -130,7 +131,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	/*
 		I want to exclude organisations that are not 501(c)(3) orgs.
 	*/
-	keep if subsection=="03"
+	keep if subsection==3
 	
 	
 	// Clean NTEE Code variable
@@ -250,7 +251,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	format period %tm
 	drop month_reg reg regd regy regq
 	sav $path3\us-monthly-registrations-by-ntee-$fdate.dta, replace
-
+	*/
 
 	** Revocations
 
@@ -361,7 +362,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 
 	** Registrations
 
-	import delimited using $path2\$foldate\can\Charities_results_2020-09-03-06-07-33.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_$fdate.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -435,7 +436,7 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	** Revocations
 
-	import delimited using $path2\$foldate\can\Charities_results_2020-09-03-06-07-33.txt, varn(1) clear
+	import delimited using $path2\$foldate\can\Charities_results_$fdate.txt, varn(1) clear
 	keep bnregistrationnumber effectivedateofstatus charitystatus
 	/*
 		An issue with Canadian data is we only observe status date for current status: for example, we don't know when revoked charities
@@ -951,11 +952,18 @@ keep if deregistrationdate!=""
 ** England and Wales **
 
 import delimited using $path2\$foldate\ew\extract_registration.csv, varn(1) clear
-keep regno regdate remdate
+keep regno regdate remdate remcode
 duplicates drop regno, force
 sort regno
 desc, f
 sav $path1\ccew-reg-dates.csv, replace
+
+
+import delimited using $path2\$foldate\ew\extract_remove_ref.csv, varn(1) clear
+rename code remcode
+sort remcode
+desc, f
+sav $path1\ccew-rem-reasons.csv, replace
 
 
 import delimited using $path2\$foldate\ew\extract_charity.csv, varn(1) clear
@@ -970,13 +978,18 @@ desc, f
 	merge 1:1 regno using $path1\ccew-reg-dates.csv, keep(match)
 	drop _merge
 	
+	// Merge removal reason information
+	
+	sort remcode
+	merge m:1 remcode using $path1\ccew-rem-reasons.csv, keep(match master)
+	sort regno
 	
 		// Postcode lookup version
 		
 		sort postcode
 		sav $path1\ccew-roc-postcode.dta, replace
 	
-
+	
 	// Convert to date
 	
 	gen regd_str = substr(regdate, 1, 10)
@@ -1015,7 +1028,9 @@ desc, f
 		egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
 		gen reg_lb = reg_avg - reg_sd
 		gen reg_ub = reg_avg + reg_sd
-		foreach var of varlist reg_count-reg_ub {
+		gen reg_lb_2 = reg_avg - (2 * reg_sd)
+		gen reg_ub_2 = reg_avg + (2 * reg_sd)
+		foreach var of varlist reg_count-reg_ub_2 {
 			replace `var' = ceil(`var')
 		}
 		gen mdate = regm
@@ -1035,7 +1050,9 @@ desc, f
 		egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
 		gen rem_lb = rem_avg - rem_sd
 		gen rem_ub = rem_avg + rem_sd
-		foreach var of varlist rem_count-rem_ub {
+		gen rem_lb_2 = rem_avg - (2 * rem_sd)
+		gen rem_ub_2 = rem_avg + (2 * rem_sd)
+		foreach var of varlist rem_count-rem_ub_2 {
 			replace `var' = ceil(`var')
 		}
 		gen mdate = remm
@@ -1045,8 +1062,9 @@ desc, f
 	restore
 
 	use $path1\ccew-reg.dta, clear
+	capture drop _merge
 	merge 1:1 mdate using $path1\ccew-rem.dta, keep(match) keepus(rem_*)
-	drop _merge
+	capture drop _merge
 	l
 	
 	
@@ -1056,12 +1074,12 @@ desc, f
 		sort month_reg
 		keep if reg_avg!=.
 		duplicates drop month_reg, force
-		keep month_reg reg_avg-reg_ub rem_avg-rem_ub
+		keep month_reg reg_avg-reg_ub_2 rem_avg-rem_ub_2
 		sav "$path1\ccew-monthly-averages.dta", replace
 	restore
 	
 	sort month_reg
-	drop reg_avg-reg_ub rem_avg-rem_ub
+	drop reg_avg-reg_ub_2 rem_avg-rem_ub_2
 	merge m:1 month_reg using "$path1\ccew-monthly-averages.dta", keep(match)
 	drop _merge
 		
@@ -1094,6 +1112,90 @@ desc, f
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\ew-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\ew-monthly-statistics-$fdate.csv, replace
+	
+	
+	** By removal reason
+	/*
+		Collapse some categories of removal reason e.g., a residual 'other' category.
+	*/
+	
+	use $path1\ew-roc-v1.dta, clear
+	
+	replace remcode = trim(remcode) // remove blank spaces from removal reason code
+	
+	// Calculate monthly figures
+	
+	keep if remm >= tm(2015m1) // interested in five-year average
+	gen freq = 1
+	egen rem_count = sum(freq), by(remm remcode)
+	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem remcode)
+	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem remcode)
+	gen rem_lb = rem_avg - rem_sd
+	gen rem_ub = rem_avg + rem_sd
+	gen rem_lb_2 = rem_avg - (2 * rem_sd)
+	gen rem_ub_2 = rem_avg + (2 * rem_sd)
+	foreach var of varlist rem_count-rem_ub_2 {
+		replace `var' = ceil(`var')
+	}
+		
+	
+	// Convert to time series
+	
+	preserve
+		sort month_rem remcode
+		keep if rem_avg!=.
+		duplicates drop month_rem remcode, force
+		keep month_rem remcode rem_avg-rem_ub_2
+		sav $path1\ew-monthly-figures-by-remcode.dta, replace
+	restore
+	
+	sort month_rem
+	drop rem_avg-rem_ub_2
+	capture drop _merge
+	merge m:1 month_rem remcode using $path1\ew-monthly-figures-by-remcode.dta, keep(match) keepus(rem_avg-rem_ub_2)
+	keep if remm >= tm(2020m1)
+	drop regno-remdate _merge
+	duplicates drop remm remcode, force
+	drop if remm==.
+	l
+	sav $path1\ew-monthly-removals-by-remcode-$fdate.dta, replace
+		
+	
+	// Calculate excess events, by remcode
+	
+	use $path1\ew-monthly-removals-by-remcode-$fdate.dta, clear
+	levelsof remcode, local(codes)
+	
+	local i = 1
+	foreach code of local codes {
+		use $path1\ew-monthly-removals-by-remcode-$fdate.dta, clear
+		keep if remcode=="`code'"
+		sort remcode remm
+		
+		gen rem_excess = ceil(rem_count - rem_avg)
+		gen rem_excess_per = ceil((rem_excess/rem_avg)*100)
+		gen rem_excess_cumu = sum(rem_excess)
+		gen rem_avg_cumu = sum(rem_avg)
+		gen rem_count_cumu = sum(rem_count)
+		gen rem_excess_cumu_per = ceil((rem_excess_cumu/rem_avg_cumu)*100)
+		
+		sav $path1\remcode-`i'.dta, replace
+		local i = `i' + 1
+	}
+	
+	use $path1\remcode-1.dta, clear
+	forvalues i = 2/15 {
+		append using $path1\remcode-`i'.dta, force
+	}
+	
+	gen period = remm
+	sort period remcode
+	format period %tm
+	drop regd_str-remq month_rem freq
+	rename text remdesc
+	sav $path3\ew-monthly-removals-by-remcode-$fdate.dta, replace
+	
+	
 	
 	/*
 	** Time series of cumulative number of charities
@@ -1358,23 +1460,23 @@ desc, f
 
 ** Create master file
 
-import delimited using $path2\$foldate\sco\CharityExport-03-Sep-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-$fdate.csv, varn(1) clear
 gen regdata = 1
-sav $path1\scot-roc-2020-08.dta, replace
+sav $path1\scot-roc-$fdate.dta, replace
 
-import delimited using $path2\$foldate\sco\CharityExport-Removed-03-Sep-2020.csv, varn(1) clear
+import delimited using $path2\$foldate\sco\CharityExport-Removed-$fdate.csv, varn(1) clear
 gen remdata = 1
-sav $path1\scot-removals-2020-08.dta, replace
+sav $path1\scot-removals-$fdate.dta, replace
 
-append using $path1\scot-roc-2020-08.dta, force
+append using $path1\scot-roc-$fdate.dta, force
 *keep charityregistrationnumber deregistrationdate dateregistered *data
 gen removed = (remdata)
-sav $path1\scot-all-data-2020-08.dta, replace
+sav $path1\scot-all-data-$fdate.dta, replace
 
 
 ** De-registrations
 
-use $path1\scot-all-data-2020-08.dta, clear
+use $path1\scot-all-data-$fdate.dta, clear
 keep if removed==1
 
 	// Convert to date
@@ -1451,7 +1553,7 @@ keep if removed==1
 	
 ** Registrations
 
-use $path1\scot-all-data-2020-08.dta, clear
+use $path1\scot-all-data-$fdate.dta, clear
 
 	// Convert to date
 	
