@@ -304,7 +304,7 @@ foreach c in `countrylist' {
 
 
 
-/*
+
 /* England and Wales - Removal Reason */
 
 use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
@@ -321,9 +321,9 @@ use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
 	local xtitle = "Month"
 	local cnameew = "England and Wales"				// The subtitle
 	local cregulatorew = "CCEW"						// The name of the regulator
-	local ceyax = 500							// Y-axis height for Ceased to exist removals
-	local noyax = 200							// Y-axis height for Does not operate removals
-	local ayax = 50							// Y-axis height for Amalgamation removals
+	local ceyax = 2000							// Y-axis height for Ceased to exist removals
+	local noyax = 1000							// Y-axis height for Does not operate removals
+	local ayax = 500							// Y-axis height for Amalgamation removals
 	
 	
 	// Cumulative events
@@ -350,7 +350,7 @@ use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
 				(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
 				(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
 				,		///
-			title("Cumulative Removals") subtitle("Ceased to Exist") 		///
+			title("Cumulative Removals - Ceased to Exist") subtitle("England and Wales") 		///
 			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ceyax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
@@ -362,6 +362,75 @@ use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
 		graph export $path6\ew-monthly-cumulative-removals-ceased-to-exist-$pdate.png, replace width($isize)
 	restore
 
+	
+	** Does not operate (NO)
+	
+	local ytick = max(round(`noyax'/5, 100), round(`noyax'/5, 10))
+	
+	preserve
+		
+		keep if remcode=="NO"
+		
+		gen dif=rem_count_cumu - rem_avg_cumu
+		sum dif
+		if r(mean)>0 {
+			local shading = "(area rem_count_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_avg_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		else {
+			local shading = "(area rem_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_count_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		drop dif
+		
+		twoway 	`shading'	///
+				(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+				(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
+				,		///
+			title("Cumulative Removals - Does Not Operate") subtitle("England and Wales") 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`noyax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
+			note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
+			caption("Data from `cregulator`c'' November 2020 Data Download", size(small) color($axtcol)) ///
+			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+			graphregion(fcolor(white))	scheme(s1mono)	
+			
+		graph export $path6\ew-monthly-cumulative-removals-does-not-operate-$pdate.png, replace width($isize)
+	restore
+	
+	
+	** Amalgamation (A)
+	
+	local ytick = max(round(`ayax'/5, 100), round(`ayax'/5, 10))
+	
+	preserve
+		
+		keep if remcode=="A"
+		
+		gen dif=rem_count_cumu - rem_avg_cumu
+		sum dif
+		if r(mean)>0 {
+			local shading = "(area rem_count_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_avg_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		else {
+			local shading = "(area rem_avg_cumu period if period < $cutoff, color($expcol*0.2))  (area rem_count_cumu period if period < $cutoff, color($obscol*0.2))"
+			}
+		drop dif
+		
+		twoway 	`shading'	///
+				(line rem_count_cumu period if period < $cutoff, lpatt(solid) lwidth(thick) lcolor($obscol)) ///
+				(line rem_avg_cumu period if period < $cutoff, lpatt(dash) lwidth(thick) lcolor($expcol)) 		///
+				,		///
+			title("Cumulative Removals - Amalgamation") subtitle("England and Wales") 		///
+			ytitle("`ytitle'" " ", color($axtcol) size(small)) yscale(lcolor($axtcol))  ylabel(0(`ytick')`ayax', tlcolor($axtcol) labcolor($axtcol) labsize(small) format(%-12.0gc) nogrid) 		///
+			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
+			legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
+			note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
+			caption("Data from `cregulator`c'' November 2020 Data Download", size(small) color($axtcol)) ///
+			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
+			graphregion(fcolor(white))	scheme(s1mono)	
+			
+		graph export $path6\ew-monthly-cumulative-removals-amalgamation-$pdate.png, replace width($isize)
+	restore
 
 
 
@@ -371,9 +440,7 @@ use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
 
 
 
-
-
-
+/*
 	
 use $path3\all-jurisdictions-monthly-statistics.dta, clear
 
