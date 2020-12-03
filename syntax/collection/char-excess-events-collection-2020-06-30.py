@@ -415,7 +415,7 @@ def ew_download(basefolder, logfolder, ddate):
     if response.status_code==200: # if the web page was successfully requested
 
         webpage = soup(response.text, "html.parser")
-        file_id = webpage.select_one("a[href*=RegPlusExtract]").get("href")
+        file_id = webpage.select_one("a[href*=Extract]").get("href")
         file_url = "https://register-of-charities.charitycommission.gov.uk" + file_id
 
 
