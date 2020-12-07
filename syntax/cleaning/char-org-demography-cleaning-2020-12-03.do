@@ -56,7 +56,7 @@ count
 	
 	** Create summary datasets **
 	
-	// Births
+	** Births
 	
 	preserve
 		collapse (count) freq, by(reg_year)
@@ -88,8 +88,7 @@ count
 		restore
 		
 	
-	
-	// Active
+	** Active
 	/*
 		Number of charities filing a non-zero annual return at time t.
 	*/
@@ -127,7 +126,7 @@ count
 		restore
 	
 	
-	// Deaths
+	** Deaths
 	
 	preserve
 		collapse (count) freq, by(diss_year)
@@ -159,7 +158,7 @@ count
 		restore
 	
 	
-	// Survival 
+	** Survival 
 	
 	gen orgage = cond(diss_year==., 2020 - reg_year, diss_year - reg_year)
 	forvalues i = 1/60 {
@@ -197,8 +196,7 @@ count
 		restore
 	
 	
-	
-	// High-growth organisations
+	** High-growth organisations
 	/*
 		All enterprises with average annualised growth greater than 20% per annum, over a three year period (ONS definition).
 		
@@ -257,6 +255,89 @@ count
 		restore
 	
 	
+	** Income dominance
+	/*
+		% of total income accounted for by top 100 or 1% of charities.
+	*/
+
+	// Base datasets
+	
+	keep regno scale region icnpo FH_income_def*
+	drop if icnpo=="Grant-making foundations"
+	reshape long FH_income_def, i(regno) j(year)
+	drop if FH_income_def==. | FH_income_def <= 0
+	
+	bys year: egen inc_rank = rank(FH_income_def), field
+	gen top100 = 0
+	bys year: replace top100 = 1 if inc_rank <= 100
+	
+	bys year: egen inc_pctile = pctile(FH_income_def), p(99)
+	codebook inc_pctile
+	tab inc_pctile
+	gen top1pc = 0
+	bys year: replace top1pc = 1 if FH_income_def >= inc_pctile
+	sav $path1\topinc-base.dta, replace
+	
+	gen freq = 1
+	collapse (count) freq (sum) FH_income_def , by(year)
+	sort year
+	rename freq orgs
+	rename FH_income_def inc_total
+	sav $path1\chardemo-total-income.dta, replace
+	
+		// Top 100 and 1%
+			
+		use $path1\topinc-base.dta
+			
+		collapse (sum) FH_income_def, by(year top100)
+		sort year
+		drop if top100==0
+		rename FH_income_def inc_top100
+		sav $path1\chardemo-top100.dta, replace		
+			
+		use $path1\topinc-base.dta, clear
+		collapse (sum) FH_income_def, by(year top1pc)
+		sort year
+		drop if top1pc==0
+		rename FH_income_def inc_top1pc
+		sav $path1\chardemo-top1pc.dta, replace	
+		
+	// Merge datasets
+	
+	use $path1\chardemo-total-income.dta, clear
+	merge 1:1 year using $path1\chardemo-top100.dta, keep(match master) keepus(inc_top100)
+	drop _merge
+	merge 1:1 year using $path1\chardemo-top1pc.dta, keep(match master) keepus(inc_top1pc)
+	drop _merge
+
+	gen top100_share = (inc_top100 / inc_total)*100
+	gen top1pc_share = (inc_top1pc / inc_total)*100
+		
+		// By local
+		
+		preserve
+			keep regno scale region icnpo FH_income_def*
+			drop if icnpo=="Grant-making foundations"
+			keep if scale==3
+			reshape long FH_income_def, i(regno) j(year)
+			drop if FH_income_def==. | FH_income_def <= 0
+			
+			bys year: egen inc_rank = rank(FH_income_def), field
+			gen top100_local = 0
+			bys year: replace top100_local = 1 if inc_rank <= 100
+			
+			bys year: egen inc_pctile = pctile(FH_income_def), p(99)
+			codebook inc_pctile
+			tab inc_pctile
+			gen top1pc_local = 0
+			bys year: replace top1pc_local = 1 if FH_income_def >= inc_pctile
+			
+			collapse (sum) top100 top1pc, by(year)
+			sort year
+			sav $path1\chardemo-topinc-local.dta, replace		
+		restore
+
+	
 	** Merge summary datasets **
 	
 	use $path1\chardemo-registrations.dta, clear
@@ -270,16 +351,17 @@ count
 	drop _merge
 	
 	
+	
 	** Create derived variables **
 	
-	// Population
+	** Population
 	
 	gen constant = 1
 	gen net_births = births - deaths
 	bysort constant (year) : gen population = sum(net_births)
 	
 	
-	// Churn
+	** Churn
 	/*
 		births + deaths / population[_n-1]
 	*/
@@ -287,7 +369,7 @@ count
 	gen churn = (births + deaths) / population[_n-1]
 	
 	
-	// Survival rate
+	** Survival rate
 	
 	forvalues i = 1/60 {
 		gen survived_`i'_rate = (survived_`i' / births)
