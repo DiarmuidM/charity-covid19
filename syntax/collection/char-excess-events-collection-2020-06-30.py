@@ -930,6 +930,7 @@ def main():
     print("Executing data download")
     
     download, log, ddate = prelim()
+    """
     try:
         print("Beginning Scotland download")
         sco_download(download, log, ddate)
@@ -941,11 +942,13 @@ def main():
         aus_download(download, log, ddate)
     except:
         print("Could not execute Australia download")
+    """
     try:
         print("Beginning England and Wales download")
         ew_download(download, log, ddate)
     except:
         print("Could not execute England and Wales download")
+    """
     try:
         print("Beginning Rep. of Ireland download")
         roi_download(download, log, ddate)
@@ -967,7 +970,7 @@ def main():
         nz_download(download, log, ddate)
     except:
         print("Could not execute New Zealand download")
-
+    """
 
 # Main program #
 
