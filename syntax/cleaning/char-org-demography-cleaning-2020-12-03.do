@@ -263,6 +263,7 @@ count
 	// Base datasets
 	
 	keep regno scale region icnpo FH_income_def*
+	gen freq = 1
 	drop if icnpo=="Grant-making foundations"
 	reshape long FH_income_def, i(regno) j(year)
 	drop if FH_income_def==. | FH_income_def <= 0
@@ -272,35 +273,80 @@ count
 	bys year: replace top100 = 1 if inc_rank <= 100
 	
 	bys year: egen inc_pctile = pctile(FH_income_def), p(99)
-	codebook inc_pctile
-	tab inc_pctile
 	gen top1pc = 0
 	bys year: replace top1pc = 1 if FH_income_def >= inc_pctile
+	
+	foreach var in region icnpo scale {
+		bys year `var': egen inc_rank_`var' = rank(FH_income_def), field
+		gen top100_`var' = 0
+		bys year `var': replace top100_`var' = 1 if inc_rank_`var' <= 100
+		
+		bys year `var': egen inc_pctile_`var' = pctile(FH_income_def), p(99)
+		gen top1pc_`var' = 0
+		bys year `var': replace top1pc_`var' = 1 if FH_income_def >= inc_pctile_`var'
+	}
+	
 	sav $path1\topinc-base.dta, replace
 	
-	gen freq = 1
-	collapse (count) freq (sum) FH_income_def , by(year)
+	// Total sector income per year
+	
+	collapse (count) freq (sum) FH_income_def , by(year) // calculate total income per year
 	sort year
 	rename freq orgs
 	rename FH_income_def inc_total
 	sav $path1\chardemo-total-income.dta, replace
 	
+		// By covariates
+		
+		foreach var in region icnpo scale {
+			use $path1\topinc-base.dta, clear
+			collapse (count) freq (sum) FH_income_def , by(year `var') // calculate total income per year
+			sort year
+			rename freq orgs
+			rename FH_income_def inc_total_`var'
+			sav $path1\chardemo-total-income-`var'.dta, replace
+		}
+
+	
 		// Top 100 and 1%
 			
 		use $path1\topinc-base.dta
 			
-		collapse (sum) FH_income_def, by(year top100)
+		collapse (count) freq (sum) FH_income_def, by(year top100)
 		sort year
 		drop if top100==0
 		rename FH_income_def inc_top100
+		rename freq orgs
 		sav $path1\chardemo-top100.dta, replace		
 			
 		use $path1\topinc-base.dta, clear
-		collapse (sum) FH_income_def, by(year top1pc)
+		collapse (count) freq (sum) FH_income_def, by(year top1pc)
 		sort year
 		drop if top1pc==0
 		rename FH_income_def inc_top1pc
+		rename freq orgs
 		sav $path1\chardemo-top1pc.dta, replace	
+		
+		foreach var in region icnpo scale {
+			use $path1\topinc-base.dta, clear
+			collapse (count) freq (sum) FH_income_def, by(year `var' top1pc_`var')
+			sort year `var'
+			drop if top1pc_`var'==0 | missing(`var')
+			rename FH_income_def inc_top1pc_`var'
+			rename freq orgs
+			sav $path1\chardemo-top1pc_`var'.dta, replace	
+		}
+		
+		foreach var in region icnpo scale {
+			use $path1\topinc-base.dta, clear
+			collapse (count) freq (sum) FH_income_def, by(year `var' top100_`var')
+			sort year
+			drop if top100_`var'==0 | missing(`var')
+			rename FH_income_def inc_top100_`var'
+			rename freq orgs
+			sav $path1\chardemo-top100_`var'.dta, replace	
+		}
+		
 		
 	// Merge datasets
 	
@@ -313,29 +359,7 @@ count
 	gen top100_share = (inc_top100 / inc_total)*100
 	gen top1pc_share = (inc_top1pc / inc_total)*100
 		
-		// By local
-		
-		preserve
-			keep regno scale region icnpo FH_income_def*
-			drop if icnpo=="Grant-making foundations"
-			keep if scale==3
-			reshape long FH_income_def, i(regno) j(year)
-			drop if FH_income_def==. | FH_income_def <= 0
-			
-			bys year: egen inc_rank = rank(FH_income_def), field
-			gen top100_local = 0
-			bys year: replace top100_local = 1 if inc_rank <= 100
-			
-			bys year: egen inc_pctile = pctile(FH_income_def), p(99)
-			codebook inc_pctile
-			tab inc_pctile
-			gen top1pc_local = 0
-			bys year: replace top1pc_local = 1 if FH_income_def >= inc_pctile
-			
-			collapse (sum) top100 top1pc, by(year)
-			sort year
-			sav $path1\chardemo-topinc-local.dta, replace		
-		restore
+
 
 	
 	** Merge summary datasets **
