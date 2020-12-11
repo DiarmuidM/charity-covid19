@@ -28,8 +28,8 @@
 global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
 global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
-global foldate "2020-12-04" // name of folder containing latest data
-global fdate "2020-12-04" // date used to name output files
+global foldate "2020-12-10" // name of folder containing latest data
+global fdate "2020-12-10" // date used to name output files
 
 include "$rfiles\syntax\stata-file-paths.doi"
 

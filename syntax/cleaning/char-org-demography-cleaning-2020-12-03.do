@@ -201,6 +201,9 @@ count
 		All enterprises with average annualised growth greater than 20% per annum, over a three year period (ONS definition).
 		
 		Can only calculate this measure for organisations established as recently as 2016.
+		
+		[NB] Alternative Operationalisation: number of charities (all, not just new) in a given year that experienced high growth
+		e.g., 2019 figures would include charities active that year that grew more than 20% on average between 2016-2019.
 	*/
 
 	preserve
@@ -208,34 +211,22 @@ count
 		reshape long FH_income_def, i(regno) j(year)
 		drop if FH_income_def==.
 		tsset regno year
-		bys regno: gen fob = (_n==1)
-		bys regno: gen sob = (_n==2)
-		bys regno: gen tob = (_n==3)
-		bys regno: gen foob = (_n==4)
 
 		capture drop *_apg
-		keep if inlist(1, fob, sob, tob, foob)
-		bys regno: gen numobs = _N
-		keep if numobs==4
 		bys regno: gen inc_apg = (((FH_income_def + 1) - (FH_income_def[_n-1])) / (FH_income_def[_n-1])) * 100 if FH_income_def[_n-1] >= 1000
 		drop if inc_apg==.
-		bys regno: egen inc_apg_mean = mean(inc_apg)
+		bys regno: gen inc_apg_mean = (inc_apg + inc_apg[_n-1] + inc_apg[_n-2]) / 3
+
 		gen hgorg = (inc_apg_mean > 20 & inc_apg_mean!=.)
-		keep regno hgorg
-		duplicates drop regno, force
-		sav $path1\chardemo-hgorg-lookup.dta, replace
-	restore
-	
-	merge 1:1 regno using $path1\chardemo-hgorg-lookup.dta, keep(match master)
-	drop _merge
-	
-	preserve
-		collapse (sum) hgorg, by(reg_year)
-		sort reg_year
-		rename reg_year year
+		keep regno hgorg year
+		*duplicates drop regno, force
+		
+		collapse (sum) hgorg, by(year)
+		sort year
 		sav $path1\chardemo-hgorg.dta, replace
 	restore
 	
+		/*
 		// By region
 		
 		preserve
@@ -253,6 +244,7 @@ count
 			rename reg_year year
 			sav $path1\chardemo-hgorg-icnpo.dta, replace
 		restore
+		*/
 	
 	
 	** Income dominance
@@ -360,8 +352,6 @@ count
 	gen top1pc_share = (inc_top1pc / inc_total)*100
 		
 
-
-	
 	** Merge summary datasets **
 	
 	use $path1\chardemo-registrations.dta, clear
@@ -375,10 +365,20 @@ count
 	drop _merge
 	
 	
-	
 	** Create derived variables **
+	/*
+		Need to make a decision about the use of `active` charities as the demoninator.
+		
+		For example, a death means a charity was removed from the Register, not that it
+		did not submit a non-zero return that year.
+		
+		SOLUTION: use `population` instead for now.
+	*/
 	
 	** Population
+	/*
+		All charities listed on Register at end of particular year.
+	*/
 	
 	gen constant = 1
 	gen net_births = births - deaths
@@ -390,7 +390,26 @@ count
 		births + deaths / population[_n-1]
 	*/
 	
-	gen churn = (births + deaths) / population[_n-1]
+	gen churn = ((births + deaths) / population[_n-1]) * 100
+	
+	
+	** Birth and death rates
+	/*
+		Proportion of births/deaths to populatoin.
+		
+		Should it be active charities in the previous year? YES
+	*/
+	
+	gen birth_rate = (births / population[_n-1]) * 100
+	gen death_rate = (deaths / population[_n-1]) * 100
+	
+	
+	** High growth rate
+	/*
+		Use `active` as the baseline.
+	*/
+	
+	gen hg_rate = (hgorg / active) * 100
 	
 	
 	** Survival rate
@@ -444,6 +463,12 @@ export delimited using $path3\chardemo-statistics.csv, replace
 			*/
 			
 			gen churn = (births + deaths) / population[_n-1]
+			
+			
+			// Birth and death rates - proportion of births/deaths to active charities
+	
+			gen birth_rate = (births / population) * 100
+			gen death_rate = (deaths / population) * 100
 			
 			
 			// Survival rate
