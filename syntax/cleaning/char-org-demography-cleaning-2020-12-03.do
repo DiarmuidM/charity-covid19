@@ -350,6 +350,9 @@ count
 
 	gen top100_share = (inc_top100 / inc_total)*100
 	gen top1pc_share = (inc_top1pc / inc_total)*100
+	
+	sort year
+	sav $path1\chardemo-total-inc-shares.dta, replace
 		
 
 	** Merge summary datasets **
@@ -362,6 +365,8 @@ count
 	merge 1:1 year using $path1\chardemo-active.dta, keep(match master)
 	drop _merge
 	merge 1:1 year using $path1\chardemo-hgorg.dta, keep(match master)
+	drop _merge
+	merge 1:1 year using $path1\chardemo-total-inc-shares.dta, keep(match master)
 	drop _merge
 	
 	
