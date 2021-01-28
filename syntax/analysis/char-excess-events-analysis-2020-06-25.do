@@ -25,9 +25,9 @@
 /** 0. Preliminaries **/
 
 ** Diarmuid **
-global dfiles "C:\Users\t95171dm\Dropbox" // location of data files
-global rfiles "C:\Users\t95171dm\projects\charity-covid19" // location of syntax and other project outputs
-global gfiles "C:\Users\t95171dm\projects\charity-covid19\docs" // location of graphs
+global dfiles "C:\Users\mcdonndz\Dropbox" // location of data files
+global rfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19" // location of syntax and other project outputs
+global gfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19\docs" // location of graphs
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -45,9 +45,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** Set file and image properties
 
 global isize 1200
-global cutoff tm(2020m12)
-global fdate "2020-12-10" // date used to name input files
-global pdate "2020-12-10" // date used to name visualisation and other analytical outputs
+global cutoff tm(2021m1)
+global fdate "2021-01-28" // date used to name input files
+global pdate "2021-01-28" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour
