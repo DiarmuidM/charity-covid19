@@ -80,7 +80,7 @@ Figures for Northern Ireland should be interpreted cautiously, for three reasons
 2. The regulator is still undertaking work to register charities already in existence; that is, CCNI is calling charities forward in order to register with them. Thus monthly figures include new organisations being formed, and existing charities formalising their registration with the regulator. More information on the regulator's work on this task [here](https://apps.charitycommissionni.org.uk/About_us/Contacting_us/FAQs.aspx#Registration%20begins%20date?).
 3. The regulator's ability and capacity to register and remove charities (as well as execute a number of other core functions) has been considerably hampered by a recent court ruling - information [here](https://www.charitycommissionni.org.uk/news/legal-update/).
 
-For these reasons we are reluctant to draw firm conclusions interpret the observed trends - hopefully these figures will either be revised or clarified at a future date.
+For these reasons we are reluctant to draw firm conclusions - hopefully these figures will either be revised or clarified at a future date.
 
 #### Registrations
 
@@ -164,6 +164,6 @@ A synotpic review of the evidence presented above suggests that the coronavirus 
 * New charities have been formed at largely the expected rate in most jurisdictions analysed.
 * Far fewer organisations have ceased to exist or be charitable than expected in nearly all jurisdictions analysed.
 
-However this would be a misleading conclusion. While the rate of formation of new organisations is encouraging, the lower than expected level of de-registration is almost certainly an artefact of a) reduced regulatory capacity to process de-registration applications and to conduct proactive removals of organisations for official registers; and b) the ability of charities to put operations on hold and claim support from government funding schemes (e.g., UK's Coronavirus Job Retention Scheme). Therefore many de-registrations have been "put on ice", with the prophesised culling of organisations likely to materialise in 2021.
+However this would be a misleading conclusion. While the rate of formation of new organisations is encouraging, the lower than expected level of de-registration is almost certainly an artefact of a) reduced regulatory capacity to process de-registration applications and to conduct proactive removals of organisations from official registers; and b) the ability of charities to put operations on hold and claim support from government funding schemes (e.g., UK's Coronavirus Job Retention Scheme). Therefore many de-registrations have been "put on ice", with the prophesised culling of organisations likely to materialise in 2021.
 
 We will continue to collect and analyse charity registers throughout 2021 to track emerging trends and to capture revisions to 2020 data (e.g., yet-to-be processed 2020 de-registration applications).
