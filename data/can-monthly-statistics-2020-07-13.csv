@@ -1,8 +1,0 @@
-reg_count,reg_avg,reg_sd,reg_lb,reg_ub,reg_excess,reg_excess_per,reg_excess_cumu,reg_avg_cumu,reg_count_cumu,reg_excess_cumu_per,period,rem_count,rem_avg,rem_sd,rem_lb,rem_ub,rem_excess,rem_excess_per,rem_excess_cumu,rem_avg_cumu,rem_count_cumu,rem_excess_cumu_per,country
-215,378,78,300,455,-163,-43,-163,378,215,-43,2020m1,142,166,46,121,211,-24,-14,-24,166,142,-14,Canada
-42,101,16,86,117,-59,-58,-222,479,257,-46,2020m2,71,137,29,109,166,-66,-48,-90,303,213,-29,Canada
-17,117,11,107,128,-100,-85,-322,596,274,-54,2020m3,228,224,100,124,324,4,2,-86,527,441,-16,Canada
-27,165,21,144,186,-138,-83,-460,761,301,-60,2020m4,,,,,,,,,,,,Canada
-7,131,22,110,152,-124,-94,-584,892,308,-65,2020m5,,,,,,,,,,,,Canada
-5,107,12,95,119,-102,-95,-686,999,313,-68,2020m6,,,,,,,,,,,,Canada
-2,129,17,113,145,-127,-98,-813,1128,315,-72,2020m7,,,,,,,,,,,,Canada

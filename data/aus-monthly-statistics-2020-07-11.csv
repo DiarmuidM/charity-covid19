@@ -1,7 +1,0 @@
-reg_count,reg_avg,reg_sd,reg_lb,reg_ub,reg_excess,reg_excess_per,reg_excess_cumu,reg_avg_cumu,reg_count_cumu,reg_excess_cumu_per,period,country
-149,211,38,174,248,-62,-29,-62,211,149,-29,2020m1,Australia
-123,159,32,128,191,-36,-22,-98,370,272,-26,2020m2,Australia
-101,174,20,154,194,-73,-41,-171,544,373,-31,2020m3,Australia
-92,158,10,149,168,-66,-41,-237,702,465,-33,2020m4,Australia
-91,184,23,162,207,-93,-50,-330,886,556,-37,2020m5,Australia
-40,158,10,149,167,-118,-74,-448,1044,596,-42,2020m6,Australia
