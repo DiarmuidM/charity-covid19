@@ -59,49 +59,49 @@ global pdate "2021-01-28" // date used to name visualisation and other analytica
 
 	
 local countrylist = "aus us can nz ni scot ew"
-local month = "November"
+local monthyr = "January 2021"
 
 * USA
 	local cnameus = "United States of America"		// The subtitle
 	local cregulatorus = "IRS"						// The name of the regulator
-	local cyhregus =100000							// Y-axis height for registrations
-	local cyhremus = 50000							// Y-axis height for removals
+	local cyhregus = 80000							// Y-axis height for registrations
+	local cyhremus = 40000							// Y-axis height for removals
 
 * Canada
 	local cnamecan = "Canada"						// The subtitle
 	local cregulatorcan = "CRA"						// The name of the regulator
 	local cyhregcan =2000							// Y-axis height for registrations
-	local cyhremcan = 1000							// Y-axis height for removals	
+	local cyhremcan = 1100							// Y-axis height for removals	
 	
 * Country
 	local cnamenz = "New Zealand"					// The subtitle
 	local cregulatornz = "CSNZ"						// The name of the regulator
 	local cyhregnz =1750							// Y-axis height for registrations
-	local cyhremnz = 1750							// Y-axis height for removals	
+	local cyhremnz = 2000							// Y-axis height for removals	
 	
 * Country
 	local cnameaus = "Australia"					// The subtitle
 	local cregulatoraus = "ACNC"					// The name of the regulator
-	local cyhregaus =2000							// Y-axis height for registrations
+	local cyhregaus =2400							// Y-axis height for registrations
 	local cyhremaus = 2000							// Y-axis height for removals	
 	
 * Country
 	local cnameni = "Northern Ireland"				// The subtitle
 	local cregulatorni = "CCNI"						// The name of the regulator
-	local cyhregni =1500							// Y-axis height for registrations
-	local cyhremni = 400							// Y-axis height for removals	
+	local cyhregni = 2000							// Y-axis height for registrations
+	local cyhremni = 100							// Y-axis height for removals	
 	
 * Country
 	local cnamescot = "Scotland"					// The subtitle
 	local cregulatorscot = "OSCR"					// The name of the regulator
-	local cyhregscot =800							// Y-axis height for registrations
-	local cyhremscot = 700							// Y-axis height for removals	
+	local cyhregscot = 1000							// Y-axis height for registrations
+	local cyhremscot = 800							// Y-axis height for removals	
 	
 * Country
 	local cnameew = "England and Wales"				// The subtitle
 	local cregulatorew = "CCEW"						// The name of the regulator
-	local cyhregew =4000							// Y-axis height for registrations
-	local cyhremew = 4000							// Y-axis height for removals	
+	local cyhregew = 6000							// Y-axis height for registrations
+	local cyhremew = 6000							// Y-axis height for removals	
 	
 * Country
 	local cname = ""						// The subtitle
@@ -142,7 +142,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability") label(2 "Mean Registrations (2015-2019)") label(3 "Observed Registrations") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 		*/	
 		twoway 	(rcap reg_lb reg_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5) ) ///
@@ -153,7 +153,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(2 "Observed Registrations") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-registrations-$pdate.png, replace width($isize)
@@ -167,7 +167,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Registrations (2015-2019)") label(3 "Observed Registrations") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in registrations for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-registrations-range-$pdate.png, replace width($isize)
@@ -197,7 +197,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability") label(2 "Mean Removals (2015-2019)") label(3 "Observed Removals") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 		*/	
 		twoway 	(rcap rem_lb rem_ub period if period < $cutoff, msize(vtiny) lpatt(solid) lwidth(vvthick) lcolor($expcol*0.5)) ///
@@ -208,7 +208,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)")  label(2 "Observed Removals") rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle
 			
 		graph export $path6\`c'-monthly-removals-$pdate.png, replace width($isize)
@@ -222,7 +222,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(1 "Variability of Mean Removals (2015-2019)") label(3 "Observed Removals") order(1 3) rows(1) size(small)) ///
 			note("Intervals represent expected range of variability in removals for that month (2015-2019)", color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			$graphstyle			
 			
 			
@@ -258,7 +258,7 @@ foreach c in `countrylist' {
 			xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 			legend(label(3 "Observed Registrations") label(4 "Expected Registrations (2015-2019)") rows(1) size(small) order(3 4)) ///
 			note("Expected registrations: mean number of registrations for that month (2015-2019)",  color($axtcol)) ///
-			caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+			caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 			bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
 			graphregion(fcolor(white))	scheme(s1mono)	
 			
@@ -291,7 +291,7 @@ foreach c in `countrylist' {
 				xtitle("`xtitle'", color($axtcol) size(small)) xscale(lcolor($axtcol)) xlabel(, tlcolor($axtcol) labcolor($axtcol) labsize(small)  nogrid)  	///
 				legend(label(3 "Observed Removals") label(4 "Expected Removals (2015-2019)") rows(1) size(small) order(3 4)) ///
 				note("Expected removals: mean number of removals for that month (2015-2019)",  color($axtcol)) ///
-				caption("Data from `cregulator`c'' `month' 2020 Data Download", size(small) color($axtcol)) ///
+				caption("Data from `cregulator`c'' `monthyr' Data Download", size(small) color($axtcol)) ///
 				bgcolor(white) plotregion(ilcolor(none) lcolor(none)) graphregion(ilcolor(none) lcolor(none)) ///
 				graphregion(fcolor(white))	scheme(s1mono)	
 				
