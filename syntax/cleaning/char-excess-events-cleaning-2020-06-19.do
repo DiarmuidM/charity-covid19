@@ -73,10 +73,36 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	tab1 regq regm month_reg
 	
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "us"
+		gen period = regy
+		sort country period
+		sav $path1\us-yearly-registrations-$fdate.dta, replace
+	restore	
+
+	** Monthly 
+
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -288,10 +314,36 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	tab1 remq remm month_rem
 	
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
 	gen rem = 1
+	
+	** Yearly
+	
+	preserve
+		rename rem rem_count
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "us"
+		gen period = remy
+		sort country period
+		sav $path1\us-yearly-removals-$fdate.dta, replace
+	restore	
+
+	** Monthly
+
 	egen rem_count = sum(rem), by(remm)
 	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -343,12 +395,23 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	// Create analysis file
 	
+	** Monthly 
+	
 	use $path1\us-monthly-registrations-$fdate.dta, clear
 	merge 1:1 period using $path1\us-monthly-removals-$fdate.dta, keep(match master)
 	drop _merge
 	gen country = "USA"
 	sav $path3\us-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\us-monthly-statistics-$fdate.csv, replace
+	
+	** Yearly
+	
+	use $path1\us-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\us-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\us-yearly-statistics-$fdate, replace
+	export delimited using $path3\us-yearly-statistics-$fdate.csv, replace
+
 
 	
 ************************************************************************************************************
@@ -388,6 +451,32 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "can"
+		gen period = regy
+		sort country period
+		sav $path1\can-yearly-registrations-$fdate.dta, replace
+	restore	
+
+	** Monthly 
+
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -462,6 +551,32 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
 	gen rem = 1
+	
+	** Yearly
+	
+	preserve
+		rename rem rem_count
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "can"
+		gen period = remy
+		sort country period
+		sav $path1\can-yearly-removals-$fdate.dta, replace
+	restore	
+
+	** Monthly
+
 	egen rem_count = sum(rem), by(remm)
 	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -513,6 +628,8 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	
 	// Create analysis file
 	
+	** Monthly
+	
 	use "$path1\can-monthly-registrations.dta", clear
 	merge 1:1 period using "$path1\can-monthly-removals.dta", keep(match master)
 	drop _merge
@@ -520,6 +637,14 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\can-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\can-monthly-statistics-$fdate.csv, replace
+
+	** Yearly 
+	
+	use $path1\can-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\can-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\can-yearly-statistics-$fdate, replace
+	export delimited using $path3\can-yearly-statistics-$fdate.csv, replace
 
 		
 ************************************************************************************************************
@@ -556,6 +681,32 @@ keep if deregistrationdate!=""
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
 	gen rem = 1
+	
+	** Yearly
+	
+	preserve
+		rename rem rem_count
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "nz"
+		gen period = remy
+		sort country period
+		sav $path1\nz-yearly-removals-$fdate.dta, replace
+	restore	
+
+	** Monthly
+	
 	egen rem_count = sum(rem), by(remm)
 	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -629,6 +780,32 @@ keep if deregistrationdate!=""
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "nz"
+		gen period = regy
+		sort country period
+		sav $path1\nz-yearly-registrations-$fdate.dta, replace
+	restore	
+
+	** Monthly 
+	
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -675,7 +852,9 @@ keep if deregistrationdate!=""
 	sav "$path1\nz-monthly-registrations.dta", replace
 	
 	
-	// Create analysis file
+	// Create analysis files
+	
+	** Monthly 
 	
 	use "$path1\nz-monthly-registrations.dta", clear
 	merge 1:1 period using "$path1\nz-monthly-removals.dta", keep(match)
@@ -685,6 +864,15 @@ keep if deregistrationdate!=""
 	drop postaladdress_country streetaddress_country
 	sav $path3\nz-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\nz-monthly-statistics-$fdate.csv, replace
+	
+	** Yearly 
+	
+	use $path1\nz-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\nz-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\nz-yearly-statistics-$fdate, replace
+	export delimited using $path3\nz-yearly-statistics-$fdate.csv, replace
+	
 
 	
 ************************************************************************************************************
@@ -725,10 +913,36 @@ keep if deregistrationdate!=""
 	*/
 
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "aus"
+		gen period = regy
+		sort country period
+		sav $path3\aus-yearly-statistics-$fdate.dta, replace
+	restore	
+	
+	** Monthly 
+	
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -810,10 +1024,36 @@ keep if deregistrationdate!=""
 	*/
 
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "ni"
+		gen period = regy
+		sort country period
+		sav $path1\ni-yearly-registrations-$fdate.dta, replace
+	restore	
+
+	** Monthly 
+
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -882,10 +1122,36 @@ keep if deregistrationdate!=""
 	*/
 
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
 	gen rem = 1
+	
+	** Yearly
+	
+	preserve
+		rename rem rem_count
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "ni"
+		gen period = remy
+		sort country period
+		sav $path1\ni-yearly-removals-$fdate.dta, replace
+	restore	
+	
+	** Monthly
+
 	egen rem_count = sum(rem), by(remm)
 	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -934,6 +1200,8 @@ keep if deregistrationdate!=""
 	
 	// Create analysis file
 	
+	** Monthly
+	
 	use "$path1\ni-monthly-registrations.dta", clear
 	merge 1:1 period using "$path1\ni-monthly-removals.dta", keep(match)
 	drop _merge
@@ -941,6 +1209,15 @@ keep if deregistrationdate!=""
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\ni-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\ni-monthly-statistics-$fdate.csv, replace
+	
+	** Yearly
+	
+	use $path1\ni-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\ni-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\ni-yearly-statistics-$fdate, replace
+	export delimited using $path3\ni-yearly-statistics-$fdate.csv, replace
+
 
 	
 ************************************************************************************************************
@@ -1018,7 +1295,9 @@ desc, f
 	sav $path1\ew-roc-v1.dta, replace
 
 
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
+	
+	** Monthly 
 	
 	preserve
 		keep if regm >= tm(2015m1) // interested in five-year average
@@ -1045,6 +1324,7 @@ desc, f
 	preserve
 		keep if remm >= tm(2015m1) // interested in five-year average
 		gen freq = 1
+
 		egen rem_count = sum(freq), by(remm)
 		egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 		egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -1060,6 +1340,52 @@ desc, f
 		duplicates drop mdate, force
 		sav $path1\ccew-rem.dta, replace
 	restore
+	
+	** Yearly
+	
+	preserve
+		keep if remm >= tm(2015m1) // interested in five-year average
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "ew"
+		gen period = remy
+		sort country period
+		sav $path1\ew-yearly-removals-$fdate.dta, replace
+	restore	
+	
+	preserve
+		keep if regm >= tm(2015m1) // interested in five-year average
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "ew"
+		gen period = regy
+		sort country period
+		sav $path1\ew-yearly-registrations-$fdate.dta, replace
+	restore	
 
 	use $path1\ccew-reg.dta, clear
 	capture drop _merge
@@ -1103,7 +1429,9 @@ desc, f
 	}
 	
 	
-	// Create analysis file
+	// Create analysis files
+	
+	** Monthly
 	
 	gen period = regm
 	format period %tm
@@ -1112,6 +1440,16 @@ desc, f
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\ew-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\ew-monthly-statistics-$fdate.csv, replace
+	
+	** Yearly
+	
+	use $path1\ew-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\ew-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\ew-yearly-statistics-$fdate, replace
+	export delimited using $path3\ew-yearly-statistics-$fdate.csv, replace
+
+
 	
 	
 	** By removal reason
@@ -1193,8 +1531,7 @@ desc, f
 	format period %tm
 	drop regd_str-remq month_rem freq
 	rename text remdesc
-	sav $path3\ew-monthly-removals-by-remcode-$fdate.dta, replace
-	
+	sav $path3\ew-monthly-removals-by-remcode-$fdate.dta, replace	
 	
 	
 	/*
@@ -1498,10 +1835,36 @@ keep if removed==1
 	sav $path1\scot-rem-data.dta, replace
 
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
 	gen rem = 1
+	
+	** Yearly
+	
+	preserve
+		rename rem rem_count
+		collapse (count) rem_count, by(remy)
+		egen rem_avg  = mean(rem_count) if remy < 2020
+		egen rem_sd = sd(rem_count) if remy < 2020
+		gen rem_sd2 = rem_sd * 2
+		gen rem_lb = rem_avg - rem_sd
+		gen rem_ub = rem_avg + rem_sd
+		gen rem_lb2 = rem_avg - rem_sd2
+		gen rem_ub2 = rem_avg + rem_sd2
+		foreach var of varlist rem_avg-rem_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if remy==2020
+		}
+		gen rem_deviation = (rem_count - rem_avg) / rem_sd
+		gen country = "sco"
+		gen period = remy
+		sort country period
+		sav $path1\scot-yearly-removals-$fdate.dta, replace
+	restore	
+
+	** Monthly
+	
 	egen rem_count = sum(rem), by(remm)
 	egen rem_avg  = mean(rem_count) if remm < tm(2020m1), by(month_rem)
 	egen rem_sd = sd(rem_count) if remm < tm(2020m1), by(month_rem)
@@ -1574,10 +1937,36 @@ use $path1\scot-all-data-$fdate.dta, clear
 	sav $path1\scot-reg-data.dta, replace
 
 	
-	// Calculate monthly figures
+	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
 	gen reg = 1
+	
+	** Yearly
+	
+	preserve
+		rename reg reg_count
+		collapse (count) reg_count, by(regy)
+		egen reg_avg  = mean(reg_count) if regy < 2020
+		egen reg_sd = sd(reg_count) if regy < 2020
+		gen reg_sd2 = reg_sd * 2
+		gen reg_lb = reg_avg - reg_sd
+		gen reg_ub = reg_avg + reg_sd
+		gen reg_lb2 = reg_avg - reg_sd2
+		gen reg_ub2 = reg_avg + reg_sd2
+		foreach var of varlist reg_avg-reg_ub2 {
+			replace `var' = ceil(`var')
+			replace `var' = `var'[_n-1] if regy==2020
+		}
+		gen reg_deviation = (reg_count - reg_avg) / reg_sd
+		gen country = "sco"
+		gen period = regy
+		sort country period
+		sav $path1\scot-yearly-registrations-$fdate.dta, replace
+	restore	
+
+	** Monthly 
+
 	egen reg_count = sum(reg), by(regm)
 	egen reg_avg  = mean(reg_count) if regm < tm(2020m1), by(month_reg)
 	egen reg_sd = sd(reg_count) if regm < tm(2020m1), by(month_reg)
@@ -1626,6 +2015,8 @@ use $path1\scot-all-data-$fdate.dta, clear
 	
 	// Create analysis file
 	
+	** Monthly 
+	
 	use "$path1\scot-monthly-registrations.dta", clear
 	merge 1:1 period using "$path1\scot-monthly-removals.dta", keep(match)
 	drop _merge
@@ -1633,6 +2024,15 @@ use $path1\scot-all-data-$fdate.dta, clear
 	keep period country *_avg* *_count* *_excess* rem_* reg_*
 	sav $path3\scot-monthly-statistics-$fdate.dta, replace
 	export delimited using $path3\scot-monthly-statistics-$fdate.csv, replace
+	
+	** Yearly 
+	
+	use $path1\scot-yearly-registrations-$fdate, clear
+	merge 1:1 period using $path1\scot-yearly-removals-$fdate, keep(match master)
+	sort country period
+	sav $path3\scot-yearly-statistics-$fdate, replace
+	export delimited using $path3\scot-yearly-statistics-$fdate.csv, replace
+
 	
 	/*
 	** Time series of cumulative number of charities
@@ -1678,10 +2078,27 @@ use $path1\scot-all-data-$fdate.dta, clear
 
 ************************************************************************************************************
 
-/*
 	
-/* Create master analysis file */
+/* Create master file of yearly statistics */
 
+clear
+set obs 0
+foreach c in aus nz can us scot ew ni {
+	append using $path3\`c'-yearly-statistics-$fdate.dta, force
+}
+
+sort country period
+
+	** Index of growth/decline **
+	
+	foreach var in reg rem {
+		gen `var'_count_index = .
+		bys country: replace `var'_count_index = (`var'_count / `var'_count[1]) * 100 
+	}
+
+sav $path3\all-jurisdictions-yearly-statistics-$fdate.dta, replace
+
+/*
 clear
 local cleandir $path3
 cd `cleandir'

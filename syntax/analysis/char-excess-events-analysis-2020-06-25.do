@@ -303,8 +303,78 @@ foreach c in `countrylist' {
 }
 
 
+/* Yearly statistics */
+/*
+	Produce plot of deviation from expected levels of registrations and de-registrations.
+*/
+
+use $path3\all-jurisdictions-yearly-statistics-$fdate.dta, clear
+encode country, gen(jurisdiction)
+drop if regy > 2020
+gen y2020 = (regy==2020)
+gen yoth = (regy<2020)
+
+	** Registrations **
+	
+	// Scatterplot of standard deviations
+
+	twoway (scatter jurisdiction reg_deviation if y2020, mcolor(cranberry) msize(medlarge)) (scatter jurisdiction reg_deviation if yoth, mcolor(gs10) msym(O)) ///
+		, xline(0, lcolor(gs5)) title("Excess registrations for charity jurisdictions") subtitle(" ") ///
+		xlab(-3(1)3, labsize(small)) ylab(1 "Australia" 2 "Canada" 3 "England & Wales" 4 "Northern Ireland" 5 "New Zealand" 6 "Scotland" 7 "USA", labsize(small) angle(0)) ///
+		xtitle("Standard deviations above or below average number of registrations (2015-2019)", size(small)) ///
+		ytitle(" ") ///
+		legend(label(1 "2020") label(2 "2015-2019") size(small)) ///
+		$graphstyle
+	graph export $path6\all-jurisdictions-yearly-registrations-$pdate.png, replace width($isize)
+		
+	// Growth index
+	
+	twoway (line reg_count_index period if jurisdiction==1, lcolor(cranberry)) (line reg_count_index period if jurisdiction==2, lcolor(dknavy)) ///
+		(line reg_count_index period if jurisdiction==3, lcolor(dkorange)) (line reg_count_index period if jurisdiction==4, lcolor(sandb)) ///
+		(line reg_count_index period if jurisdiction==5, lcolor(eltblue)) (line reg_count_index period if jurisdiction==6, lcolor(orange_red)) ///
+		(line reg_count_index period if jurisdiction==7, lcolor(forest_green)) ///
+		, yline(100, lcolor(gs5) lpatt(shortdash)) title("Growth/decline in registrations") subtitle(" ") ///
+		xlab(, labsize(small)) ylab(, labsize(small)) ///
+		xtitle("Registration year", size(small)) ///
+		ytitle("Growth index (100 = no. of registrations in 2015)", size(small)) ///
+		legend(label(1 "Australia") label(2 "Canada") label(3 "England & Wales") label(4 "Northern Ireland") label(5 "New Zealand") label(6 "Scotland") label(7 "USA") rows(3) size(small)) ///
+		$graphstyle
+	graph export $path6\all-jurisdictions-yearly-registrations-index-$pdate.png, replace width($isize)
+		
+		
+	** Removals **
+	
+	// Scatterplot of standard deviations
+
+	twoway (scatter jurisdiction rem_deviation if y2020, mcolor(cranberry) msize(medlarge)) (scatter jurisdiction rem_deviation if yoth, mcolor(gs10) msym(O)) ///
+		, xline(0, lcolor(gs5)) title("Excess removals for charity jurisdictions") subtitle(" ") ///
+		xlab(-3(1)3, labsize(small)) ylab(2 "Canada" 3 "England & Wales" 4 "Northern Ireland" 5 "New Zealand" 6 "Scotland" 7 "USA", labsize(small) angle(0)) ///
+		xtitle("Standard deviations above or below average number of removals (2015-2019)", size(small)) ///
+		ytitle(" ") ///
+		legend(label(1 "2020") label(2 "2015-2019") size(small)) ///
+		$graphstyle
+	graph export $path6\all-jurisdictions-yearly-removals-$pdate.png, replace width($isize)
+		
+	// Growth index
+	
+	twoway (line rem_count_index period if jurisdiction==1, lcolor(cranberry)) (line rem_count_index period if jurisdiction==2, lcolor(dknavy)) ///
+		(line rem_count_index period if jurisdiction==3, lcolor(dkorange)) (line rem_count_index period if jurisdiction==4, lcolor(sandb)) ///
+		(line rem_count_index period if jurisdiction==5, lcolor(eltblue)) (line rem_count_index period if jurisdiction==6, lcolor(orange_red)) ///
+		(line rem_count_index period if jurisdiction==7, lcolor(forest_green)) ///
+		, yline(100, lcolor(gs5) lpatt(shortdash)) title("Growth/decline in removals") subtitle(" ") ///
+		xlab(, labsize(small)) ylab(, labsize(small)) ///
+		xtitle("Registration year", size(small)) ///
+		ytitle("Growth index (100 = no. of removals in 2015)", size(small)) ///
+		legend(label(2 "Canada") label(3 "England & Wales") label(4 "Northern Ireland") label(5 "New Zealand") label(6 "Scotland") label(7 "USA") rows(3) size(small)) ///
+		$graphstyle
+	graph export $path6\all-jurisdictions-yearly-removals-index-$pdate.png, replace width($isize)
 
 
+
+		
+		
+		
+		
 /* England and Wales - Removal Reason */
 
 use $path3\ew-monthly-removals-by-remcode-$fdate.dta, clear
