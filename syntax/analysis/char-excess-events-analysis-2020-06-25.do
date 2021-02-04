@@ -370,9 +370,78 @@ gen yoth = (regy<2020)
 	graph export $path6\all-jurisdictions-yearly-removals-index-$pdate.png, replace width($isize)
 
 
-
+	** Moving averages **
+	
+	use $path3\all-jurisdictions-yearly-statistics-ts-$fdate.dta, clear
+	encode country, gen(jurisdiction)
+	tsset jurisdiction period
+	
+	foreach var in reg rem {
+		tssmooth ma `var'_count_ma = `var'_count, window(2 1 )
+	}
+	
+	keep if period > 2009 & period < 2020 & !missing(jurisdiction)
+	sum reg_count_ma if jurisdiction!=7 , d
+	
+	twoway (line reg_count_ma period if jurisdiction==1, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Australia") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\aus-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==2, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Canada") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\can-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==3, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("England and Wales") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\ew-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==4, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Northern Ireland") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\ni-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==5, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("New Zealand") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\nz-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==6, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Scotland") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\scot-yearly-registrations-ma-$pdate.png, replace width($isize)
+	
+	twoway (line reg_count_ma period if jurisdiction==7, lcolor(cranberry)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("United States") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
+		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		$graphstyle
+	graph export $path6\us-yearly-registrations-ma-$pdate.png, replace width($isize)
 		
-		
+		*(line rem_count_ma period if jurisdiction==2, lcolor(dknavy)) ///
+		*(line rem_count_ma period if jurisdiction==3, lcolor(dkorange)) ///
+		*(line rem_count_ma period if jurisdiction==5, lcolor(eltblue)) (line rem_count_ma period if jurisdiction==6, lcolor(orange_red)) ///
 		
 		
 /* England and Wales - Removal Reason */

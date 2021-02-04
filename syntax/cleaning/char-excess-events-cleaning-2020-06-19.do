@@ -73,6 +73,18 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	tab1 regq regm month_reg
 	
 	
+	// Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "us"
+		sav $path1\us-yearly-registrations-ts-$fdate.dta, replace
+	restore
+	
+	
 	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
@@ -314,6 +326,18 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	tab1 remq remm month_rem
 	
 	
+	// Moving average
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "us"
+		sav $path1\us-yearly-removals-ts-$fdate.dta, replace
+	restore
+	
+	
 	// Calculate monthly and yearly figures
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
@@ -412,7 +436,15 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	sav $path3\us-yearly-statistics-$fdate, replace
 	export delimited using $path3\us-yearly-statistics-$fdate.csv, replace
 
-
+	** Moving average
+	
+	use $path1\us-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\us-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\us-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\us-yearly-statistics-ts-$fdate.csv, replace
+	
 	
 ************************************************************************************************************
 
@@ -445,6 +477,17 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	format regq %tq
 	format regm %tm
 	tab1 regq regm month_reg
+	
+	// Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "can"
+		sav $path1\can-yearly-registrations-ts-$fdate.dta, replace
+	restore
 	
 	
 	// Calculate monthly figures
@@ -547,6 +590,18 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	tab1 remq remm month_rem
 	
 	
+	// Moving average
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "can"
+		sav $path1\can-yearly-removals-ts-$fdate.dta, replace
+	restore
+	
+	
 	// Calculate monthly figures
 	
 	keep if remm >= tm(2015m1) // interested in five-year average
@@ -645,6 +700,15 @@ include "$rfiles\syntax\stata-file-paths.doi"
 	sort country period
 	sav $path3\can-yearly-statistics-$fdate, replace
 	export delimited using $path3\can-yearly-statistics-$fdate.csv, replace
+	
+	** Moving average
+	
+	use $path1\can-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\can-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\can-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\can-yearly-statistics-ts-$fdate.csv, replace
 
 		
 ************************************************************************************************************
@@ -676,6 +740,18 @@ keep if deregistrationdate!=""
 		Consider monthly or bimonthly measures also
 	*/
 
+	
+	// Moving average
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "nz"
+		sav $path1\nz-yearly-removals-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly figures
 	
@@ -775,6 +851,17 @@ keep if deregistrationdate!=""
 		Consider monthly or bimonthly measures also
 	*/
 
+	// Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "nz"
+		sav $path1\nz-yearly-registrations-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly figures
 	
@@ -873,6 +960,16 @@ keep if deregistrationdate!=""
 	sav $path3\nz-yearly-statistics-$fdate, replace
 	export delimited using $path3\nz-yearly-statistics-$fdate.csv, replace
 	
+	** Moving average
+	
+	use $path1\nz-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\nz-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\nz-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\nz-yearly-statistics-ts-$fdate.csv, replace
+
+	
 
 	
 ************************************************************************************************************
@@ -912,6 +1009,17 @@ keep if deregistrationdate!=""
 		Consider monthly or bimonthly measures also
 	*/
 
+	// Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "aus"
+		sav $path3\aus-yearly-statistics-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly and yearly figures
 	
@@ -1023,6 +1131,17 @@ keep if deregistrationdate!=""
 		Consider monthly or bimonthly measures also
 	*/
 
+	// Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "ni"
+		sav $path1\ni-yearly-registrations-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly and yearly figures
 	
@@ -1121,6 +1240,17 @@ keep if deregistrationdate!=""
 		Consider monthly or bimonthly measures also
 	*/
 
+	// Moving average
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "ni"
+		sav $path1\ni-yearly-removals-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly and yearly figures
 	
@@ -1217,6 +1347,16 @@ keep if deregistrationdate!=""
 	sort country period
 	sav $path3\ni-yearly-statistics-$fdate, replace
 	export delimited using $path3\ni-yearly-statistics-$fdate.csv, replace
+	
+	** Moving average
+	
+	use $path1\ni-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\ni-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\ni-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\ni-yearly-statistics-ts-$fdate.csv, replace
+
 
 
 	
@@ -1296,6 +1436,26 @@ desc, f
 
 
 	// Calculate monthly and yearly figures
+	
+	** Moving average
+	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "ew"
+		sav $path1\ew-yearly-registrations-ts-$fdate.dta, replace
+	restore
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "ew"
+		sav $path1\ew-yearly-removals-ts-$fdate.dta, replace
+	restore
 	
 	** Monthly 
 	
@@ -1448,6 +1608,16 @@ desc, f
 	sort country period
 	sav $path3\ew-yearly-statistics-$fdate, replace
 	export delimited using $path3\ew-yearly-statistics-$fdate.csv, replace
+	
+	** Moving average
+	
+	use $path1\ew-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\ew-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\ew-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\ew-yearly-statistics-ts-$fdate.csv, replace
+
 
 
 	
@@ -1834,6 +2004,17 @@ keep if removed==1
 	
 	sav $path1\scot-rem-data.dta, replace
 
+	// Moving average
+	
+	preserve
+		gen rem_count = 1
+		collapse (count) rem_count, by(remy)
+		gen period = remy
+		l
+		gen country = "sco"
+		sav $path1\scot-yearly-removals-ts-$fdate.dta, replace
+	restore
+	
 	
 	// Calculate monthly and yearly figures
 	
@@ -1936,7 +2117,18 @@ use $path1\scot-all-data-$fdate.dta, clear
 	
 	sav $path1\scot-reg-data.dta, replace
 
+	// Moving average
 	
+	preserve
+		gen reg_count = 1
+		collapse (count) reg_count, by(regy)
+		gen period = regy
+		l
+		gen country = "sco"
+		sav $path1\scot-yearly-registrations-ts-$fdate.dta, replace
+	restore
+	
+
 	// Calculate monthly and yearly figures
 	
 	keep if regm >= tm(2015m1) // interested in five-year average
@@ -2032,6 +2224,16 @@ use $path1\scot-all-data-$fdate.dta, clear
 	sort country period
 	sav $path3\scot-yearly-statistics-$fdate, replace
 	export delimited using $path3\scot-yearly-statistics-$fdate.csv, replace
+	
+	** Moving average
+	
+	use $path1\scot-yearly-registrations-ts-$fdate.dta, clear
+	merge 1:1 period using $path1\scot-yearly-removals-ts-$fdate.dta, keep(match master)
+	sort country period
+	drop _merge
+	sav $path3\scot-yearly-statistics-ts-$fdate.dta, replace
+	export delimited using $path3\scot-yearly-statistics-ts-$fdate.csv, replace
+
 
 	
 	/*
@@ -2080,6 +2282,23 @@ use $path1\scot-all-data-$fdate.dta, clear
 
 	
 /* Create master file of yearly statistics */
+/*
+	Combine yearly statistics cleaning tasks.
+*/
+
+** Moving average **
+
+clear
+set obs 0
+foreach c in aus nz can us scot ew ni {
+	append using $path3\`c'-yearly-statistics-ts-$fdate.dta, force
+}
+
+sort country period
+sav $path3\all-jurisdictions-yearly-statistics-ts-$fdate.dta, replace
+
+
+** Standard deviation **
 
 clear
 set obs 0
