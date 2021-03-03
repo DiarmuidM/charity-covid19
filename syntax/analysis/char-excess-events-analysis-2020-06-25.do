@@ -25,7 +25,7 @@
 /** 0. Preliminaries **/
 
 ** Diarmuid **
-global dfiles "C:\Users\mcdonndz\Dropbox" // location of data files
+global dfiles "C:\Users\mcdonndz-local\Dropbox" // location of data files
 global rfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19" // location of syntax and other project outputs
 global gfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19\docs" // location of graphs
 
@@ -45,9 +45,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** Set file and image properties
 
 global isize 1200
-global cutoff tm(2021m1)
-global fdate "2021-01-28" // date used to name input files
-global pdate "2021-01-28" // date used to name visualisation and other analytical outputs
+global cutoff tm(2021m2)
+global fdate "2021-02-28" // date used to name input files
+global pdate "2021-02-28" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour
@@ -59,7 +59,7 @@ global pdate "2021-01-28" // date used to name visualisation and other analytica
 
 	
 local countrylist = "aus us can nz ni scot ew"
-local monthyr = "January 2021"
+local monthyr = "February 2021"
 
 * USA
 	local cnameus = "United States of America"		// The subtitle
@@ -302,10 +302,60 @@ foreach c in `countrylist' {
 
 }
 
+/* Monthly statistics */
+
+use $path3\ew-monthly-time-series.dta, clear
+
+drop if period > tm(2020m12)
+
+	tsset period
+	gen pandemic = (period>=723) // April 2020
+
+	/* Statistical models */
+		
+	// Fit an OLS model and test for autocorrelation
+	
+	regress reg_count period pandemic
+	estat bgodfrey // Suggests there's no autocorrelation.
+	
+	// Time series models 
+	
+	newey reg_count period pandemic , lag(0) // Same as regress, vce(robust)
+		collin period pandemic  // mean VIF is above 2.5 but this is unlikely to be problematic
+		
+	newey reg_count period pandemic, lag(1)
+	newey reg_count period pandemic, lag(2)
+	newey reg_count period pandemic, lag(3)
+	newey reg_count period pandemic, lag(4)
+	newey reg_count period pandemic, lag(5)
+	/*
+		Effect of time is not statistically significant in first model.
+	*/
+	
+	// ITSA model
+	
+	local numobs = _N
+	local intervent = tm(2020m4)
+	itsa reg_count, single trperiod(`intervent') posttrend ///
+			figure(title("Level and Trend in Monthly Registrations (CCEW)") subtitle("By monthly registration period") ytitle("Number of registrations per month", size(medsmall)) ///
+				xlabel(, labsize(small)) ylabel(, labsize(small)) note("Source: OSCR; n=`numobs'. Produced: $S_DATE.", size(vsmall)) ///
+				scheme(s1color) saving($path6\ew-itsa-registrations-$fdate.gph, replace))
+	
+	graph export $path6\ew-itsa-registrations-$fdate.png, replace width(4096)
+		
+	actest, lags(5)
+	/*
+		No evidence of a strong shift in registrations.
+	*/
+
+
 
 /* Yearly statistics */
 /*
 	Produce plot of deviation from expected levels of registrations and de-registrations.
+	
+	As I do this for later data extracts, compare graphs from earlier data downloads: 
+		- if figures for 2020 shift, is it due to regulatory updates or data cleaning issues?
 */
 
 use $path3\all-jurisdictions-yearly-statistics-$fdate.dta, clear
@@ -314,11 +364,11 @@ drop if regy > 2020
 gen y2020 = (regy==2020)
 gen yoth = (regy<2020)
 
-	** Registrations **
+	** Descriptive statistics **
 	
 	// Scatterplot of standard deviations
 
-	twoway (scatter jurisdiction reg_deviation if y2020, mcolor(cranberry) msize(medlarge)) (scatter jurisdiction reg_deviation if yoth, mcolor(gs10) msym(O)) ///
+	twoway (scatter jurisdiction reg_deviation if y2020, mcolor(cranberry) msym(T) msize(large)) (scatter jurisdiction reg_deviation if yoth, mcolor(gs10) msym(O)) ///
 		, xline(0, lcolor(gs5)) title("Excess registrations for charity jurisdictions") subtitle(" ") ///
 		xlab(-3(1)3, labsize(small)) ylab(1 "Australia" 2 "Canada" 3 "England & Wales" 4 "Northern Ireland" 5 "New Zealand" 6 "Scotland" 7 "USA", labsize(small) angle(0)) ///
 		xtitle("Standard deviations above or below average number of registrations (2015-2019)", size(small)) ///
@@ -341,14 +391,12 @@ gen yoth = (regy<2020)
 		$graphstyle
 	graph export $path6\all-jurisdictions-yearly-registrations-index-$pdate.png, replace width($isize)
 		
-		
-	** Removals **
 	
 	// Scatterplot of standard deviations
 
-	twoway (scatter jurisdiction rem_deviation if y2020, mcolor(cranberry) msize(medlarge)) (scatter jurisdiction rem_deviation if yoth, mcolor(gs10) msym(O)) ///
+	twoway (scatter jurisdiction rem_deviation if y2020, mcolor(cranberry) msym(T) msize(large)) (scatter jurisdiction rem_deviation if yoth, mcolor(gs10) msym(O)) ///
 		, xline(0, lcolor(gs5)) title("Excess removals for charity jurisdictions") subtitle(" ") ///
-		xlab(-3(1)3, labsize(small)) ylab(2 "Canada" 3 "England & Wales" 4 "Northern Ireland" 5 "New Zealand" 6 "Scotland" 7 "USA", labsize(small) angle(0)) ///
+		xlab(-3(1)3, labsize(small)) ylab(1 "Australia" 2 "Canada" 3 "England & Wales" 4 "Northern Ireland" 5 "New Zealand" 6 "Scotland" 7 "USA", labsize(small) angle(0)) ///
 		xtitle("Standard deviations above or below average number of removals (2015-2019)", size(small)) ///
 		ytitle(" ") ///
 		legend(label(1 "2020") label(2 "2015-2019") size(small)) ///
@@ -369,7 +417,7 @@ gen yoth = (regy<2020)
 		$graphstyle
 	graph export $path6\all-jurisdictions-yearly-removals-index-$pdate.png, replace width($isize)
 
-
+	
 	** Moving averages **
 	
 	use $path3\all-jurisdictions-yearly-statistics-ts-$fdate.dta, clear
@@ -377,67 +425,222 @@ gen yoth = (regy<2020)
 	tsset jurisdiction period
 	
 	foreach var in reg rem {
-		tssmooth ma `var'_count_ma = `var'_count, window(2 1 )
+		tssmooth ma `var'_count_ma = `var'_count, window(5  )
 	}
 	
-	keep if period > 2009 & period < 2020 & !missing(jurisdiction)
+	keep if period > 2009 & period < 2021 & !missing(jurisdiction)
 	sum reg_count_ma if jurisdiction!=7 , d
 	
-	twoway (line reg_count_ma period if jurisdiction==1, lcolor(cranberry)) ///
+	// Registrations
+	
+	twoway (line reg_count_ma period if jurisdiction==1, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==1, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("Australia") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\aus-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==2, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==2, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==2, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("Canada") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\can-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==3, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==3, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==3, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("England and Wales") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\ew-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==4, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==4, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==4, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("Northern Ireland") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\ni-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==5, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==5, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==5, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("New Zealand") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\nz-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==6, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==6, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==6, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("Scotland") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\scot-yearly-registrations-ma-$pdate.png, replace width($isize)
 	
-	twoway (line reg_count_ma period if jurisdiction==7, lcolor(cranberry)) ///
+	twoway (line reg_count_ma period if jurisdiction==7, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==7, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("United States") subtitle(" ") ///
-		ylab(, labsize(small)) xlab(2010(1)2019, labsize(small)) ///
-		ytitle("Mean number of registrations (3-year moving average)", size(medsmall)) ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (5-year average)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\us-yearly-registrations-ma-$pdate.png, replace width($isize)
+
+	
+	// Removals
+	
+	twoway (line rem_count_ma period if jurisdiction==1, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==1, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Australia") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\aus-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==2, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==2, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Canada") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\can-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==3, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==3, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("England and Wales") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\ew-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==4, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==4, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Northern Ireland") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\ni-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==5, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==5, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("New Zealand") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\nz-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==6, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==6, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("Scotland") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\scot-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	twoway (line rem_count_ma period if jurisdiction==7, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line rem_count period if jurisdiction==7, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("United States") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of removals", size(medsmall)) ///
+		legend(label(1 "Expected removals (5-year average)") label(2 "Observed removals") size(small)) ///
+		$graphstyle
+	graph export $path6\us-yearly-removals-ma-$pdate.png, replace width($isize)
+	
+	
+	** Statistical modelling **
+	/*
+		The aim is to model observed events as a function of time and place.
+		
+		Two approaches:
+			- Times Series Cross Section (REWB)
+			- Linear regression for each country 
+			
+		For both models check the residuals for 2020.
+	*/
+	
+	use $path3\all-jurisdictions-yearly-statistics-ts-$fdate.dta, clear
+	encode country, gen(jurisdiction)
+	tsset jurisdiction period
+	
+	foreach var in reg rem {
+		tssmooth ma `var'_count_ma = `var'_count, window(5  )
+	}
+	
+	keep if period > 2009 & period < 2021 & !missing(jurisdiction)
+	sum reg_count_ma if jurisdiction!=7 , d
+	
+	foreach var in reg rem {
+		bys jurisdiction: gen `var'_count_lag = `var'_count[_n-1]
+	}
+	
+		
+	// Linear regression for each country
+	
+	forvalues i = 1/7 {
+		dfuller reg_count if jurisdiction==`i', trend
+		*regress reg_count if jurisdiction==`i', vce(robust)
+		regress reg_count reg_count_lag period if jurisdiction==`i', vce(robust) 
+	}
+	
+
+	dfuller reg_count, trend regress // suggests a stationary process (i.e. time trends are not predictive)
+	regress reg_count jurisdiction reg_count_lag period, vce(robust)
+	predict pr_reg_count
+	predict r, res
+	
+	*lvr2plot, mlabel(period)
+	
+	twoway (line pr_reg_count period, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period, lcolor(dknavy) lwidth(thick)) ///
+		, xline(2015, lcolor(gs10) lpatt(dash)) ///
+		title("England and Wales") subtitle(" ") ///
+		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
+		ytitle("Mean number of registrations", size(medsmall)) ///
+		legend(label(1 "Expected registrations (model prediction)") label(2 "Observed registrations") size(small)) ///
+		$graphstyle
+	graph export $path6\ew-yearly-registrations-linmod-$pdate.png, replace width($isize)
+	
+	// Times Series Cross Section (REWB)
+	/*
+		1. Set data as time series (tsset)
+		2. Test for non-stationarity
+		3. Decide on lagged variables (dependent and/or independent)
+		4. Estimate usual models with robust standard errors (Pooled, Fixed, Random)
+	*/
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 		
 		*(line rem_count_ma period if jurisdiction==2, lcolor(dknavy)) ///
 		*(line rem_count_ma period if jurisdiction==3, lcolor(dkorange)) ///
