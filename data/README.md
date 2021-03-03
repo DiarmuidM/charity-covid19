@@ -8,8 +8,6 @@ The data sets underpinning the analysis are contained in this folder - for examp
 
 There are multiple files per jurisdiction, one for each month. Therefore, figures can be compared over time within each jurisdiction, capturing any revisions to the figures by the regulators.
 
-The codebook explaining what each data set contains can be found here: [ [LINK] ](./data-codebook.md)
-
 ## Sources
 
 This project draws on lists of registered and de-registered charities from seven jurisdictions:
