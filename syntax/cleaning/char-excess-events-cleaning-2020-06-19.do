@@ -18,6 +18,10 @@
 				 data sets suitable for statistical analysis.
 				 
 				 See 'FILE_NAME' for the data collection code.
+				 
+	Issues:
+		- Importing delimited files results in difficulties around hanging quotation marks;
+			check this isn't affecting the results.
 */
 
 
@@ -26,10 +30,10 @@
 ** Diarmuid **
 
 global dfiles "C:\Users\mcdonndz-local\Dropbox" // location of data files
-global rfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19" // location of syntax and other project outputs
-global gfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19\docs" // location of graphs
-global foldate "2021-02-28" // name of folder containing latest data
-global fdate "2021-02-28" // date used to name output files
+global rfiles "C:\Users\mcdonndz-local\Dropbox\projects\charity-covid19" // location of syntax and other project outputs
+global gfiles "C:\Users\mcdonndz-local\Dropbox\projects\charity-covid19\docs" // location of graphs
+global foldate "2021-03-28" // name of folder containing latest data
+global fdate "2021-03-28" // date used to name output files
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -1101,7 +1105,7 @@ keep if deregistrationdate!=""
 	
 	** Removals
 	
-	import delimited using $path2\$foldate\aus\aus-removals-$fdate.csv, varn(1) clear
+	import delimited using $path2\2021-02-28\aus\aus-removals-2021-02-28.csv, varn(1) clear
 	
 	drop if status=="NULL" | status=="Registered"
 	capture duplicates drop abn, force

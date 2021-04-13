@@ -20,7 +20,6 @@
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
 from time import sleep
-from fimport import import_zip
 import requests
 import zipfile, io
 import os
@@ -403,51 +402,43 @@ def ew_download(basefolder, logfolder, ddate):
     mfile = logfolder + "/ew-download-metadata-" + ddate + ".json"
 
 
-    # Request web page containing link to file
+    # Request zip files
     
-    webadd = "https://register-of-charities.charitycommission.gov.uk/register/full-register-download"
-    response = requests.get(webadd)
-    print(response.status_code, response.headers)
+    tables = ["charity", "charity_annual_return_history", "charity_annual_return_parta", "charity_annual_return_partb", 
+    "charity_area_of_operation", "charity_classification", "charity_event_history", "charity_governing_document", "charity_other_names",
+    "charity_other_regulators", "charity_policy", "charity_published_report", "charity_trustee"]
+    webadd = "https://ccewuksprdoneregsadata1.blob.core.windows.net/data/txt/publicextract.{}.zip" # txt download (json also available)
+    
+    for table in tables:
+        response = requests.get(webadd.format(table))
+        print(response.status_code, response.headers)
 
+        if response.status_code==200:
 
-    # Search for file on web page
-
-    if response.status_code==200: # if the web page was successfully requested
-
-        webpage = soup(response.text, "html.parser")
-        file_id = webpage.select_one("a[href*=Extract]").get("href")
-        file_url = "https://register-of-charities.charitycommission.gov.uk" + file_id
-
-
-        # Request file
-
-        response_file = requests.get(file_url, allow_redirects=True)
-
-        if response_file.status_code==200:
-
-            outfile = dfolder + "/ccew-data-extract-" + ddate + ".zip"
+            outfile = dfolder + "/" + table + "-" + ddate + ".zip"
+            print(outfile)
             if os.path.isfile(outfile): # do not overwrite existing file
                 print("File already exists, no need to overwrite")
             else: # file does not currently exist, therefore create
                 with open(outfile, "wb") as f:
-                    f.write(response_file.content)
+                    f.write(response.content)
 
-            # Unzip files and convert from bcp to csv
+            # Unzip files
 
-            import_zip(outfile, dfolder)
+            with zipfile.ZipFile(outfile, 'r') as zip_ref:
+            	zip_ref.extractall(dfolder)
 
         else:
-            print("Unable to download data extract from link {}".format(file_url))
-            print("Status code {}".format(response_file.status_code))
+            print("Unable to download data extract from link {}".format(webadd))
+            print("Status code {}".format(response.status_code))
 
 
     # Write metadata to file
 
-    mdata = dict(response_file.headers)
-    mdata["file"] = "Data Extract"
-    mdata["data_portal_link"] = str(webadd)
-    mdata["data_extract_link"] = str(file_url)
-    mdata["data_extract_last_modified"] = response_file.headers["Last-Modified"]
+    mdata = dict(response.headers)
+    mdata["file"] = table
+    mdata["file_link"] = str(webadd)
+    mdata["data_extract_last_modified"] = response.headers["Last-Modified"]
 
     with open(mfile, "w") as f:
         json.dump(mdata, f)
@@ -456,6 +447,7 @@ def ew_download(basefolder, logfolder, ddate):
     print("\r")    
     print("Successfully downloaded data extract")
     print("Check log file for metadata about the download: {}".format(mfile))
+
 
 
 #############################################################################################################
@@ -930,7 +922,7 @@ def main():
     print("Executing data download")
     
     download, log, ddate = prelim()
-    """
+    
     try:
         print("Beginning Scotland download")
         sco_download(download, log, ddate)
@@ -942,23 +934,25 @@ def main():
         aus_download(download, log, ddate)
     except:
         print("Could not execute Australia download")
-    """
+    
     try:
         print("Beginning England and Wales download")
         ew_download(download, log, ddate)
     except:
         print("Could not execute England and Wales download")
-    """
+    
     try:
         print("Beginning Rep. of Ireland download")
         roi_download(download, log, ddate)
     except:
         print("Could not execute Republic of Ireland download")
+    
     try:
         print("Beginning Northern Ireland download")
         ni_download(download, log, ddate)
     except:
         print("Could not execute Northern Ireland download")
+    
     try:
         print("Beginning USA download")
         usa_download(download, log, ddate)
@@ -970,7 +964,7 @@ def main():
         nz_download(download, log, ddate)
     except:
         print("Could not execute New Zealand download")
-    """
+
 
 # Main program #
 

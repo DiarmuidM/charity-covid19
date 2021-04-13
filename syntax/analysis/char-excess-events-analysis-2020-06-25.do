@@ -26,8 +26,8 @@
 
 ** Diarmuid **
 global dfiles "C:\Users\mcdonndz-local\Dropbox" // location of data files
-global rfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19" // location of syntax and other project outputs
-global gfiles "C:\Users\mcdonndz\DataShare\projects\charity-covid19\docs" // location of graphs
+global rfiles "C:\Users\mcdonndz-local\Dropbox\projects\charity-covid19" // location of syntax and other project outputs
+global gfiles "C:\Users\mcdonndz-local\Dropbox\projects\charity-covid19\docs" // location of graphs
 
 include "$rfiles\syntax\stata-file-paths.doi"
 
@@ -45,9 +45,9 @@ include "$rfiles\syntax\stata-file-paths.doi"
 ** Set file and image properties
 
 global isize 1200
-global cutoff tm(2021m2)
-global fdate "2021-02-28" // date used to name input files
-global pdate "2021-02-28" // date used to name visualisation and other analytical outputs
+global cutoff tm(2021m3)
+global fdate "2021-03-28" // date used to name input files
+global pdate "2021-03-28" // date used to name visualisation and other analytical outputs
 
 * Graph colours
 	global axtcol = "gs5"	// axis colour
@@ -346,6 +346,8 @@ drop if period > tm(2020m12)
 	actest, lags(5)
 	/*
 		No evidence of a strong shift in registrations.
+		
+		Issues: linear approximation does not look a good representation of the functional form.
 	*/
 
 
@@ -599,18 +601,18 @@ gen yoth = (regy<2020)
 	}
 	
 
-	dfuller reg_count, trend regress // suggests a stationary process (i.e. time trends are not predictive)
-	regress reg_count jurisdiction reg_count_lag period, vce(robust)
+	dfuller reg_count if jurisdiction==3, trend regress // suggests a stationary process (i.e. time trends are not predictive)
+	regress reg_count jurisdiction reg_count_lag period if jurisdiction==3, vce(robust)
 	predict pr_reg_count
 	predict r, res
 	
 	*lvr2plot, mlabel(period)
 	
-	twoway (line pr_reg_count period, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period, lcolor(dknavy) lwidth(thick)) ///
+	twoway (line pr_reg_count period if jurisdiction==3, lcolor(cranberry) lpatt(longdash) lwidth(thick)) (line reg_count period if jurisdiction==3, lcolor(dknavy) lwidth(thick)) ///
 		, xline(2015, lcolor(gs10) lpatt(dash)) ///
 		title("England and Wales") subtitle(" ") ///
 		ylab(, labsize(small)) xlab(2010(2)2020, labsize(small)) ///
-		ytitle("Mean number of registrations", size(medsmall)) ///
+		ytitle("Number of registrations", size(medsmall)) ///
 		legend(label(1 "Expected registrations (model prediction)") label(2 "Observed registrations") size(small)) ///
 		$graphstyle
 	graph export $path6\ew-yearly-registrations-linmod-$pdate.png, replace width($isize)
